@@ -37,6 +37,9 @@ FTP_REMOTE_PATH = "meteo_data.json"
 DAYS_TO_FETCH = 7  # Nombre de jours à récupérer
 BACKUP_ENABLED = True
 
+os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+os.makedirs(os.path.dirname(JSON_OUTPUT), exist_ok=True)
+
 # ══════════════════════════════════════════════════════════════
 # LOGGING
 # ══════════════════════════════════════════════════════════════
