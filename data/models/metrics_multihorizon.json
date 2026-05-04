@@ -1,0 +1,12 @@
+{
+  "temp_mae": 0.48521015579346355,
+  "rain_accuracy": 1.0,
+  "n_samples": 519,
+  "n_features": 275,
+  "trained_at": "2026-05-04T14:26:46.289674",
+  "horizons": [
+    0,
+    1,
+    2
+  ]
+}
