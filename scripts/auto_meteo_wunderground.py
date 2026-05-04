@@ -290,7 +290,7 @@ def backup_json():
     if not os.path.exists(JSON_OUTPUT):
         return
     
-    backup_dir = "/Users/yves/Desktop/Meteo_Backups/data/json/backup"
+    backup_dir = os.path.join(BASE_DIR, "data", "backup")
     os.makedirs(backup_dir, exist_ok=True)
     
     backup_name = os.path.join(backup_dir, f'meteo_data_backup_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json')
