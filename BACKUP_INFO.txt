@@ -1,0 +1,67 @@
+========================================================================
+BACKUP SYSTÈME MÉTÉO ML - VINELZ
+========================================================================
+
+Date du backup : 2026-05-03 09:51:24
+Utilisateur : yves
+Machine : Mac-mini-de-Yves.local
+
+========================================================================
+CONTENU DU BACKUP
+========================================================================
+
+Scripts :
+      39 fichiers
+
+Données :
+- JSON : 1,5M
+- Events :   0B
+- Validation : 4,0K
+- Reports : 
+
+LaunchAgents :
+      11 fichiers
+
+Web :
+4,0K
+
+Logs récents :
+      28 fichiers
+
+Documentation :
+       4 fichiers
+
+========================================================================
+STATISTIQUES
+========================================================================
+
+Jours de données : 271
+
+LaunchAgents actifs :
+       8
+
+Taille totale backup :
+3,4M
+
+========================================================================
+RESTAURATION
+========================================================================
+
+Pour restaurer ce backup :
+
+1. Extraire l'archive :
+   tar -xzf meteo_system_20260503_095123.tar.gz
+
+2. Copier les scripts :
+   cp -R meteo_system_20260503_095123/scripts/* ~/Documents/Météo/scripts/
+
+3. Copier les données :
+   cp -R meteo_system_20260503_095123/data/* ~/Documents/Météo/data/
+
+4. Restaurer les LaunchAgents :
+   cp meteo_system_20260503_095123/LaunchAgents/*.plist ~/Library/LaunchAgents/
+   launchctl load ~/Library/LaunchAgents/com.sevy.meteo.*.plist
+
+========================================================================
+FIN DU FICHIER INFO
+========================================================================
