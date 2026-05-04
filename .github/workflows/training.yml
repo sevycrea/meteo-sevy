@@ -1,0 +1,36 @@
+name: Entraînement modèle ML
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # 3h00 chaque nuit
+  workflow_dispatch:
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Installer dépendances
+        run: pip install -r requirements.txt
+
+      - name: Entraîner le modèle
+        run: python scripts/train_model_multihorizon.py
+
+      - name: Commit modèle entraîné
+        run: |
+          git config user.name "Meteo Bot"
+          git config user.email "bot@meteo-sevy.ch"
+          git add data/models/
+          git diff --staged --quiet || git commit -m "🧠 Modèle ML réentraîné $(date -u +'%Y-%m-%d')"
+          git push

@@ -1,0 +1,44 @@
+{
+  "generated_at": "2026-05-03T07:44:12.907466",
+  "model_version": "2026-05-03T07:39:11.712982",
+  "model_type": "multihorizon_seasonal",
+  "forecasts": [
+    {
+      "date": "2026-05-02",
+      "day_name": "Saturday",
+      "day_number": 0,
+      "day_label": "Aujourd'hui",
+      "temperature": {
+        "predicted": 15.1,
+        "min_estimate": 14.6,
+        "max_estimate": 15.6
+      },
+      "rain": {
+        "will_rain": false,
+        "probability": 8
+      },
+      "confidence": 95,
+      "periods": {
+        "p1": {
+          "name": "Matin (04h-12h)",
+          "temp_estimate": 12.1,
+          "rain_risk": "low"
+        },
+        "p2": {
+          "name": "Après-midi (12h-20h)",
+          "temp_estimate": 20.1,
+          "rain_risk": "low"
+        },
+        "p3": {
+          "name": "Nuit (20h-04h)",
+          "temp_estimate": 13.1,
+          "rain_risk": "low"
+        }
+      }
+    }
+  ],
+  "model_performance": {
+    "temperature_accuracy": "±0.6°C",
+    "rain_accuracy": "87%"
+  }
+}

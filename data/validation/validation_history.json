@@ -1,0 +1,25 @@
+[
+  {
+    "validation_date": "2026-05-03T08:11:42.846114",
+    "prediction_date": "2026-05-03",
+    "target_date": "2026-05-02",
+    "horizon": 0,
+    "horizon_label": "Aujourd'hui",
+    "temperature": {
+      "predicted": 15.1,
+      "actual": 15.9,
+      "error": 0.8,
+      "min_estimate": 14.6,
+      "max_estimate": 15.6,
+      "within_bounds": false
+    },
+    "rain": {
+      "predicted": false,
+      "actual": false,
+      "correct": true,
+      "probability": 8
+    },
+    "confidence": 95,
+    "model_type": "multihorizon_seasonal"
+  }
+]

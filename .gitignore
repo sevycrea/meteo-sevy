@@ -1,0 +1,22 @@
+# Logs
+logs/*.log
+
+# Backups & archives (Mac-local, not needed in repo)
+data/json/
+data/backup/
+*.tar.gz
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+
+# macOS
+.DS_Store
+
+# LaunchAgents (Mac-only, not needed on GitHub)
+LaunchAgents/
+
+# Large or sensitive local files
+web/

@@ -1,0 +1,41 @@
+name: Prévisions météo IA
+
+on:
+  schedule:
+    - cron: '0 4 * * *'   # 4h00
+    - cron: '0 12 * * *'  # 12h00
+  workflow_dispatch:
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Installer dépendances
+        run: pip install -r requirements.txt
+
+      - name: Générer prévisions
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+        run: python scripts/predict_weather_multihorizon.py
+
+      - name: Commit prévisions
+        run: |
+          git config user.name "Meteo Bot"
+          git config user.email "bot@meteo-sevy.ch"
+          git add data/
+          git diff --staged --quiet || git commit -m "🤖 Prévisions IA $(date -u +'%Y-%m-%d %H:%M')"
+          git push

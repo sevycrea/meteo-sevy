@@ -1,0 +1,288 @@
+================================================================================
+RAPPORT D'ANALYSE DES SEUILS OPTIMAUX - VINELZ
+================================================================================
+Généré le : 2026-05-03 09:50:48
+Données analysées : 271 jours
+
+RÉSUMÉ ANNUEL (VINELZ)
+--------------------------------------------------------------------------------
+  Température moyenne :    9.1°C
+  Écart-type :             6.7°C
+  Minimum observé :        -6.3°C
+  Maximum observé :        27.9°C
+  Médiane :                8.2°C
+
+NORMALES ET SEUILS PAR MOIS
+================================================================================
+
+📅 JANVIER
+--------------------------------------------------------------------------------
+  Données : 31 jours
+
+  📊 STATISTIQUES
+     Moyenne :             1.0°C
+     Écart-type :          2.7°C
+     Min/Max observés :    -6.3°C / 5.0°C
+     Médiane :             1.7°C
+
+  🌡️  SEUILS CHALEUR
+     Avertissement :       6.4°C
+                           (méthode σ: 6.4°C, P95: 4.6°C)
+     Critique :            9.2°C
+                           (méthode σ: 9.2°C, P99: 4.9°C)
+
+  ❄️  SEUILS FROID
+     Avertissement :       -4.5°C
+                           (méthode σ: -4.5°C, P10: -3.5°C)
+     Critique (gel) :      0.0°C
+
+  💡 INTERPRÉTATION
+     En Janvier, une température :
+     • > 6.4°C est inhabituelle (top 5%)
+     • > 9.2°C est extrême (top 1%)
+     • < -4.5°C est inhabituelle (bottom 10%)
+     • < 0°C est un gel
+
+
+📅 FÉVRIER
+--------------------------------------------------------------------------------
+  Données : 28 jours
+
+  📊 STATISTIQUES
+     Moyenne :             5.8°C
+     Écart-type :          2.5°C
+     Min/Max observés :    1.6°C / 12.0°C
+     Médiane :             5.9°C
+
+  🌡️  SEUILS CHALEUR
+     Avertissement :       10.9°C
+                           (méthode σ: 10.9°C, P95: 10.0°C)
+     Critique :            13.5°C
+                           (méthode σ: 13.5°C, P99: 11.6°C)
+
+  ❄️  SEUILS FROID
+     Avertissement :       0.8°C
+                           (méthode σ: 0.8°C, P10: 3.0°C)
+     Critique (gel) :      0.0°C
+
+  💡 INTERPRÉTATION
+     En Février, une température :
+     • > 10.9°C est inhabituelle (top 5%)
+     • > 13.5°C est extrême (top 1%)
+     • < 0.8°C est inhabituelle (bottom 10%)
+     • < 0°C est un gel
+
+
+📅 MARS
+--------------------------------------------------------------------------------
+  Données : 31 jours
+
+  📊 STATISTIQUES
+     Moyenne :             6.9°C
+     Écart-type :          2.1°C
+     Min/Max observés :    2.0°C / 9.7°C
+     Médiane :             7.6°C
+
+  🌡️  SEUILS CHALEUR
+     Avertissement :       11.1°C
+                           (méthode σ: 11.1°C, P95: 9.4°C)
+     Critique :            13.2°C
+                           (méthode σ: 13.2°C, P99: 9.6°C)
+
+  ❄️  SEUILS FROID
+     Avertissement :       2.7°C
+                           (méthode σ: 2.7°C, P10: 4.0°C)
+     Critique (gel) :      0.0°C
+
+  💡 INTERPRÉTATION
+     En Mars, une température :
+     • > 11.1°C est inhabituelle (top 5%)
+     • > 13.2°C est extrême (top 1%)
+     • < 2.7°C est inhabituelle (bottom 10%)
+     • < 0°C est un gel
+
+
+📅 AVRIL
+--------------------------------------------------------------------------------
+  Données : 30 jours
+
+  📊 STATISTIQUES
+     Moyenne :             12.7°C
+     Écart-type :          2.9°C
+     Min/Max observés :    4.7°C / 16.6°C
+     Médiane :             13.7°C
+
+  🌡️  SEUILS CHALEUR
+     Avertissement :       18.5°C
+                           (méthode σ: 18.5°C, P95: 15.8°C)
+     Critique :            21.5°C
+                           (méthode σ: 21.5°C, P99: 16.4°C)
+
+  ❄️  SEUILS FROID
+     Avertissement :       6.9°C
+                           (méthode σ: 6.9°C, P10: 8.2°C)
+     Critique (gel) :      0.0°C
+
+  💡 INTERPRÉTATION
+     En Avril, une température :
+     • > 18.5°C est inhabituelle (top 5%)
+     • > 21.5°C est extrême (top 1%)
+     • < 6.9°C est inhabituelle (bottom 10%)
+     • < 0°C est un gel
+
+
+📅 AOÛT
+--------------------------------------------------------------------------------
+  Données : 27 jours
+
+  📊 STATISTIQUES
+     Moyenne :             21.8°C
+     Écart-type :          3.6°C
+     Min/Max observés :    16.1°C / 27.9°C
+     Médiane :             20.9°C
+
+  🌡️  SEUILS CHALEUR
+     Avertissement :       29.0°C
+                           (méthode σ: 29.0°C, P95: 27.2°C)
+     Critique :            32.6°C
+                           (méthode σ: 32.6°C, P99: 27.7°C)
+
+  ❄️  SEUILS FROID
+     Avertissement :       14.6°C
+                           (méthode σ: 14.6°C, P10: 17.4°C)
+     Critique (gel) :      0.0°C
+
+  💡 INTERPRÉTATION
+     En Août, une température :
+     • > 29.0°C est inhabituelle (top 5%)
+     • > 32.6°C est extrême (top 1%)
+     • < 14.6°C est inhabituelle (bottom 10%)
+     • < 0°C est un gel
+
+
+📅 SEPTEMBRE
+--------------------------------------------------------------------------------
+  Données : 30 jours
+
+  📊 STATISTIQUES
+     Moyenne :             15.7°C
+     Écart-type :          2.7°C
+     Min/Max observés :    10.6°C / 20.4°C
+     Médiane :             16.4°C
+
+  🌡️  SEUILS CHALEUR
+     Avertissement :       21.1°C
+                           (méthode σ: 21.1°C, P95: 19.5°C)
+     Critique :            23.8°C
+                           (méthode σ: 23.8°C, P99: 20.3°C)
+
+  ❄️  SEUILS FROID
+     Avertissement :       10.3°C
+                           (méthode σ: 10.3°C, P10: 11.8°C)
+     Critique (gel) :      0.0°C
+
+  💡 INTERPRÉTATION
+     En Septembre, une température :
+     • > 21.1°C est inhabituelle (top 5%)
+     • > 23.8°C est extrême (top 1%)
+     • < 10.3°C est inhabituelle (bottom 10%)
+     • < 0°C est un gel
+
+
+📅 OCTOBRE
+--------------------------------------------------------------------------------
+  Données : 31 jours
+
+  📊 STATISTIQUES
+     Moyenne :             10.8°C
+     Écart-type :          1.8°C
+     Min/Max observés :    7.5°C / 14.5°C
+     Médiane :             11.0°C
+
+  🌡️  SEUILS CHALEUR
+     Avertissement :       14.4°C
+                           (méthode σ: 14.4°C, P95: 13.6°C)
+     Critique :            16.2°C
+                           (méthode σ: 16.2°C, P99: 14.2°C)
+
+  ❄️  SEUILS FROID
+     Avertissement :       7.2°C
+                           (méthode σ: 7.2°C, P10: 8.4°C)
+     Critique (gel) :      0.0°C
+
+  💡 INTERPRÉTATION
+     En Octobre, une température :
+     • > 14.4°C est inhabituelle (top 5%)
+     • > 16.2°C est extrême (top 1%)
+     • < 7.2°C est inhabituelle (bottom 10%)
+     • < 0°C est un gel
+
+
+📅 NOVEMBRE
+--------------------------------------------------------------------------------
+  Données : 30 jours
+
+  📊 STATISTIQUES
+     Moyenne :             5.1°C
+     Écart-type :          3.3°C
+     Min/Max observés :    -1.5°C / 10.6°C
+     Médiane :             5.7°C
+
+  🌡️  SEUILS CHALEUR
+     Avertissement :       11.8°C
+                           (méthode σ: 11.8°C, P95: 10.4°C)
+     Critique :            15.1°C
+                           (méthode σ: 15.1°C, P99: 10.6°C)
+
+  ❄️  SEUILS FROID
+     Avertissement :       -1.5°C
+                           (méthode σ: -1.5°C, P10: 1.0°C)
+     Critique (gel) :      0.0°C
+
+  💡 INTERPRÉTATION
+     En Novembre, une température :
+     • > 11.8°C est inhabituelle (top 5%)
+     • > 15.1°C est extrême (top 1%)
+     • < -1.5°C est inhabituelle (bottom 10%)
+     • < 0°C est un gel
+
+
+📅 DÉCEMBRE
+--------------------------------------------------------------------------------
+  Données : 31 jours
+
+  📊 STATISTIQUES
+     Moyenne :             3.3°C
+     Écart-type :          2.8°C
+     Min/Max observés :    -1.7°C / 9.7°C
+     Médiane :             3.3°C
+
+  🌡️  SEUILS CHALEUR
+     Avertissement :       9.0°C
+                           (méthode σ: 9.0°C, P95: 8.1°C)
+     Critique :            11.8°C
+                           (méthode σ: 11.8°C, P99: 9.4°C)
+
+  ❄️  SEUILS FROID
+     Avertissement :       -2.4°C
+                           (méthode σ: -2.4°C, P10: -0.3°C)
+     Critique (gel) :      0.0°C
+
+  💡 INTERPRÉTATION
+     En Décembre, une température :
+     • > 9.0°C est inhabituelle (top 5%)
+     • > 11.8°C est extrême (top 1%)
+     • < -2.4°C est inhabituelle (bottom 10%)
+     • < 0°C est un gel
+
+
+================================================================================
+COMPARAISON : SEUILS ARBITRAIRES vs SEUILS OPTIMISÉS
+================================================================================
+
+EXEMPLE : Juillet à Vinelz
+--------------------------------------------------------------------------------
+
+================================================================================
+FIN DU RAPPORT
+================================================================================

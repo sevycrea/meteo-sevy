@@ -1,0 +1,45 @@
+name: Collecte données journalières
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Installer dépendances
+        run: pip install requests numpy
+
+      - name: Collecter données journalières
+        env:
+          WU_API_KEY: ${{ secrets.WU_API_KEY }}
+          WU_STATION_ID: ${{ secrets.WU_STATION_ID }}
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+        run: python scripts/auto_meteo_wunderground.py
+
+      - name: Enrichir données (agrégation périodes)
+        run: python scripts/aggregate_periods.py
+
+      - name: Commit données mises à jour
+        run: |
+          git config user.name "Meteo Bot"
+          git config user.email "bot@meteo-sevy.ch"
+          git add data/
+          git diff --staged --quiet || git commit -m "📊 Données journalières $(date -u +'%Y-%m-%d %H:%M')"
+          git push

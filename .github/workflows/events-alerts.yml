@@ -1,0 +1,43 @@
+name: Détection événements et alertes
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # toutes les 30 minutes
+  workflow_dispatch:
+
+jobs:
+  events-alerts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Installer dépendances
+        run: pip install requests
+
+      - name: Détecter événements météo
+        run: python scripts/detect_events.py
+
+      - name: Uploader alertes vers le site
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+        run: python scripts/export_to_ftp.py
+
+      - name: Commit alertes
+        run: |
+          git config user.name "Meteo Bot"
+          git config user.email "bot@meteo-sevy.ch"
+          git add data/
+          git diff --staged --quiet || git commit -m "⚠️ Alertes $(date -u +'%Y-%m-%d %H:%M')"
+          git push
