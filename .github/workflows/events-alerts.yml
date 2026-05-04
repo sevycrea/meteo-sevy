@@ -27,12 +27,15 @@ jobs:
       - name: Détecter événements météo
         run: python scripts/detect_events.py
 
-      - name: Uploader alertes vers le site
+      - name: Uploader alertes et logs vers le site
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASS: ${{ secrets.FTP_PASS }}
-        run: python scripts/export_to_ftp.py
+        run: |
+          python scripts/export_to_ftp.py
+          python scripts/upload_log_ftp.py logs/events.log
+          python scripts/upload_log_ftp.py logs/ftp_upload.log
 
       - name: Commit alertes
         run: |

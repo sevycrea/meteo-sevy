@@ -33,6 +33,13 @@ jobs:
           FTP_PASS: ${{ secrets.FTP_PASS }}
         run: python scripts/auto_meteo_wunderground_hourly.py
 
+      - name: Upload log FTP
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+        run: python scripts/upload_log_ftp.py logs/auto_wunderground_hourly.log
+
       - name: Commit données mises à jour
         run: |
           git config user.name "Meteo Bot"

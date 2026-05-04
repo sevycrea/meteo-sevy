@@ -36,6 +36,15 @@ jobs:
       - name: Enrichir données (agrégation périodes)
         run: python scripts/aggregate_periods.py
 
+      - name: Upload logs FTP
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+        run: |
+          python scripts/upload_log_ftp.py logs/auto_update_wunderground.log
+          python scripts/upload_log_ftp.py logs/aggregation.log
+
       - name: Commit données mises à jour
         run: |
           git config user.name "Meteo Bot"
