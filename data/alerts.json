@@ -1,1 +1,8 @@
-{"generated_at":"","status":"normal","message":"Aucune alerte météo en cours","total_alerts":0,"alerts":[]}
+{
+  "generated_at": "2026-05-04T14:25:48.054814",
+  "location": "Vinelz, Suisse",
+  "total_alerts": 0,
+  "alerts": [],
+  "status": "normal",
+  "message": "Aucune alerte météo en cours"
+}
