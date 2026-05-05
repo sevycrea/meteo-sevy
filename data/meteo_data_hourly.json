@@ -606,5 +606,33 @@
       "pressure_avg": 1004.6,
       "humidity_avg": 92.0
     }
+  },
+  "2026-05-05": {
+    "hourly": {
+      "11:00": {
+        "temp": 15,
+        "hum": 79,
+        "wind": 7,
+        "gust": 7,
+        "pressure": 1000.0,
+        "rain": 4.6,
+        "timestamp": "2026-05-05 13:44:06"
+      }
+    },
+    "daily": {
+      "temp_min": 15,
+      "temp_max": 15,
+      "temp_sum": 30,
+      "temp_count": 2,
+      "rain_total": 4.57,
+      "wind_max": 7,
+      "pressure_sum": 2000.0,
+      "pressure_count": 2,
+      "humidity_sum": 158,
+      "humidity_count": 2,
+      "temp_avg": 15.0,
+      "pressure_avg": 1000.0,
+      "humidity_avg": 79.0
+    }
   }
 }
