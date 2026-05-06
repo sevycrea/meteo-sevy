@@ -27,19 +27,39 @@ jobs:
       - name: Installer dépendances
         run: pip install -r requirements.txt
 
-      - name: Générer prévisions
+      # 1) Récupérer le NWP frais (Open-Meteo / MetNo) — 7 jours à partir d'aujourd'hui
+      - name: Récupérer NWP MetNo
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+        run: python scripts/fetch_nwp_forecast.py
+
+      # 2) Générer les prévisions ML multihorizon (utilise le NWP frais)
+      - name: Générer prévisions ML
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASS: ${{ secrets.FTP_PASS }}
         run: python scripts/predict_weather_multihorizon.py
 
-      - name: Upload log FTP
+      # 3) Générer les créneaux horaires 2h × 7 jours (utilise NWP + corrections ML)
+      - name: Générer prévisions horaires (créneaux 2h)
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASS: ${{ secrets.FTP_PASS }}
-        run: python scripts/upload_log_ftp.py logs/predictions_multihorizon.log
+        run: python scripts/predict_hourly.py
+
+      - name: Upload logs FTP
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+        run: |
+          python scripts/upload_log_ftp.py logs/predictions_multihorizon.log || true
+          python scripts/upload_log_ftp.py logs/nwp_forecast.log || true
+          python scripts/upload_log_ftp.py logs/predictions_hourly.log || true
 
       - name: Commit prévisions
         run: |
