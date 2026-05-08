@@ -1,104 +1,104 @@
 {
-  "generated_at": "2026-05-07T18:02:15.968478",
-  "model_version": "2026-05-07T10:55:48.212981",
+  "generated_at": "2026-05-08T08:59:50.399759",
+  "model_version": "2026-05-08T08:15:28.396104",
   "model_type": "multihorizon_sequential",
   "forecasts": [
     {
-      "date": "2026-05-07",
-      "day_name": "Thursday",
+      "date": "2026-05-08",
+      "day_name": "Friday",
       "day_number": 0,
       "day_label": "Aujourd'hui",
       "temperature": {
-        "predicted": 8.5,
-        "min_estimate": 8.0,
-        "max_estimate": 8.9
+        "predicted": 9.5,
+        "min_estimate": 9.0,
+        "max_estimate": 10.0
       },
       "rain": {
-        "will_rain": true,
-        "probability": 76.0
+        "will_rain": false,
+        "probability": 10.0
       },
       "confidence": 95,
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 6.1,
-          "rain_risk": "high"
+          "temp_estimate": 7.1,
+          "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 12.5,
-          "rain_risk": "high"
+          "temp_estimate": 13.5,
+          "rain_risk": "low"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 6.9,
-          "rain_risk": "high"
-        }
-      }
-    },
-    {
-      "date": "2026-05-08",
-      "day_name": "Friday",
-      "day_number": 1,
-      "day_label": "Demain",
-      "temperature": {
-        "predicted": 8.2,
-        "min_estimate": 7.6,
-        "max_estimate": 8.8
-      },
-      "rain": {
-        "will_rain": true,
-        "probability": 62.0
-      },
-      "confidence": 86.0,
-      "periods": {
-        "p1": {
-          "name": "Matin (04h-12h)",
-          "temp_estimate": 6.2,
-          "rain_risk": "high"
-        },
-        "p2": {
-          "name": "Après-midi (12h-20h)",
-          "temp_estimate": 11.8,
-          "rain_risk": "high"
-        },
-        "p3": {
-          "name": "Nuit (20h-04h)",
-          "temp_estimate": 7.0,
-          "rain_risk": "high"
+          "temp_estimate": 7.9,
+          "rain_risk": "low"
         }
       }
     },
     {
       "date": "2026-05-09",
       "day_name": "Saturday",
+      "day_number": 1,
+      "day_label": "Demain",
+      "temperature": {
+        "predicted": 9.2,
+        "min_estimate": 8.6,
+        "max_estimate": 9.8
+      },
+      "rain": {
+        "will_rain": false,
+        "probability": 13.0
+      },
+      "confidence": 86.0,
+      "periods": {
+        "p1": {
+          "name": "Matin (04h-12h)",
+          "temp_estimate": 7.2,
+          "rain_risk": "low"
+        },
+        "p2": {
+          "name": "Après-midi (12h-20h)",
+          "temp_estimate": 12.8,
+          "rain_risk": "low"
+        },
+        "p3": {
+          "name": "Nuit (20h-04h)",
+          "temp_estimate": 8.0,
+          "rain_risk": "low"
+        }
+      }
+    },
+    {
+      "date": "2026-05-10",
+      "day_name": "Sunday",
       "day_number": 2,
       "day_label": "Après-demain",
       "temperature": {
-        "predicted": 8.0,
-        "min_estimate": 7.3,
-        "max_estimate": 8.8
+        "predicted": 8.6,
+        "min_estimate": 7.8,
+        "max_estimate": 9.4
       },
       "rain": {
-        "will_rain": true,
-        "probability": 54.0
+        "will_rain": false,
+        "probability": 8.0
       },
       "confidence": 71.0,
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 6.4,
-          "rain_risk": "medium"
+          "temp_estimate": 7.0,
+          "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 11.2,
-          "rain_risk": "medium"
+          "temp_estimate": 11.8,
+          "rain_risk": "low"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 7.2,
-          "rain_risk": "medium"
+          "temp_estimate": 7.8,
+          "rain_risk": "low"
         }
       }
     }
