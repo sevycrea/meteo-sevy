@@ -4417,17 +4417,17 @@
   },
   "2026-05-08": {
     "gust_max": 11.1,
-    "hum_avg": 72.9,
+    "hum_avg": 69.5,
     "hum_max": 96.0,
     "hum_min": 34.2,
-    "pressure_avg": 1005.0,
+    "pressure_avg": 1004.9,
     "pressure_max": 1006.1,
     "pressure_min": 1003.0,
     "rain": 0,
-    "temp_avg": 13.8,
+    "temp_avg": 14.6,
     "temp_max": 21.8,
     "temp_min": 7.3,
-    "wind_avg": 2.6,
+    "wind_avg": 2.4,
     "wind_max": 6.7,
     "wind_min": 0.0
   }
