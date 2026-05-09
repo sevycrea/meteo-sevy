@@ -166,7 +166,20 @@ def generate_hourly(nwp, ml_preds):
         if ml_pred:
             t_ml = ml_pred['temperature']['predicted']
             t_nwp_avg = nwp_day.get('temp_avg') or t_ml
-            ml_correction = round(t_ml - t_nwp_avg, 2)
+            raw_correction = round(t_ml - t_nwp_avg, 2)
+            # Plafonner la correction ML à ±2°C : le NWP MetNo brut est
+            # généralement précis à ±1-2°C. Une correction plus grande indique
+            # un modèle ML mal calibré (entraîné sur saison différente, etc.).
+            # On clamp pour éviter qu'un ML aberrant tire toutes les prévisions
+            # horaires hors de la réalité (cas du 2026-05-09 : correction -6°C
+            # alors que la réalité confirmait le NWP brut).
+            ML_CORRECTION_CAP = 2.0
+            if abs(raw_correction) > ML_CORRECTION_CAP:
+                ml_correction = ML_CORRECTION_CAP if raw_correction > 0 else -ML_CORRECTION_CAP
+                log(f"⚠️  Correction ML brute {raw_correction:+.2f}°C plafonnée à {ml_correction:+.1f}°C "
+                    f"(ML={t_ml}° vs NWP_avg={t_nwp_avg}°)")
+            else:
+                ml_correction = raw_correction
         else:
             ml_correction = 0.0
 
