@@ -2,8 +2,15 @@ name: Prévisions météo IA
 
 on:
   schedule:
-    - cron: '0 4 * * *'   # 4h00
-    - cron: '0 12 * * *'  # 12h00
+    # 4×/jour pour avoir un NWP frais à chaque période de la journée :
+    # 04h UTC = 06h CEST (matin frais)
+    # 10h UTC = 12h CEST (mi-journée, juste avant orages d'été)
+    # 16h UTC = 18h CEST (soir, validation prévisions du jour)
+    # 22h UTC = 00h CEST (nuit)
+    - cron: '0 4 * * *'
+    - cron: '0 10 * * *'
+    - cron: '0 16 * * *'
+    - cron: '0 22 * * *'
   workflow_dispatch:
 
 jobs:

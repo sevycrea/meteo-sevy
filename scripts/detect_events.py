@@ -28,6 +28,7 @@ BASE_DIR         = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PREDICTIONS_FILE = os.path.join(BASE_DIR, "data", "predictions.json")
 DATA_FILE        = os.path.join(BASE_DIR, "data", "meteo_data_enriched.json")
 HOURLY_FILE      = os.path.join(BASE_DIR, "data", "meteo_data_hourly.json")
+REALTIME_FILE    = os.path.join(BASE_DIR, "data", "meteo_data_realtime.json")
 NWP_FILE         = os.path.join(BASE_DIR, "data", "nwp_forecast.json")
 NWP_FILE_ALT     = os.path.join(BASE_DIR, "data", "json", "nwp_forecast.json")
 EVENTS_LOG       = os.path.join(BASE_DIR, "logs", "events.log")
@@ -65,6 +66,20 @@ THRESHOLDS = {
         'wind_storm':               70,    # km/h
         'horizon_hours':            12,    # combien d'heures à analyser
     },
+    # Détection orage (codes WMO + CAPE)
+    'thunderstorm': {
+        'wmo_codes_thunder':       [95, 96, 99],  # 95=orage, 96=+grêle, 99=grêle violente
+        'cape_warning':            1000,   # J/kg — instabilité significative
+        'cape_critical':           2000,   # J/kg — instabilité forte (orages probables)
+        'horizon_hours':           24,     # on regarde 24h pour anticiper
+    },
+}
+
+# Codes WMO décodés (utile pour les messages)
+WMO_NAMES = {
+    95: "Orage",
+    96: "Orage avec grêle légère",
+    99: "Orage avec forte grêle",
 }
 
 # ============================================
@@ -98,6 +113,11 @@ def load_json(path):
 
 def load_predictions():     return load_json(PREDICTIONS_FILE)
 def load_hourly_station():  return load_json(HOURLY_FILE)
+def load_realtime_station():
+    """Mesures sub-horaires (10-min) — fenêtre glissante 24h.
+    Si dispo, c'est BEAUCOUP plus précis pour la détection que les
+    snapshots horaires (front froid détecté à 30 min près au lieu de 2h)."""
+    return load_json(REALTIME_FILE)
 
 def load_nwp():
     return load_json(NWP_FILE) or load_json(NWP_FILE_ALT)
@@ -135,83 +155,88 @@ def vinelz_today():
 # ============================================
 # 1. DÉTECTION TEMPS RÉEL (STATION IVINEL2)
 # ============================================
-def realtime_check(hourly_station):
-    """Analyse les 3 dernières heures de mesures pour détecter les signes
-    d'orage à proximité ou de front froid en cours.
+def _flatten_realtime(realtime_data):
+    """Convertit le dict realtime {YYYY-MM-DD HH:MM: ...} en liste triée
+    par datetime. Retourne [(dt, key, record), ...]."""
+    if not realtime_data:
+        return []
+    items = []
+    for k, v in realtime_data.items():
+        try:
+            dt = datetime.strptime(k, "%Y-%m-%d %H:%M")
+            items.append((dt, k, v))
+        except ValueError:
+            continue
+    items.sort(key=lambda x: x[0])
+    return items
 
-    Retour : liste d'alertes.
-    """
+def _fnum(v):
+    try: return float(v)
+    except (TypeError, ValueError): return None
+
+def _analyze_window(records, window_label, source='hourly'):
+    """Analyse une fenêtre temporelle de mesures (≥3 records, premier=plus
+    ancien, dernier=le plus récent). Retourne la liste d'alertes détectées.
+    Utilisé pour les deux modes : hourly fallback et realtime 10-min."""
     alerts = []
-    if not hourly_station:
+    if not records or len(records) < 3:
         return alerts
-
-    today = vinelz_today()
-    today_data = hourly_station.get(today, {}).get('hourly', {})
-    if not today_data or len(today_data) < 3:
-        log(f"  ⏭  Temps réel : moins de 3 heures dispo pour {today} — skip")
-        return alerts
-
-    # Trier par heure et prendre les 3 dernières
-    keys = sorted(today_data.keys())
-    last3 = [today_data[k] for k in keys[-3:]]
-    last3_keys = keys[-3:]
-
-    def fnum(v):
-        try: return float(v)
-        except (TypeError, ValueError): return None
-
-    temps     = [fnum(r.get('temp'))     for r in last3]
-    hums      = [fnum(r.get('hum'))      for r in last3]
-    pressures = [fnum(r.get('pressure')) for r in last3]
-    gusts     = [fnum(r.get('gust'))     for r in last3]
-    winds     = [fnum(r.get('wind'))     for r in last3]
-    rains     = [fnum(r.get('rain'))     for r in last3]
 
     R = THRESHOLDS['realtime']
-    label_window = f"{last3_keys[0]}–{last3_keys[-1]}"
+
+    temps     = [_fnum(r.get('temp'))     for r in records]
+    hums      = [_fnum(r.get('hum'))      for r in records]
+    pressures = [_fnum(r.get('pressure')) for r in records]
+    gusts     = [_fnum(r.get('gust'))     for r in records]
+    rains     = [_fnum(r.get('rain'))     for r in records]
+
+    # Fenêtre temporelle : ~2h en mode hourly (3 records), ~90 min en realtime
+    win_label_hours = "2h" if source == 'hourly' else "1h30"
 
     # ── A) Front froid : chute T° + saut humidité simultanés ──
     if all(t is not None for t in temps) and all(h is not None for h in hums):
-        temp_drop = temps[0] - temps[-1]   # T° d'il y a 2h - T° actuelle
-        hum_jump  = hums[-1] - hums[0]     # humidité actuelle - humidité d'il y a 2h
+        temp_drop = temps[0] - temps[-1]
+        hum_jump  = hums[-1] - hums[0]
         if temp_drop >= R['temp_drop_2h'] and hum_jump >= R['humidity_jump_2h']:
             alerts.append({
                 'type': 'cold_front_realtime',
                 'severity': 'warning',
-                'window': label_window,
+                'window': window_label,
+                'source': source,
                 'message': (f"❄️🌧️ Front froid détecté · "
                             f"−{temp_drop:.1f}°C et +{hum_jump:.0f}% humidité "
-                            f"en 2h ({label_window})"),
+                            f"en {win_label_hours} ({window_label})"),
                 'recommendation': "Orage probable à proximité — vigilance.",
-                'metrics': {
-                    'temp_drop_2h': round(temp_drop, 1),
-                    'humidity_jump_2h': round(hum_jump, 1),
-                }
+                'metrics': {'temp_drop': round(temp_drop, 1),
+                            'humidity_jump': round(hum_jump, 1)}
             })
 
-    # ── B) Chute de pression rapide (orage approchant) ──
+    # ── B) Chute de pression rapide ──
     if all(p is not None for p in pressures):
-        press_drop_1h = pressures[-2] - pressures[-1] if len(pressures) >= 2 else 0
-        press_drop_3h = pressures[0]  - pressures[-1]
-        if press_drop_1h >= R['pressure_drop_1h']:
+        press_drop_short = pressures[-2] - pressures[-1] if len(pressures) >= 2 else 0
+        press_drop_full  = pressures[0]  - pressures[-1]
+        # Période courte = ~1h (hourly) ou ~10-30 min (realtime selon densité)
+        short_label = "1h" if source == 'hourly' else "30 min"
+        full_label  = "3h" if source == 'hourly' else "1h30"
+        if press_drop_short >= R['pressure_drop_1h']:
             alerts.append({
                 'type': 'pressure_drop_realtime',
                 'severity': 'warning',
-                'window': label_window,
-                'message': (f"⚡ Chute de pression rapide · "
-                            f"−{press_drop_1h:.1f} hPa en 1h"),
+                'window': window_label,
+                'source': source,
+                'message': f"⚡ Chute de pression rapide · −{press_drop_short:.1f} hPa en {short_label}",
                 'recommendation': "Conditions instables — orage approchant possible.",
-                'metrics': {'pressure_drop_1h': round(press_drop_1h, 1)}
+                'metrics': {'pressure_drop_short': round(press_drop_short, 1)}
             })
-        elif press_drop_3h >= R['pressure_drop_3h']:
+        elif press_drop_full >= R['pressure_drop_3h']:
             alerts.append({
                 'type': 'pressure_drop_realtime',
                 'severity': 'info',
-                'window': label_window,
-                'message': (f"📉 Pression en baisse · "
-                            f"−{press_drop_3h:.1f} hPa en 3h"),
+                'window': window_label,
+                'source': source,
+                'message': f"📉 Pression en baisse · −{press_drop_full:.1f} hPa en {full_label}",
                 'recommendation': "Tendance à surveiller (perturbation possible).",
-                'metrics': {'pressure_drop_3h': round(press_drop_3h, 1)}
+                'metrics': {'pressure_drop_full': round(press_drop_full, 1)}
             })
 
     # ── C) Rafales fortes ──
@@ -221,7 +246,8 @@ def realtime_check(hourly_station):
             alerts.append({
                 'type': 'wind_gust_realtime',
                 'severity': 'critical',
-                'window': label_window,
+                'window': window_label,
+                'source': source,
                 'message': f"💨 Rafale forte · {gust_max:.0f} km/h",
                 'recommendation': "Sécurisez les objets extérieurs.",
                 'metrics': {'gust_max': round(gust_max, 1)}
@@ -230,35 +256,73 @@ def realtime_check(hourly_station):
             alerts.append({
                 'type': 'wind_gust_realtime',
                 'severity': 'warning',
-                'window': label_window,
+                'window': window_label,
+                'source': source,
                 'message': f"💨 Vent soutenu · rafale {gust_max:.0f} km/h",
                 'recommendation': "Attention au vent.",
                 'metrics': {'gust_max': round(gust_max, 1)}
             })
 
-    # ── D) Pluie locale (cumulé 3h) ──
+    # ── D) Pluie locale ──
     if any(r is not None for r in rains):
         rain_cumul = sum(r for r in rains if r is not None)
+        cumul_label = "3h" if source == 'hourly' else "1h30"
         if rain_cumul >= R['rain_3h_critical']:
             alerts.append({
                 'type': 'local_rain_realtime',
                 'severity': 'warning',
-                'window': label_window,
-                'message': f"🌧️ Pluie soutenue · {rain_cumul:.1f} mm cumulés en 3h",
+                'window': window_label,
+                'source': source,
+                'message': f"🌧️ Pluie soutenue · {rain_cumul:.1f} mm cumulés en {cumul_label}",
                 'recommendation': "Précipitations actives — sols saturés possibles.",
-                'metrics': {'rain_3h': round(rain_cumul, 1)}
+                'metrics': {'rain_cumul': round(rain_cumul, 1)}
             })
         elif rain_cumul >= R['rain_3h_warning']:
             alerts.append({
                 'type': 'local_rain_realtime',
                 'severity': 'info',
-                'window': label_window,
-                'message': f"🌧️ Pluie en cours · {rain_cumul:.1f} mm en 3h",
+                'window': window_label,
+                'source': source,
+                'message': f"🌧️ Pluie en cours · {rain_cumul:.1f} mm en {cumul_label}",
                 'recommendation': "Précipitations actives.",
-                'metrics': {'rain_3h': round(rain_cumul, 1)}
+                'metrics': {'rain_cumul': round(rain_cumul, 1)}
             })
 
     return alerts
+
+def realtime_check(hourly_station, realtime_station=None):
+    """Détection temps réel des signes d'orage / front froid à partir
+    des mesures station les plus récentes.
+
+    - Si meteo_data_realtime.json dispo (10-min granularity) → fenêtre 90 min,
+      détection beaucoup plus rapide (alerte ~10 min après début du front).
+    - Sinon fallback sur meteo_data_hourly.json (3 dernières heures snapshots).
+    """
+    # Mode REALTIME (10-min granularity)
+    if realtime_station:
+        items = _flatten_realtime(realtime_station)
+        if items:
+            now = datetime.now()
+            # Fenêtre 90 min glissante
+            recent = [(dt, k, v) for (dt, k, v) in items
+                      if (now - dt).total_seconds() <= 90 * 60]
+            if len(recent) >= 4:
+                first_key, last_key = recent[0][1], recent[-1][1]
+                window_label = f"{first_key[-5:]}–{last_key[-5:]}"
+                return _analyze_window([v for (_, _, v) in recent],
+                                       window_label, source='realtime')
+
+    # Mode FALLBACK (snapshots horaires)
+    if not hourly_station:
+        return []
+    today = vinelz_today()
+    today_data = hourly_station.get(today, {}).get('hourly', {})
+    if not today_data or len(today_data) < 3:
+        log(f"  ⏭  Temps réel : moins de 3 heures dispo pour {today} — skip")
+        return []
+    keys = sorted(today_data.keys())
+    last3 = [today_data[k] for k in keys[-3:]]
+    return _analyze_window(last3, f"{keys[-3]}–{keys[-1]}", source='hourly')
 
 # ============================================
 # 2. DÉTECTION NWP HORAIRE (HEURES À VENIR)
@@ -355,6 +419,116 @@ def nwp_upcoming_check(nwp_data):
             'message': f"💨 Vent fort prévu vers {max_wind_hour:02d}h · {max_wind:.0f} km/h",
             'recommendation': "Attention au vent.",
             'metrics': {'wind_kmh': round(max_wind, 1), 'hour': max_wind_hour}
+        })
+
+    return alerts
+
+# ============================================
+# 2.bis DÉTECTION D'ORAGES (WMO + CAPE) — 24h à venir
+# ============================================
+def thunderstorm_check(nwp_data):
+    """Examine les codes WMO et CAPE des prochaines 24h pour anticiper
+    les orages.
+
+    Critères :
+      - WMO ∈ {95, 96, 99} → orage prévu (warning/critical selon code)
+      - CAPE ≥ 1000 J/kg combinée à précip ou vent → risque convectif
+      - CAPE ≥ 2000 J/kg → instabilité forte (alerte préventive)
+    """
+    alerts = []
+    if not nwp_data:
+        return alerts
+
+    forecasts = nwp_data.get('forecasts', {})
+    if not isinstance(forecasts, dict):
+        return alerts
+
+    today = vinelz_today()
+    T = THRESHOLDS['thunderstorm']
+
+    # On scanne aujourd'hui + demain (24h glissantes)
+    candidate_dates = sorted(forecasts.keys())
+    if today in candidate_dates:
+        idx = candidate_dates.index(today)
+        scan_dates = candidate_dates[idx:idx + 2]
+    else:
+        scan_dates = candidate_dates[:2]
+
+    now_hour = datetime.now().hour
+    horizon = T['horizon_hours']
+    hours_scanned = 0
+
+    found_thunder = []   # [(date, hour, wmo, cape, precip)]
+    found_high_cape = []
+
+    for d_idx, date in enumerate(scan_dates):
+        day = forecasts.get(date, {})
+        hourly = day.get('hourly', [])
+        if not hourly:
+            continue
+        # Pour aujourd'hui : on ne regarde que les heures à venir
+        # Pour demain : toutes les heures
+        for hr in hourly:
+            h = hr.get('hour')
+            if h is None:
+                continue
+            if d_idx == 0 and h < now_hour:
+                continue
+            if hours_scanned >= horizon:
+                break
+
+            wmo = hr.get('weathercode')
+            cape = hr.get('cape')
+            precip = hr.get('precipitation') or 0
+
+            try: wmo = int(wmo) if wmo is not None else None
+            except (TypeError, ValueError): wmo = None
+            try: cape = float(cape) if cape is not None else 0
+            except (TypeError, ValueError): cape = 0
+            try: precip = float(precip)
+            except (TypeError, ValueError): precip = 0
+
+            if wmo in T['wmo_codes_thunder']:
+                found_thunder.append((date, h, wmo, cape, precip))
+            elif cape >= T['cape_warning'] and (precip >= 0.5 or hr.get('wind_speed', 0) >= 25):
+                found_high_cape.append((date, h, wmo, cape, precip))
+
+            hours_scanned += 1
+        if hours_scanned >= horizon:
+            break
+
+    # Construction des alertes
+    if found_thunder:
+        # On garde la plus précoce
+        date, hour, wmo, cape, precip = found_thunder[0]
+        wmo_label = WMO_NAMES.get(wmo, f"Code {wmo}")
+        is_today = (date == today)
+        when = f"vers {hour:02d}h" if is_today else f"demain vers {hour:02d}h"
+        sev = 'critical' if wmo in (96, 99) else 'warning'
+        emoji = "⚡⚡" if wmo == 99 else "⚡"
+        alerts.append({
+            'type': 'thunderstorm_upcoming',
+            'severity': sev,
+            'date': date,
+            'target_hour': hour,
+            'message': f"{emoji} {wmo_label} prévu {when} (NWP)",
+            'recommendation': "Restez à l'abri pendant l'orage, attention à la foudre.",
+            'metrics': {'wmo': wmo, 'cape': cape, 'precip_mm_h': precip}
+        })
+
+    if found_high_cape:
+        date, hour, wmo, cape, precip = found_high_cape[0]
+        is_today = (date == today)
+        when = f"vers {hour:02d}h" if is_today else f"demain vers {hour:02d}h"
+        sev = 'warning' if cape >= T['cape_critical'] else 'info'
+        alerts.append({
+            'type': 'instability_upcoming',
+            'severity': sev,
+            'date': date,
+            'target_hour': hour,
+            'message': f"⚠️ Atmosphère instable {when} · CAPE {cape:.0f} J/kg",
+            'recommendation': "Risque d'averses orageuses ou de coups de vent.",
+            'metrics': {'cape': cape, 'wmo': wmo}
         })
 
     return alerts
@@ -482,19 +656,22 @@ def detect_events():
     if isinstance(forecasts, dict):
         forecasts = list(forecasts.values())
 
-    hourly_station = load_hourly_station()
-    nwp_data = load_nwp()
+    hourly_station   = load_hourly_station()
+    realtime_station = load_realtime_station()
+    nwp_data         = load_nwp()
 
     log(f"📊 Sources : prédictions={len(forecasts)}j · "
-        f"station={'oui' if hourly_station else 'non'} · "
+        f"hourly={'oui' if hourly_station else 'non'} · "
+        f"realtime={'oui (' + str(len(realtime_station)) + ' pts)' if realtime_station else 'non'} · "
         f"NWP={'oui' if nwp_data else 'non'}")
     log("")
 
     all_alerts = []
 
     # 1. Temps réel
-    log("⏱  Analyse temps réel (station IVINEL2, dernières heures)…")
-    rt = realtime_check(hourly_station or {})
+    mode = "realtime 10-min" if realtime_station else "hourly snapshots"
+    log(f"⏱  Analyse temps réel (mode {mode})…")
+    rt = realtime_check(hourly_station or {}, realtime_station)
     log(f"   → {len(rt)} alerte(s)")
     for a in rt: log(f"     • {a['message']}")
     all_alerts.extend(rt)
@@ -505,6 +682,13 @@ def detect_events():
     log(f"   → {len(nu)} alerte(s)")
     for a in nu: log(f"     • {a['message']}")
     all_alerts.extend(nu)
+
+    # 2.bis Orages (codes WMO 95-99 + CAPE) sur 24h
+    log("⚡ Analyse d'orages (WMO + CAPE) sur 24h…")
+    th = thunderstorm_check(nwp_data)
+    log(f"   → {len(th)} alerte(s)")
+    for a in th: log(f"     • {a['message']}")
+    all_alerts.extend(th)
 
     # 3. Prévisions journalières
     log("📅 Analyse prévisions 7 jours (ML + NWP)…")

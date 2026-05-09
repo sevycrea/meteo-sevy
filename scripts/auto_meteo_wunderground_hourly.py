@@ -22,10 +22,14 @@ STATION_ID = os.environ.get("WU_STATION_ID", "IVINEL2")
 API_URL    = f"https://api.weather.com/v2/pws/observations/current?stationId={STATION_ID}&format=json&units=m&apiKey={API_KEY}"
 
 # Chemins — relatifs à la racine du repo
-BASE_DIR   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JSON_FILE  = os.path.join(BASE_DIR, "data", "meteo_data_hourly.json")
-BACKUP_DIR = os.path.join(BASE_DIR, "data", "backup")
-LOG_FILE   = os.path.join(BASE_DIR, "logs", "auto_wunderground_hourly.log")
+BASE_DIR       = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+JSON_FILE      = os.path.join(BASE_DIR, "data", "meteo_data_hourly.json")
+REALTIME_FILE  = os.path.join(BASE_DIR, "data", "meteo_data_realtime.json")
+BACKUP_DIR     = os.path.join(BASE_DIR, "data", "backup")
+LOG_FILE       = os.path.join(BASE_DIR, "logs", "auto_wunderground_hourly.log")
+
+# Combien d'heures de données granulaires (10-min) à conserver
+REALTIME_RETENTION_HOURS = 24
 
 # FTP — credentials via variables d'environnement (GitHub Secrets)
 FTP_HOST = os.environ.get("FTP_HOST", "")
@@ -161,11 +165,49 @@ def cleanup_old_data(all_data, keep_days=90):
 def save_json(data):
     """Sauvegarder le JSON"""
     os.makedirs(os.path.dirname(JSON_FILE), exist_ok=True)
-    
+
     with open(JSON_FILE, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    
+
     log(f"✅ JSON sauvegardé: {JSON_FILE}")
+
+def update_realtime_data(current_data):
+    """Conserve les mesures fines (10-min) sur les dernières 24h.
+    Permet à detect_events.py de faire de la détection sub-horaire
+    (front froid, chute pression, rafales) avec une fenêtre glissante précise.
+    """
+    from datetime import datetime, timedelta
+    realtime = {}
+    if os.path.exists(REALTIME_FILE):
+        try:
+            with open(REALTIME_FILE, 'r', encoding='utf-8') as f:
+                realtime = json.load(f)
+        except Exception as e:
+            log(f"⚠️  Realtime corrupted, réinitialisation : {e}")
+            realtime = {}
+
+    # Ajouter la mesure courante avec clé "YYYY-MM-DD HH:MM"
+    now = datetime.now()
+    key = now.strftime("%Y-%m-%d %H:%M")
+    realtime[key] = {
+        'temp':      round(current_data['temp'], 1),
+        'hum':       round(current_data['humidity'], 0),
+        'wind':      round(current_data['wind_speed'], 1),
+        'gust':      round(current_data['wind_gust'], 1),
+        'pressure':  round(current_data['pressure'], 1),
+        'rain':      round(current_data['precip_total'], 1),
+        'timestamp': current_data['timestamp'],
+    }
+
+    # Trim : on ne garde que les dernières REALTIME_RETENTION_HOURS heures
+    cutoff = now - timedelta(hours=REALTIME_RETENTION_HOURS)
+    cutoff_key = cutoff.strftime("%Y-%m-%d %H:%M")
+    keys_to_keep = [k for k in realtime.keys() if k >= cutoff_key]
+    trimmed = {k: realtime[k] for k in sorted(keys_to_keep)}
+
+    with open(REALTIME_FILE, 'w', encoding='utf-8') as f:
+        json.dump(trimmed, f, ensure_ascii=False, indent=2)
+    log(f"✅ Realtime mis à jour : {len(trimmed)} points sur {REALTIME_RETENTION_HOURS}h ({key})")
 
 def backup_json():
     """Créer une sauvegarde du JSON"""
@@ -191,21 +233,30 @@ def backup_json():
 
 def upload_to_ftp():
     """Uploader le JSON vers WordPress via FTP"""
-    if FTP_HOST == "ftp.votreserveur.com":
+    if FTP_HOST == "ftp.votreserveur.com" or not FTP_HOST:
         log("⚠️ FTP non configuré - upload ignoré")
         return
-    
+
     try:
         ftp = ftplib.FTP(FTP_HOST, timeout=30)
         ftp.login(FTP_USER, FTP_PASS)
-        ftp.cwd(FTP_PATH)
-        
+        if FTP_PATH:
+            ftp.cwd(FTP_PATH)
+
+        # Hourly (utilisé par le frontend — historique 90 jours)
         with open(JSON_FILE, 'rb') as f:
             ftp.storbinary('STOR meteo_data_hourly.json', f)
-        
+        log("✅ Upload meteo_data_hourly.json")
+
+        # Realtime (utilisé par detect_events — fenêtre glissante 24h)
+        if os.path.exists(REALTIME_FILE):
+            with open(REALTIME_FILE, 'rb') as f:
+                ftp.storbinary('STOR meteo_data_realtime.json', f)
+            log("✅ Upload meteo_data_realtime.json")
+
         ftp.quit()
-        log("✅ Upload FTP réussi")
-        
+        log("✅ Upload FTP terminé")
+
     except Exception as e:
         log(f"❌ Erreur FTP: {e}")
 
@@ -230,12 +281,15 @@ def main():
     current_data = extract_weather_data(obs)
     log(f"📡 Données reçues: {current_data['temp']}°C, {current_data['humidity']}%")
     
-    # 3. Mettre à jour avec les données horaires
+    # 3. Mettre à jour avec les données horaires (snapshot HH:00)
     all_data = update_hourly_data(all_data, current_data)
-    
+
+    # 3.bis Conserver les mesures sub-horaires (10-min) sur les 24 dernières heures
+    update_realtime_data(current_data)
+
     # 4. Nettoyer les anciennes données
     all_data = cleanup_old_data(all_data, keep_days=90)
-    
+
     # 5. Sauvegarder
     save_json(all_data)
     

@@ -42,13 +42,16 @@ DAILY_VARS = [
     "wind_gusts_10m_max",
 ]
 
-# Variables horaires
+# Variables horaires (incluant signaux d'orage : weathercode WMO + CAPE)
 HOURLY_VARS = [
     "temperature_2m",
     "precipitation",
     "pressure_msl",
     "cloud_cover",
     "wind_speed_10m",
+    "wind_gusts_10m",        # rafales (utile pour détection vent fort à venir)
+    "weathercode",           # codes WMO : 95-99 = orages
+    "cape",                  # Convective Available Potential Energy (J/kg)
 ]
 
 # FTP via variables d'environnement (GitHub Actions secrets)
@@ -149,6 +152,9 @@ def extract_hourly_for_date(hourly, date_str):
     pressure = hourly.get('pressure_msl', [])
     cloud    = hourly.get('cloud_cover', [])
     wind     = hourly.get('wind_speed_10m', [])
+    gusts    = hourly.get('wind_gusts_10m', [])
+    wmo      = hourly.get('weathercode', [])
+    cape     = hourly.get('cape', [])
 
     prefix = f"{date_str}T"
     hours = []
@@ -163,6 +169,9 @@ def extract_hourly_for_date(hourly, date_str):
             'pressure':      pressure[i] if i < len(pressure) else None,
             'cloud_cover':   cloud[i]    if i < len(cloud)    else None,
             'wind_speed':    wind[i]     if i < len(wind)     else None,
+            'wind_gust':     gusts[i]    if i < len(gusts)    else None,
+            'weathercode':   wmo[i]      if i < len(wmo)      else None,
+            'cape':          cape[i]     if i < len(cape)     else None,
         })
     return hours
 
