@@ -1,8 +1,21 @@
 {
-  "generated_at": "2026-05-09T17:38:22.161681",
+  "generated_at": "2026-05-09T20:08:26.948967",
   "location": "Vinelz, Suisse",
-  "total_alerts": 3,
+  "total_alerts": 4,
   "alerts": [
+    {
+      "type": "cold_front_realtime",
+      "severity": "warning",
+      "window": "14:00–20:00",
+      "source": "hourly",
+      "message": "❄️🌧️ Front froid détecté · −7.0°C et +22% humidité en 2h (14:00–20:00)",
+      "recommendation": "Orage probable à proximité — vigilance.",
+      "metrics": {
+        "temp_drop": 7.0,
+        "humidity_jump": 22.0
+      },
+      "detected_at": "2026-05-09T20:08:26.871430"
+    },
     {
       "type": "pressure_drop_realtime",
       "severity": "info",
@@ -39,5 +52,5 @@
     }
   ],
   "status": "warning",
-  "message": "2 avertissement(s) en cours"
+  "message": "3 avertissement(s) en cours"
 }
