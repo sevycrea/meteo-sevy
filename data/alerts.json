@@ -1,8 +1,19 @@
 {
-  "generated_at": "2026-05-09T04:52:13.189642",
+  "generated_at": "2026-05-09T07:23:13.334311",
   "location": "Vinelz, Suisse",
-  "total_alerts": 0,
-  "alerts": [],
-  "status": "normal",
-  "message": "Aucune alerte météo en cours"
+  "total_alerts": 1,
+  "alerts": [
+    {
+      "type": "strong_wind_day",
+      "severity": "warning",
+      "date": "2026-05-11",
+      "day_label": "Après-demain",
+      "gust_kmh": 50.0,
+      "message": "💨 Vent fort · rafales jusqu'à 50 km/h Après-demain",
+      "recommendation": "Attention au vent.",
+      "detected_at": "2026-05-09T08:06:07.301756"
+    }
+  ],
+  "status": "warning",
+  "message": "1 avertissement(s) en cours"
 }
