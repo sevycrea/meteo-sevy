@@ -1,23 +1,35 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Détection d'Événements Météo Extrêmes
-Analyse les prédictions et envoie des alertes pour événements inhabituels
+Détection d'Événements Météo Extrêmes — v2 (orages + temps réel)
+
+Combine 3 stratégies de détection :
+1. **Temps réel** (station IVINEL2) : analyse des dernières heures pour détecter
+   les signes immédiats d'orage à proximité (chute T°, saut humidité, chute
+   pression, rafales, pluie locale).
+2. **NWP horaire** : examine les heures à venir du modèle MetNo pour
+   anticiper les pics de précipitations et de vent.
+3. **Prévisions journalières** (ML+NWP) : alertes "long terme" sur 7 jours
+   (canicule, gel, pluie soutenue, vent fort).
+
+Tous les alertes vont dans `data/alerts_history.json` puis sont publiées sur
+le ticker du site via export_to_ftp.py → alerts.json.
 """
 
 import json
 import os
-from datetime import datetime
 import subprocess
+from datetime import datetime, timedelta
 
 # ============================================
 # CONFIGURATION
 # ============================================
-
-# Chemins — relatifs à la racine du repo
 BASE_DIR         = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PREDICTIONS_FILE = os.path.join(BASE_DIR, "data", "predictions.json")
 DATA_FILE        = os.path.join(BASE_DIR, "data", "meteo_data_enriched.json")
+HOURLY_FILE      = os.path.join(BASE_DIR, "data", "meteo_data_hourly.json")
+NWP_FILE         = os.path.join(BASE_DIR, "data", "nwp_forecast.json")
+NWP_FILE_ALT     = os.path.join(BASE_DIR, "data", "json", "nwp_forecast.json")
 EVENTS_LOG       = os.path.join(BASE_DIR, "logs", "events.log")
 ALERTS_HISTORY   = os.path.join(BASE_DIR, "data", "alerts_history.json")
 
@@ -27,343 +39,508 @@ os.makedirs(os.path.dirname(ALERTS_HISTORY), exist_ok=True)
 # ============================================
 # SEUILS DE DÉTECTION (Vinelz, Suisse)
 # ============================================
-
 THRESHOLDS = {
-    'heat_wave': {
-        'temp_high': 30.0,      # Canicule si > 30°C
-        'temp_very_high': 35.0,  # Canicule extrême si > 35°C
-        'duration_days': 3       # Sur 3 jours consécutifs
+    # Prévisions journalières (long terme)
+    'heat_wave':       {'high': 30.0, 'extreme': 35.0},
+    'cold_wave':       {'low': 0.0,   'extreme_low': -10.0},
+    'heavy_rain_day':  {'mm_warning': 15.0, 'mm_extreme': 30.0},   # cumul jour
+    'rain_prob_high':  {'warning': 70, 'critical': 85},            # %
+    'strong_wind_day': {'gust_warning': 40, 'gust_storm': 70},     # km/h
+    # Temps réel (station, dernières heures)
+    'realtime': {
+        'temp_drop_2h':       3.0,    # °C
+        'humidity_jump_2h':   15,     # %
+        'pressure_drop_1h':   2.0,    # hPa
+        'pressure_drop_3h':   4.0,    # hPa
+        'gust_warning':       40,     # km/h
+        'gust_critical':      60,     # km/h
+        'rain_3h_warning':    3.0,    # mm cumulés sur 3h
+        'rain_3h_critical':   8.0,    # mm cumulés
     },
-    'cold_wave': {
-        'temp_low': 0.0,         # Gel si < 0°C
-        'temp_very_low': -10.0,  # Grand froid si < -10°C
-        'duration_days': 3
+    # NWP horaire (heures à venir)
+    'nwp_upcoming': {
+        'precip_per_hour_warning':  2.0,   # mm/h
+        'precip_per_hour_extreme':  5.0,   # mm/h
+        'wind_warning':             40,    # km/h
+        'wind_storm':               70,    # km/h
+        'horizon_hours':            12,    # combien d'heures à analyser
     },
-    'heavy_rain': {
-        'daily_mm': 20.0,        # Pluie forte si > 20mm/jour
-        'extreme_mm': 50.0,      # Pluie extrême si > 50mm/jour
-    },
-    'strong_wind': {
-        'gust_kmh': 60.0,        # Vent fort si > 60 km/h
-        'storm_kmh': 90.0,       # Tempête si > 90 km/h
-    },
-    'temperature_drop': {
-        'drop_degrees': 10.0,    # Chute brutale si > 10°C en 24h
-    },
-    'pressure_drop': {
-        'drop_hpa': 15.0,        # Chute brutale si > 15 hPa en 24h
-    }
 }
 
 # ============================================
-# FONCTIONS
+# UTILITAIRES
 # ============================================
-
 def log(message):
-    """Logger avec timestamp"""
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    log_message = f"[{timestamp}] {message}\n"
-    print(log_message.strip())
-    
+    line = f"[{timestamp}] {message}\n"
+    print(line.strip())
     with open(EVENTS_LOG, 'a', encoding='utf-8') as f:
-        f.write(log_message)
+        f.write(line)
 
 def send_notification(title, message, sound="Glass"):
-    """Envoyer une notification macOS"""
     try:
         script = f'display notification "{message}" with title "{title}" sound name "{sound}"'
-        subprocess.run(['osascript', '-e', script], check=True)
-        log(f"🔔 Notification envoyée: {title}")
+        subprocess.run(['osascript', '-e', script], check=True, timeout=5)
+        log(f"🔔 Notification : {title}")
     except Exception as e:
-        log(f"⚠️  Erreur notification: {e}")
+        # Pas de macOS dans l'environnement GitHub Actions — pas grave
+        pass
 
-def load_predictions():
-    """Charger les prédictions"""
+def load_json(path):
+    if not os.path.exists(path):
+        return None
     try:
-        with open(PREDICTIONS_FILE, 'r', encoding='utf-8') as f:
+        with open(path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except Exception as e:
-        log(f"❌ Erreur chargement prédictions: {e}")
+        log(f"⚠️  Erreur chargement {path}: {e}")
         return None
 
-def load_historical_data():
-    """Charger les données historiques pour contexte"""
-    try:
-        with open(DATA_FILE, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        # Derniers jours
-        dates = sorted(data.keys())[-7:]
-        return {date: data[date] for date in dates}
-    except Exception as e:
-        log(f"⚠️  Erreur chargement données historiques: {e}")
-        return {}
+def load_predictions():     return load_json(PREDICTIONS_FILE)
+def load_hourly_station():  return load_json(HOURLY_FILE)
+
+def load_nwp():
+    return load_json(NWP_FILE) or load_json(NWP_FILE_ALT)
 
 def load_alerts_history():
-    """Charger l'historique des alertes"""
-    try:
-        if os.path.exists(ALERTS_HISTORY):
-            with open(ALERTS_HISTORY, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        return []
-    except:
-        return []
+    return load_json(ALERTS_HISTORY) or []
 
 def save_alert(alert):
-    """Sauvegarder une alerte dans l'historique"""
     history = load_alerts_history()
+    # Anti-doublon : on évite de re-saver une alerte du même type pour la
+    # même cible dans la dernière heure (évite de spammer le ticker).
+    now = datetime.now()
+    cutoff = now - timedelta(hours=1)
+    recent_keys = set()
+    for a in history:
+        try:
+            det = datetime.fromisoformat(a.get('detected_at', '1970-01-01'))
+            if det > cutoff:
+                key = (a.get('type'), a.get('target_hour'), a.get('date'))
+                recent_keys.add(key)
+        except Exception:
+            pass
+    new_key = (alert.get('type'), alert.get('target_hour'), alert.get('date'))
+    if new_key in recent_keys:
+        return  # déjà alerté il y a moins d'1h, on n'ajoute pas
     history.append(alert)
-    
-    # Garder seulement les 100 dernières alertes
-    history = history[-100:]
-    
+    history = history[-200:]
     with open(ALERTS_HISTORY, 'w', encoding='utf-8') as f:
         json.dump(history, f, indent=2, ensure_ascii=False)
 
-def check_heat_wave(forecasts):
-    """Détecter vague de chaleur"""
+def vinelz_today():
+    """Date du jour à Vinelz (Europe/Zurich approx via heure locale)."""
+    return datetime.now().strftime("%Y-%m-%d")
+
+# ============================================
+# 1. DÉTECTION TEMPS RÉEL (STATION IVINEL2)
+# ============================================
+def realtime_check(hourly_station):
+    """Analyse les 3 dernières heures de mesures pour détecter les signes
+    d'orage à proximité ou de front froid en cours.
+
+    Retour : liste d'alertes.
+    """
     alerts = []
-    
-    for forecast in forecasts:
-        temp = forecast['temperature']['predicted']
-        date = forecast['date']
-        day_label = forecast['day_label']
-        
-        # Canicule extrême
-        if temp >= THRESHOLDS['heat_wave']['temp_very_high']:
-            alert = {
-                'type': 'heat_wave_extreme',
-                'severity': 'critical',
-                'date': date,
-                'day_label': day_label,
-                'temperature': temp,
-                'message': f"🔥 CANICULE EXTRÊME : {temp}°C prévu {day_label}",
-                'recommendation': "Restez au frais, hydratez-vous abondamment"
-            }
-            alerts.append(alert)
-            log(f"🔥 ALERTE CANICULE EXTRÊME: {temp}°C le {date}")
-            send_notification(
-                "🔥 CANICULE EXTRÊME",
-                f"{temp}°C prévu {day_label}. Restez au frais !",
-                sound="Basso"
-            )
-        
-        # Canicule
-        elif temp >= THRESHOLDS['heat_wave']['temp_high']:
-            alert = {
-                'type': 'heat_wave',
+    if not hourly_station:
+        return alerts
+
+    today = vinelz_today()
+    today_data = hourly_station.get(today, {}).get('hourly', {})
+    if not today_data or len(today_data) < 3:
+        log(f"  ⏭  Temps réel : moins de 3 heures dispo pour {today} — skip")
+        return alerts
+
+    # Trier par heure et prendre les 3 dernières
+    keys = sorted(today_data.keys())
+    last3 = [today_data[k] for k in keys[-3:]]
+    last3_keys = keys[-3:]
+
+    def fnum(v):
+        try: return float(v)
+        except (TypeError, ValueError): return None
+
+    temps     = [fnum(r.get('temp'))     for r in last3]
+    hums      = [fnum(r.get('hum'))      for r in last3]
+    pressures = [fnum(r.get('pressure')) for r in last3]
+    gusts     = [fnum(r.get('gust'))     for r in last3]
+    winds     = [fnum(r.get('wind'))     for r in last3]
+    rains     = [fnum(r.get('rain'))     for r in last3]
+
+    R = THRESHOLDS['realtime']
+    label_window = f"{last3_keys[0]}–{last3_keys[-1]}"
+
+    # ── A) Front froid : chute T° + saut humidité simultanés ──
+    if all(t is not None for t in temps) and all(h is not None for h in hums):
+        temp_drop = temps[0] - temps[-1]   # T° d'il y a 2h - T° actuelle
+        hum_jump  = hums[-1] - hums[0]     # humidité actuelle - humidité d'il y a 2h
+        if temp_drop >= R['temp_drop_2h'] and hum_jump >= R['humidity_jump_2h']:
+            alerts.append({
+                'type': 'cold_front_realtime',
                 'severity': 'warning',
-                'date': date,
-                'day_label': day_label,
-                'temperature': temp,
-                'message': f"🌡️ Forte chaleur : {temp}°C prévu {day_label}",
-                'recommendation': "Évitez l'exposition au soleil aux heures chaudes"
-            }
-            alerts.append(alert)
-            log(f"🌡️ ALERTE CHALEUR: {temp}°C le {date}")
-            send_notification(
-                "🌡️ Forte Chaleur",
-                f"{temp}°C prévu {day_label}",
-                sound="Glass"
-            )
-    
+                'window': label_window,
+                'message': (f"❄️🌧️ Front froid détecté · "
+                            f"−{temp_drop:.1f}°C et +{hum_jump:.0f}% humidité "
+                            f"en 2h ({label_window})"),
+                'recommendation': "Orage probable à proximité — vigilance.",
+                'metrics': {
+                    'temp_drop_2h': round(temp_drop, 1),
+                    'humidity_jump_2h': round(hum_jump, 1),
+                }
+            })
+
+    # ── B) Chute de pression rapide (orage approchant) ──
+    if all(p is not None for p in pressures):
+        press_drop_1h = pressures[-2] - pressures[-1] if len(pressures) >= 2 else 0
+        press_drop_3h = pressures[0]  - pressures[-1]
+        if press_drop_1h >= R['pressure_drop_1h']:
+            alerts.append({
+                'type': 'pressure_drop_realtime',
+                'severity': 'warning',
+                'window': label_window,
+                'message': (f"⚡ Chute de pression rapide · "
+                            f"−{press_drop_1h:.1f} hPa en 1h"),
+                'recommendation': "Conditions instables — orage approchant possible.",
+                'metrics': {'pressure_drop_1h': round(press_drop_1h, 1)}
+            })
+        elif press_drop_3h >= R['pressure_drop_3h']:
+            alerts.append({
+                'type': 'pressure_drop_realtime',
+                'severity': 'info',
+                'window': label_window,
+                'message': (f"📉 Pression en baisse · "
+                            f"−{press_drop_3h:.1f} hPa en 3h"),
+                'recommendation': "Tendance à surveiller (perturbation possible).",
+                'metrics': {'pressure_drop_3h': round(press_drop_3h, 1)}
+            })
+
+    # ── C) Rafales fortes ──
+    if any(g is not None for g in gusts):
+        gust_max = max((g for g in gusts if g is not None), default=0)
+        if gust_max >= R['gust_critical']:
+            alerts.append({
+                'type': 'wind_gust_realtime',
+                'severity': 'critical',
+                'window': label_window,
+                'message': f"💨 Rafale forte · {gust_max:.0f} km/h",
+                'recommendation': "Sécurisez les objets extérieurs.",
+                'metrics': {'gust_max': round(gust_max, 1)}
+            })
+        elif gust_max >= R['gust_warning']:
+            alerts.append({
+                'type': 'wind_gust_realtime',
+                'severity': 'warning',
+                'window': label_window,
+                'message': f"💨 Vent soutenu · rafale {gust_max:.0f} km/h",
+                'recommendation': "Attention au vent.",
+                'metrics': {'gust_max': round(gust_max, 1)}
+            })
+
+    # ── D) Pluie locale (cumulé 3h) ──
+    if any(r is not None for r in rains):
+        rain_cumul = sum(r for r in rains if r is not None)
+        if rain_cumul >= R['rain_3h_critical']:
+            alerts.append({
+                'type': 'local_rain_realtime',
+                'severity': 'warning',
+                'window': label_window,
+                'message': f"🌧️ Pluie soutenue · {rain_cumul:.1f} mm cumulés en 3h",
+                'recommendation': "Précipitations actives — sols saturés possibles.",
+                'metrics': {'rain_3h': round(rain_cumul, 1)}
+            })
+        elif rain_cumul >= R['rain_3h_warning']:
+            alerts.append({
+                'type': 'local_rain_realtime',
+                'severity': 'info',
+                'window': label_window,
+                'message': f"🌧️ Pluie en cours · {rain_cumul:.1f} mm en 3h",
+                'recommendation': "Précipitations actives.",
+                'metrics': {'rain_3h': round(rain_cumul, 1)}
+            })
+
     return alerts
+
+# ============================================
+# 2. DÉTECTION NWP HORAIRE (HEURES À VENIR)
+# ============================================
+def nwp_upcoming_check(nwp_data):
+    """Examine les prochaines heures du NWP MetNo pour anticiper les
+    précipitations fortes ou les rafales."""
+    alerts = []
+    if not nwp_data:
+        return alerts
+
+    forecasts = nwp_data.get('forecasts', {})
+    if not isinstance(forecasts, dict):
+        return alerts
+
+    today = vinelz_today()
+    today_nwp = forecasts.get(today)
+    if not today_nwp:
+        return alerts
+
+    hourly = today_nwp.get('hourly', [])
+    if not hourly or len(hourly) < 24:
+        return alerts
+
+    now_hour = datetime.now().hour
+    horizon = THRESHOLDS['nwp_upcoming']['horizon_hours']
+    upcoming = hourly[now_hour:now_hour + horizon]
+    if not upcoming:
+        return alerts
+
+    N = THRESHOLDS['nwp_upcoming']
+
+    # ── Pic de précipitations dans les prochaines heures ──
+    max_precip = 0
+    max_precip_hour = None
+    for i, hr in enumerate(upcoming):
+        precip = hr.get('precipitation') or 0
+        try: precip = float(precip)
+        except (TypeError, ValueError): precip = 0
+        if precip > max_precip:
+            max_precip = precip
+            max_precip_hour = (now_hour + i) % 24
+
+    if max_precip >= N['precip_per_hour_extreme']:
+        alerts.append({
+            'type': 'precip_upcoming',
+            'severity': 'critical',
+            'target_hour': max_precip_hour,
+            'date': today,
+            'message': (f"🌧️⚡ Précipitations extrêmes prévues vers {max_precip_hour:02d}h · "
+                        f"{max_precip:.1f} mm/h"),
+            'recommendation': "Risque d'orage / de fortes pluies — restez prudent.",
+            'metrics': {'precip_mm_h': round(max_precip, 2), 'hour': max_precip_hour}
+        })
+    elif max_precip >= N['precip_per_hour_warning']:
+        alerts.append({
+            'type': 'precip_upcoming',
+            'severity': 'warning',
+            'target_hour': max_precip_hour,
+            'date': today,
+            'message': (f"🌧️ Pluie forte prévue vers {max_precip_hour:02d}h · "
+                        f"{max_precip:.1f} mm/h"),
+            'recommendation': "Prévoyez un parapluie.",
+            'metrics': {'precip_mm_h': round(max_precip, 2), 'hour': max_precip_hour}
+        })
+
+    # ── Pic de vent dans les prochaines heures ──
+    max_wind = 0
+    max_wind_hour = None
+    for i, hr in enumerate(upcoming):
+        w = hr.get('wind_speed') or 0
+        try: w = float(w)
+        except (TypeError, ValueError): w = 0
+        if w > max_wind:
+            max_wind = w
+            max_wind_hour = (now_hour + i) % 24
+
+    if max_wind >= N['wind_storm']:
+        alerts.append({
+            'type': 'wind_upcoming',
+            'severity': 'critical',
+            'target_hour': max_wind_hour,
+            'date': today,
+            'message': f"🌬️ Tempête prévue vers {max_wind_hour:02d}h · {max_wind:.0f} km/h",
+            'recommendation': "Restez à l'abri, sécurisez les extérieurs.",
+            'metrics': {'wind_kmh': round(max_wind, 1), 'hour': max_wind_hour}
+        })
+    elif max_wind >= N['wind_warning']:
+        alerts.append({
+            'type': 'wind_upcoming',
+            'severity': 'warning',
+            'target_hour': max_wind_hour,
+            'date': today,
+            'message': f"💨 Vent fort prévu vers {max_wind_hour:02d}h · {max_wind:.0f} km/h",
+            'recommendation': "Attention au vent.",
+            'metrics': {'wind_kmh': round(max_wind, 1), 'hour': max_wind_hour}
+        })
+
+    return alerts
+
+# ============================================
+# 3. DÉTECTION JOURNALIÈRE (ML + NWP) — long terme 7j
+# ============================================
+def check_heat_wave(forecasts):
+    out = []
+    for f in forecasts:
+        temp = f.get('temperature', {}).get('predicted')
+        if temp is None: continue
+        date = f.get('date'); label = f.get('day_label', date)
+        if temp >= THRESHOLDS['heat_wave']['extreme']:
+            out.append({'type': 'heat_wave_extreme', 'severity': 'critical', 'date': date, 'day_label': label,
+                        'temperature': temp, 'message': f"🔥 CANICULE EXTRÊME : {temp}°C prévu {label}",
+                        'recommendation': "Restez au frais, hydratez-vous abondamment."})
+        elif temp >= THRESHOLDS['heat_wave']['high']:
+            out.append({'type': 'heat_wave', 'severity': 'warning', 'date': date, 'day_label': label,
+                        'temperature': temp, 'message': f"🌡️ Forte chaleur : {temp}°C prévu {label}",
+                        'recommendation': "Évitez l'exposition au soleil aux heures chaudes."})
+    return out
 
 def check_cold_wave(forecasts):
-    """Détecter vague de froid / gel"""
-    alerts = []
-    
-    for forecast in forecasts:
-        temp = forecast['temperature']['predicted']
-        temp_min = forecast['temperature']['min_estimate']
-        date = forecast['date']
-        day_label = forecast['day_label']
-        
-        # Grand froid
-        if temp <= THRESHOLDS['cold_wave']['temp_very_low']:
-            alert = {
-                'type': 'extreme_cold',
-                'severity': 'critical',
-                'date': date,
-                'day_label': day_label,
-                'temperature': temp,
-                'message': f"❄️ GRAND FROID : {temp}°C prévu {day_label}",
-                'recommendation': "Protégez-vous du froid, attention aux canalisations"
-            }
-            alerts.append(alert)
-            log(f"❄️ ALERTE GRAND FROID: {temp}°C le {date}")
-            send_notification(
-                "❄️ GRAND FROID",
-                f"{temp}°C prévu {day_label}. Protégez-vous !",
-                sound="Basso"
-            )
-        
-        # Gel
-        elif temp_min <= THRESHOLDS['cold_wave']['temp_low']:
-            alert = {
-                'type': 'frost',
-                'severity': 'warning',
-                'date': date,
-                'day_label': day_label,
-                'temperature': temp,
-                'temperature_min': temp_min,
-                'message': f"🧊 Risque de GEL : minimum {temp_min}°C prévu {day_label}",
-                'recommendation': "Protégez les plantes, attention au verglas"
-            }
-            alerts.append(alert)
-            log(f"🧊 ALERTE GEL: {temp_min}°C le {date}")
-            send_notification(
-                "🧊 Risque de Gel",
-                f"Minimum {temp_min}°C prévu {day_label}",
-                sound="Glass"
-            )
-    
-    return alerts
+    out = []
+    for f in forecasts:
+        t = f.get('temperature', {}); temp = t.get('predicted'); tmin = t.get('min_estimate')
+        if temp is None: continue
+        date = f.get('date'); label = f.get('day_label', date)
+        if temp <= THRESHOLDS['cold_wave']['extreme_low']:
+            out.append({'type': 'extreme_cold', 'severity': 'critical', 'date': date, 'day_label': label,
+                        'temperature': temp, 'message': f"❄️ GRAND FROID : {temp}°C prévu {label}",
+                        'recommendation': "Protégez-vous, attention aux canalisations."})
+        elif tmin is not None and tmin <= THRESHOLDS['cold_wave']['low']:
+            out.append({'type': 'frost', 'severity': 'warning', 'date': date, 'day_label': label,
+                        'temperature_min': tmin, 'message': f"🧊 Risque de gel · min {tmin}°C {label}",
+                        'recommendation': "Protégez les plantes, attention au verglas."})
+    return out
 
-def check_heavy_rain(forecasts, historical_data):
-    """Détecter pluie forte"""
-    alerts = []
-    
-    for forecast in forecasts:
-        rain_prob = forecast['rain']['probability']
-        date = forecast['date']
-        day_label = forecast['day_label']
-        
-        # Estimer quantité basée sur probabilité et données historiques
-        # (Approximation car on n'a pas la quantité prédite exactement)
-        if rain_prob > 80:
-            # Pluie très probable
-            alert = {
-                'type': 'heavy_rain',
-                'severity': 'warning',
-                'date': date,
-                'day_label': day_label,
-                'rain_probability': rain_prob,
-                'message': f"🌧️ Pluie forte probable : {rain_prob}% {day_label}",
-                'recommendation': "Prévoyez un parapluie, possibles inondations locales"
-            }
-            alerts.append(alert)
-            log(f"🌧️ ALERTE PLUIE FORTE: {rain_prob}% le {date}")
-            send_notification(
-                "🌧️ Pluie Forte Prévue",
-                f"{rain_prob}% de probabilité {day_label}",
-                sound="Glass"
-            )
-    
-    return alerts
+def check_heavy_rain(forecasts, nwp_data):
+    """Pluie forte journalière. Utilise probabilité ML + cumul NWP si dispo."""
+    out = []
+    nwp_forecasts = (nwp_data or {}).get('forecasts', {}) if isinstance(nwp_data, dict) else {}
+    for f in forecasts:
+        date = f.get('date'); label = f.get('day_label', date)
+        rain = f.get('rain', {}); prob = rain.get('probability', 0) or 0
+        # Quantité depuis NWP daily si dispo
+        nwp_day = nwp_forecasts.get(date) if isinstance(nwp_forecasts, dict) else None
+        cumul = (nwp_day or {}).get('precip_sum') if nwp_day else None
+
+        # Niveau extrême si grosse quantité prévue OU proba très haute
+        if cumul is not None and cumul >= THRESHOLDS['heavy_rain_day']['mm_extreme']:
+            out.append({'type': 'heavy_rain_extreme', 'severity': 'critical', 'date': date, 'day_label': label,
+                        'rain_mm': cumul, 'rain_probability': prob,
+                        'message': f"🌧️⚡ Précipitations extrêmes · {cumul:.0f} mm prévus {label}",
+                        'recommendation': "Risque d'inondations locales — vigilance."})
+        elif cumul is not None and cumul >= THRESHOLDS['heavy_rain_day']['mm_warning']:
+            out.append({'type': 'heavy_rain', 'severity': 'warning', 'date': date, 'day_label': label,
+                        'rain_mm': cumul, 'rain_probability': prob,
+                        'message': f"🌧️ Pluie forte · {cumul:.0f} mm prévus {label} (proba {prob}%)",
+                        'recommendation': "Prévoyez un parapluie, possibles ruissellements."})
+        elif prob >= THRESHOLDS['rain_prob_high']['critical']:
+            out.append({'type': 'rain_likely', 'severity': 'warning', 'date': date, 'day_label': label,
+                        'rain_probability': prob,
+                        'message': f"🌧️ Pluie quasi certaine · {prob}% {label}",
+                        'recommendation': "Prévoyez un parapluie."})
+        elif prob >= THRESHOLDS['rain_prob_high']['warning']:
+            out.append({'type': 'rain_likely', 'severity': 'info', 'date': date, 'day_label': label,
+                        'rain_probability': prob,
+                        'message': f"🌧️ Pluie probable · {prob}% {label}",
+                        'recommendation': "Pensez à votre parapluie."})
+    return out
+
+def check_strong_wind(forecasts, nwp_data):
+    """Vent fort journalier — utilise NWP daily (gust_max / wind_max) si dispo."""
+    out = []
+    nwp_forecasts = (nwp_data or {}).get('forecasts', {}) if isinstance(nwp_data, dict) else {}
+    for f in forecasts:
+        date = f.get('date'); label = f.get('day_label', date)
+        nwp_day = nwp_forecasts.get(date) if isinstance(nwp_forecasts, dict) else None
+        if not nwp_day: continue
+        gust = nwp_day.get('gust_max') or nwp_day.get('wind_max') or 0
+        try: gust = float(gust)
+        except (TypeError, ValueError): continue
+
+        T = THRESHOLDS['strong_wind_day']
+        if gust >= T['gust_storm']:
+            out.append({'type': 'storm_day', 'severity': 'critical', 'date': date, 'day_label': label,
+                        'gust_kmh': gust,
+                        'message': f"🌬️ Tempête · rafales jusqu'à {gust:.0f} km/h {label}",
+                        'recommendation': "Restez à l'abri, sécurisez vos extérieurs."})
+        elif gust >= T['gust_warning']:
+            out.append({'type': 'strong_wind_day', 'severity': 'warning', 'date': date, 'day_label': label,
+                        'gust_kmh': gust,
+                        'message': f"💨 Vent fort · rafales jusqu'à {gust:.0f} km/h {label}",
+                        'recommendation': "Attention au vent."})
+    return out
 
 def check_temperature_drop(forecasts):
-    """Détecter chute brutale de température"""
-    alerts = []
-    
-    if len(forecasts) < 2:
-        return alerts
-    
+    """Chute brutale de T° entre 2 jours consécutifs."""
+    out = []
     for i in range(1, len(forecasts)):
-        temp_today = forecasts[i-1]['temperature']['predicted']
-        temp_tomorrow = forecasts[i]['temperature']['predicted']
-        drop = temp_today - temp_tomorrow
-        
-        if drop >= THRESHOLDS['temperature_drop']['drop_degrees']:
-            date = forecasts[i]['date']
-            day_label = forecasts[i]['day_label']
-            
-            alert = {
-                'type': 'temperature_drop',
-                'severity': 'info',
-                'date': date,
-                'day_label': day_label,
-                'temperature_drop': drop,
-                'from_temp': temp_today,
-                'to_temp': temp_tomorrow,
-                'message': f"📉 Chute de température : -{drop:.1f}°C entre aujourd'hui et {day_label}",
-                'recommendation': "Adaptez vos vêtements en conséquence"
-            }
-            alerts.append(alert)
-            log(f"📉 ALERTE CHUTE TEMPÉRATURE: -{drop:.1f}°C vers le {date}")
-            send_notification(
-                "📉 Chute de Température",
-                f"-{drop:.1f}°C prévu {day_label}",
-                sound="Purr"
-            )
-    
-    return alerts
+        t1 = forecasts[i-1].get('temperature', {}).get('predicted')
+        t2 = forecasts[i].get('temperature', {}).get('predicted')
+        if t1 is None or t2 is None: continue
+        drop = t1 - t2
+        if drop >= 8:  # seuil légèrement abaissé
+            date = forecasts[i].get('date'); label = forecasts[i].get('day_label', date)
+            out.append({'type': 'temperature_drop', 'severity': 'info', 'date': date, 'day_label': label,
+                        'temperature_drop': drop,
+                        'message': f"📉 Chute de température · −{drop:.1f}°C entre aujourd'hui et {label}",
+                        'recommendation': "Adaptez vos vêtements en conséquence."})
+    return out
 
+# ============================================
+# MAIN
+# ============================================
 def detect_events():
-    """Fonction principale de détection"""
-    
     log("=" * 70)
-    log("🔍 DÉTECTION D'ÉVÉNEMENTS MÉTÉO")
+    log("🔍 DÉTECTION D'ÉVÉNEMENTS MÉTÉO — v2 (orages + temps réel)")
     log("=" * 70)
-    
-    # Charger les données
-    predictions_data = load_predictions()
-    if not predictions_data:
-        log("❌ Impossible de charger les prédictions")
-        return
-    
-    forecasts = predictions_data.get('forecasts', [])
-    if not forecasts:
-        log("⚠️  Aucune prédiction trouvée")
-        return
-    
-    historical_data = load_historical_data()
-    
-    log(f"📅 Analyse de {len(forecasts)} prévisions")
+
+    predictions = load_predictions()
+    forecasts = (predictions or {}).get('forecasts', []) or []
+    if isinstance(forecasts, dict):
+        forecasts = list(forecasts.values())
+
+    hourly_station = load_hourly_station()
+    nwp_data = load_nwp()
+
+    log(f"📊 Sources : prédictions={len(forecasts)}j · "
+        f"station={'oui' if hourly_station else 'non'} · "
+        f"NWP={'oui' if nwp_data else 'non'}")
     log("")
-    
-    # Détection de tous les événements
+
     all_alerts = []
-    
-    all_alerts.extend(check_heat_wave(forecasts))
-    all_alerts.extend(check_cold_wave(forecasts))
-    all_alerts.extend(check_heavy_rain(forecasts, historical_data))
-    all_alerts.extend(check_temperature_drop(forecasts))
-    
+
+    # 1. Temps réel
+    log("⏱  Analyse temps réel (station IVINEL2, dernières heures)…")
+    rt = realtime_check(hourly_station or {})
+    log(f"   → {len(rt)} alerte(s)")
+    for a in rt: log(f"     • {a['message']}")
+    all_alerts.extend(rt)
+
+    # 2. NWP heures à venir
+    log("🛰  Analyse NWP horaire (12 prochaines heures)…")
+    nu = nwp_upcoming_check(nwp_data)
+    log(f"   → {len(nu)} alerte(s)")
+    for a in nu: log(f"     • {a['message']}")
+    all_alerts.extend(nu)
+
+    # 3. Prévisions journalières
+    log("📅 Analyse prévisions 7 jours (ML + NWP)…")
+    daily = []
+    daily.extend(check_heat_wave(forecasts))
+    daily.extend(check_cold_wave(forecasts))
+    daily.extend(check_heavy_rain(forecasts, nwp_data))
+    daily.extend(check_strong_wind(forecasts, nwp_data))
+    daily.extend(check_temperature_drop(forecasts))
+    log(f"   → {len(daily)} alerte(s)")
+    for a in daily: log(f"     • {a['message']}")
+    all_alerts.extend(daily)
+
     # Résumé
     log("")
     log("=" * 70)
     log("📊 RÉSUMÉ")
     log("=" * 70)
-    
     if all_alerts:
-        log(f"⚠️  {len(all_alerts)} alerte(s) détectée(s)")
-        log("")
-        
-        # Grouper par sévérité
-        critical = [a for a in all_alerts if a['severity'] == 'critical']
-        warning = [a for a in all_alerts if a['severity'] == 'warning']
+        crit = [a for a in all_alerts if a['severity'] == 'critical']
+        warn = [a for a in all_alerts if a['severity'] == 'warning']
         info = [a for a in all_alerts if a['severity'] == 'info']
-        
-        if critical:
-            log(f"🔴 Alertes CRITIQUES: {len(critical)}")
-            for alert in critical:
-                log(f"   {alert['message']}")
-        
-        if warning:
-            log(f"🟠 Alertes AVERTISSEMENT: {len(warning)}")
-            for alert in warning:
-                log(f"   {alert['message']}")
-        
-        if info:
-            log(f"🔵 Alertes INFO: {len(info)}")
-            for alert in info:
-                log(f"   {alert['message']}")
-        
-        # Sauvegarder toutes les alertes
+        log(f"⚠️  {len(all_alerts)} alerte(s) total — critique:{len(crit)} avert:{len(warn)} info:{len(info)}")
+
+        # Sauvegarder + notifier
         for alert in all_alerts:
             alert['detected_at'] = datetime.now().isoformat()
             save_alert(alert)
-        
+            # Notif uniquement critique (évite spam macOS)
+            if alert['severity'] == 'critical':
+                title = alert['message'].split('·')[0].strip() if '·' in alert['message'] else alert['type']
+                send_notification(title[:50], alert['message'][:120], sound="Basso")
     else:
-        log("✅ Aucun événement extrême détecté")
-        log("   Conditions météo normales prévues")
-    
+        log("✅ Aucun événement détecté — conditions normales")
     log("")
     log("=" * 70)
-
-# ============================================
-# MAIN
-# ============================================
 
 def main():
     detect_events()
