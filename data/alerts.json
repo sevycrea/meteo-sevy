@@ -1,8 +1,20 @@
 {
-  "generated_at": "2026-05-09T10:36:54.899811",
+  "generated_at": "2026-05-09T14:35:55.003960",
   "location": "Vinelz, Suisse",
-  "total_alerts": 1,
+  "total_alerts": 2,
   "alerts": [
+    {
+      "type": "pressure_drop_realtime",
+      "severity": "warning",
+      "window": "07:00–14:00",
+      "source": "hourly",
+      "message": "⚡ Chute de pression rapide · −3.1 hPa en 1h",
+      "recommendation": "Conditions instables — orage approchant possible.",
+      "metrics": {
+        "pressure_drop_short": 3.1
+      },
+      "detected_at": "2026-05-09T14:35:54.948611"
+    },
     {
       "type": "strong_wind_day",
       "severity": "warning",
@@ -15,5 +27,5 @@
     }
   ],
   "status": "warning",
-  "message": "1 avertissement(s) en cours"
+  "message": "2 avertissement(s) en cours"
 }
