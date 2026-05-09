@@ -1,8 +1,20 @@
 {
-  "generated_at": "2026-05-09T14:35:55.003960",
+  "generated_at": "2026-05-09T17:38:22.161681",
   "location": "Vinelz, Suisse",
-  "total_alerts": 2,
+  "total_alerts": 3,
   "alerts": [
+    {
+      "type": "pressure_drop_realtime",
+      "severity": "info",
+      "window": "10:00–17:00",
+      "source": "hourly",
+      "message": "📉 Pression en baisse · −4.1 hPa en 3h",
+      "recommendation": "Tendance à surveiller (perturbation possible).",
+      "metrics": {
+        "pressure_drop_full": 4.1
+      },
+      "detected_at": "2026-05-09T17:38:22.101643"
+    },
     {
       "type": "pressure_drop_realtime",
       "severity": "warning",
