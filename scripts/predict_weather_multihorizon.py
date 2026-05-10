@@ -367,6 +367,7 @@ def generate_predictions(model_temp, model_rain, metrics, data):
         'generated_at': datetime.now().isoformat(),
         'model_version': metrics.get('trained_at', 'unknown'),
         'model_type': 'multihorizon_sequential',
+        'training_days': len(data),
         'forecasts': forecasts,
         'model_performance': {
             'temperature_accuracy': f"±{metrics['temp_mae']:.1f}°C",

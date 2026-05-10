@@ -86,7 +86,7 @@ def fetch_nwp():
         f"&daily={daily_params}"
         f"&hourly={hourly_params}"
         f"&timezone=Europe/Zurich"
-        f"&forecast_days=7"
+        f"&forecast_days=8"
         f"&models=metno_seamless"
     )
     try:
