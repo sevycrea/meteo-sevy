@@ -1,58 +1,8 @@
 {
-  "generated_at": "2026-05-09T22:29:01.975684",
+  "generated_at": "2026-05-09T08:13:58.059623",
   "location": "Vinelz, Suisse",
-  "total_alerts": 5,
+  "total_alerts": 1,
   "alerts": [
-    {
-      "type": "cold_front_realtime",
-      "severity": "warning",
-      "window": "17:00–22:00",
-      "source": "hourly",
-      "message": "❄️🌧️ Front froid détecté · −5.0°C et +18% humidité en 2h (17:00–22:00)",
-      "recommendation": "Orage probable à proximité — vigilance.",
-      "metrics": {
-        "temp_drop": 5.0,
-        "humidity_jump": 18.0
-      },
-      "detected_at": "2026-05-09T22:29:01.900086"
-    },
-    {
-      "type": "cold_front_realtime",
-      "severity": "warning",
-      "window": "14:00–20:00",
-      "source": "hourly",
-      "message": "❄️🌧️ Front froid détecté · −7.0°C et +22% humidité en 2h (14:00–20:00)",
-      "recommendation": "Orage probable à proximité — vigilance.",
-      "metrics": {
-        "temp_drop": 7.0,
-        "humidity_jump": 22.0
-      },
-      "detected_at": "2026-05-09T20:08:26.871430"
-    },
-    {
-      "type": "pressure_drop_realtime",
-      "severity": "info",
-      "window": "10:00–17:00",
-      "source": "hourly",
-      "message": "📉 Pression en baisse · −4.1 hPa en 3h",
-      "recommendation": "Tendance à surveiller (perturbation possible).",
-      "metrics": {
-        "pressure_drop_full": 4.1
-      },
-      "detected_at": "2026-05-09T17:38:22.101643"
-    },
-    {
-      "type": "pressure_drop_realtime",
-      "severity": "warning",
-      "window": "07:00–14:00",
-      "source": "hourly",
-      "message": "⚡ Chute de pression rapide · −3.1 hPa en 1h",
-      "recommendation": "Conditions instables — orage approchant possible.",
-      "metrics": {
-        "pressure_drop_short": 3.1
-      },
-      "detected_at": "2026-05-09T14:35:54.948611"
-    },
     {
       "type": "strong_wind_day",
       "severity": "warning",
@@ -65,5 +15,5 @@
     }
   ],
   "status": "warning",
-  "message": "4 avertissement(s) en cours"
+  "message": "1 avertissement(s) en cours"
 }

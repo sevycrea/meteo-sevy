@@ -204,7 +204,7 @@ def _analyze_window(records, window_label, source='hourly'):
                 'window': window_label,
                 'source': source,
                 'message': (f"❄️🌧️ Front froid détecté · "
-                            f"−{temp_drop:.1f}°C et +{hum_jump:.0f}% humidité "
+                            f"chute de {temp_drop:.1f}°C et hausse de {hum_jump:.0f}% d'humidité "
                             f"en {win_label_hours} ({window_label})"),
                 'recommendation': "Orage probable à proximité — vigilance.",
                 'metrics': {'temp_drop': round(temp_drop, 1),
@@ -224,7 +224,7 @@ def _analyze_window(records, window_label, source='hourly'):
                 'severity': 'warning',
                 'window': window_label,
                 'source': source,
-                'message': f"⚡ Chute de pression rapide · −{press_drop_short:.1f} hPa en {short_label}",
+                'message': f"⚡ Chute de pression rapide · {press_drop_short:.1f} hPa en {short_label}",
                 'recommendation': "Conditions instables — orage approchant possible.",
                 'metrics': {'pressure_drop_short': round(press_drop_short, 1)}
             })
@@ -234,7 +234,7 @@ def _analyze_window(records, window_label, source='hourly'):
                 'severity': 'info',
                 'window': window_label,
                 'source': source,
-                'message': f"📉 Pression en baisse · −{press_drop_full:.1f} hPa en {full_label}",
+                'message': f"📉 Pression en baisse · {press_drop_full:.1f} hPa en {full_label}",
                 'recommendation': "Tendance à surveiller (perturbation possible).",
                 'metrics': {'pressure_drop_full': round(press_drop_full, 1)}
             })
@@ -639,7 +639,7 @@ def check_temperature_drop(forecasts):
             date = forecasts[i].get('date'); label = forecasts[i].get('day_label', date)
             out.append({'type': 'temperature_drop', 'severity': 'info', 'date': date, 'day_label': label,
                         'temperature_drop': drop,
-                        'message': f"📉 Chute de température · −{drop:.1f}°C entre aujourd'hui et {label}",
+                        'message': f"📉 Chute de température · {drop:.1f}°C de moins entre aujourd'hui et {label}",
                         'recommendation': "Adaptez vos vêtements en conséquence."})
     return out
 
