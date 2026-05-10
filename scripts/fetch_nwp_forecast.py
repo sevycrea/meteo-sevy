@@ -14,9 +14,13 @@ Utilisé par predict_hourly.py et predict_weather_multihorizon.py.
 
 import json
 import os
+import sys
 from datetime import datetime
 from urllib.request import urlopen
 from urllib.error import URLError
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ftp_helpers import upload_data
 
 # ============================================
 # CONFIGURATION (chemins relatifs au repo)
@@ -257,6 +261,9 @@ def upload_nwp():
             ftp.storbinary('STOR nwp_forecast.json', f)
         ftp.quit()
         log("✅ nwp_forecast.json uploadé sur le serveur")
+
+        # Double upload vers data.sevy-creations.net (best-effort)
+        upload_data(NWP_FILE, 'nwp_forecast.json', log=log)
     except Exception as e:
         log(f"⚠️  Upload FTP échoué : {e}")
 

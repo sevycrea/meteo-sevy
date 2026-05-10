@@ -9,8 +9,12 @@ Collecte: HORAIRE (toutes les heures)
 import requests
 import json
 import os
+import sys
 from datetime import datetime
 import ftplib
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ftp_helpers import upload_data
 
 # ============================================
 # CONFIGURATION
@@ -256,6 +260,11 @@ def upload_to_ftp():
 
         ftp.quit()
         log("✅ Upload FTP terminé")
+
+        # Double upload vers data.sevy-creations.net (best-effort, ne casse pas si KO)
+        upload_data(JSON_FILE, 'meteo_data_hourly.json', log=log)
+        if os.path.exists(REALTIME_FILE):
+            upload_data(REALTIME_FILE, 'meteo_data_realtime.json', log=log)
 
     except Exception as e:
         log(f"❌ Erreur FTP: {e}")

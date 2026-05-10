@@ -10,7 +10,11 @@ Sortie : data/json/predictions_hourly.json
 
 import json
 import os
+import sys
 from datetime import datetime
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ftp_helpers import upload_data
 
 # ============================================
 # CONFIGURATION (chemins relatifs au repo)
@@ -241,6 +245,9 @@ def upload():
             ftp.storbinary('STOR predictions_hourly.json', f)
         ftp.quit()
         log("✅ predictions_hourly.json uploadé sur le serveur")
+
+        # Double upload vers data.sevy-creations.net (best-effort)
+        upload_data(OUTPUT_FILE, 'predictions_hourly.json', log=log)
     except Exception as e:
         log(f"⚠️  Upload FTP échoué : {e}")
 

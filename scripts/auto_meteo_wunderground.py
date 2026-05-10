@@ -13,6 +13,9 @@ from datetime import datetime, timedelta
 from ftplib import FTP
 import time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ftp_helpers import upload_data
+
 # ══════════════════════════════════════════════════════════════
 # CONFIGURATION
 # ══════════════════════════════════════════════════════════════
@@ -356,9 +359,13 @@ def upload_to_wordpress():
         # Upload du fichier
         with open(JSON_OUTPUT, 'rb') as f:
             ftp.storbinary(f'STOR {FTP_REMOTE_PATH}', f)
-        
+
         ftp.quit()
         log("✅ Upload terminé avec succès !")
+
+        # Double upload vers data.sevy-creations.net (best-effort)
+        upload_data(JSON_OUTPUT, os.path.basename(FTP_REMOTE_PATH), log=log)
+
         return True
         
     except Exception as e:

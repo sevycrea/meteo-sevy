@@ -7,9 +7,13 @@ Prédit J+1, J+2, J+3 avec détails par période
 
 import json
 import os
+import sys
 from datetime import datetime, timedelta
 import numpy as np
 import joblib
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ftp_helpers import upload_data
 
 # ============================================
 # CONFIGURATION
@@ -459,9 +463,12 @@ def upload_to_server():
         log(f"📤 Upload de predictions.json...")
         with open(OUTPUT_FILE, 'rb') as f:
             ftp.storbinary('STOR predictions.json', f)
-        
+
         ftp.quit()
         log("✅ Upload FTP réussi")
+
+        # Double upload vers data.sevy-creations.net (best-effort)
+        upload_data(OUTPUT_FILE, 'predictions.json', log=log)
         
     except Exception as e:
         log(f"❌ Erreur FTP: {e}")

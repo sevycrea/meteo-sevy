@@ -11,6 +11,9 @@ from datetime import datetime, timedelta
 from ftplib import FTP
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ftp_helpers import upload_data
+
 # ============================================
 # CONFIGURATION
 # ============================================
@@ -177,6 +180,9 @@ def main():
         return 0
 
     success_json = upload_to_ftp(EXPORT_JSON, 'alerts.json')
+
+    # Double upload vers data.sevy-creations.net (best-effort, ne casse pas si KO)
+    upload_data(EXPORT_JSON, 'alerts.json', log=log)
 
     # Résumé
     log("")

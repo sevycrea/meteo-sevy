@@ -7,9 +7,13 @@ Utilise les modèles entraînés pour prédire le temps de demain
 
 import json
 import os
+import sys
 from datetime import datetime, timedelta
 import numpy as np
 import joblib
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ftp_helpers import upload_data
 
 # ============================================
 # CONFIGURATION
@@ -202,9 +206,12 @@ def upload_to_server():
             # Crée le fichier predictions.json dans le dossier actuel
             ftp.storbinary('STOR predictions.json', f)
         # Fichier final : /public_html/.../previsions-meteo/data/predictions.json
-        
+
         ftp.quit()
         log("✅ Upload FTP réussi")
+
+        # Double upload vers data.sevy-creations.net (best-effort)
+        upload_data(OUTPUT_FILE, 'predictions.json', log=log)
         
     except ftplib.error_perm as e:
         log(f"❌ Erreur FTP permissions: {e}")
