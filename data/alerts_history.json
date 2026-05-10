@@ -79,5 +79,25 @@
     "message": "💨 Vent fort · rafales jusqu'à 50 km/h Après-demain",
     "recommendation": "Attention au vent.",
     "detected_at": "2026-05-10T09:05:22.144568"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "info",
+    "date": "2026-05-10",
+    "day_label": "Aujourd'hui",
+    "rain_probability": 77.0,
+    "message": "🌧️ Pluie probable · 77.0% Aujourd'hui",
+    "recommendation": "Pensez à votre parapluie.",
+    "detected_at": "2026-05-10T15:34:28.604841"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "info",
+    "date": "2026-05-11",
+    "day_label": "Demain",
+    "rain_probability": 72.0,
+    "message": "🌧️ Pluie probable · 72.0% Demain",
+    "recommendation": "Pensez à votre parapluie.",
+    "detected_at": "2026-05-10T15:34:28.605130"
   }
 ]
