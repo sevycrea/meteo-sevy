@@ -33,6 +33,9 @@ jobs:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASS: ${{ secrets.FTP_PASS }}
+          DATA_FTP_HOST: ${{ secrets.DATA_FTP_HOST }}
+          DATA_FTP_USER: ${{ secrets.DATA_FTP_USER }}
+          DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
         run: python scripts/auto_meteo_wunderground.py
 
       - name: Enrichir données (agrégation périodes)
