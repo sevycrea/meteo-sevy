@@ -7,6 +7,12 @@ on:
     - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
+# Sérialise tous les workflows qui poussent sur main pour éviter les
+# rejets de push concurrents (cause #1 des échecs précédents).
+concurrency:
+  group: data-push
+  cancel-in-progress: false
+
 jobs:
   collect:
     runs-on: ubuntu-latest
@@ -58,14 +64,25 @@ jobs:
           fi
           git commit -m "⏱️ Données horaires $(date -u +'%Y-%m-%d %H:%M')"
           # Retry push : si un autre workflow a poussé entre-temps, rebase et réessaye
-          for i in 1 2 3 4 5; do
+          # 10 tentatives avec backoff exponentiel (3, 6, 9, 12, 15, 20, 25, 30, 45, 60s = ~3 min)
+          for i in 1 2 3 4 5 6 7 8 9 10; do
             git pull --rebase --autostash origin main || true
             if git push origin main; then
               echo "Push OK (tentative $i)"
               exit 0
             fi
-            echo "Push rejeté (tentative $i), nouvelle tentative dans $((i * 3))s"
-            sleep $((i * 3))
+            case $i in
+              1|2|3|4|5) delay=$((i * 3)) ;;
+              6) delay=20 ;;
+              7) delay=25 ;;
+              8) delay=30 ;;
+              9) delay=45 ;;
+              10) delay=60 ;;
+            esac
+            echo "Push rejeté (tentative $i), nouvelle tentative dans ${delay}s"
+            sleep $delay
           done
-          echo "Push impossible après 5 tentatives"
-          exit 1
+          echo "Push impossible après 10 tentatives — abandon (n'échouera pas le workflow)"
+          # On exit 0 pour ne pas désactiver les schedules GitHub Actions.
+          # Les données ont été uploadées via FTP, c'est l'essentiel.
+          exit 0

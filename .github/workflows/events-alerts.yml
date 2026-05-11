@@ -2,8 +2,14 @@ name: Détection événements et alertes
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # toutes les 30 minutes
+    # Toutes les 30 min, décalé de 12 min pour éviter la congestion GA
+    # sur les minutes rondes ET pour ne pas chevaucher collect-hourly/daily.
+    - cron: '12,42 * * * *'
   workflow_dispatch:
+
+concurrency:
+  group: data-push
+  cancel-in-progress: false
 
 jobs:
   events-alerts:
@@ -52,12 +58,22 @@ jobs:
             exit 0
           fi
           git commit -m "⚠️ Alertes $(date -u +'%Y-%m-%d %H:%M')"
-          for i in 1 2 3 4 5; do
+          for i in 1 2 3 4 5 6 7 8 9 10; do
             git pull --rebase --autostash origin main || true
             if git push origin main; then
               echo "Push OK (tentative $i)"
               exit 0
             fi
-            sleep $((i * 3))
+            case $i in
+              1|2|3|4|5) delay=$((i * 3)) ;;
+              6) delay=20 ;;
+              7) delay=25 ;;
+              8) delay=30 ;;
+              9) delay=45 ;;
+              10) delay=60 ;;
+            esac
+            echo "Push rejeté (tentative $i), nouvelle tentative dans ${delay}s"
+            sleep $delay
           done
-          exit 1
+          echo "Push impossible après 10 tentatives — alertes déjà sur FTP, on continue"
+          exit 0
