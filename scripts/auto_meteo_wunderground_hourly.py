@@ -132,6 +132,7 @@ def update_hourly_data(all_data, current_data):
         'hum': round(current_data['humidity'], 0),
         'wind': round(current_data['wind_speed'], 1),
         'gust': round(current_data['wind_gust'], 1),
+        'wind_dir': int(current_data.get('wind_dir', 0)),
         'pressure': round(current_data['pressure'], 1),
         'rain': round(current_data['precip_total'], 1),
         'timestamp': current_data['timestamp']
@@ -198,6 +199,7 @@ def update_realtime_data(current_data):
         'hum':       round(current_data['humidity'], 0),
         'wind':      round(current_data['wind_speed'], 1),
         'gust':      round(current_data['wind_gust'], 1),
+        'wind_dir':  int(current_data.get('wind_dir', 0)),
         'pressure':  round(current_data['pressure'], 1),
         'rain':      round(current_data['precip_total'], 1),
         'timestamp': current_data['timestamp'],
