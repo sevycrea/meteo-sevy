@@ -2022,29 +2022,29 @@
       },
       "13:00": {
         "temp": 13.0,
-        "hum": 77.0,
+        "hum": 81.0,
         "wind": 7.0,
-        "gust": 7.0,
-        "wind_dir": 150,
+        "gust": 8.0,
+        "wind_dir": 174,
         "pressure": 998.0,
         "rain": 8.4,
-        "timestamp": "2026-05-11 15:31:54"
+        "timestamp": "2026-05-11 15:38:18"
       }
     },
     "daily": {
       "temp_min": 11,
       "temp_max": 13,
-      "temp_sum": 61,
-      "temp_count": 5,
+      "temp_sum": 74,
+      "temp_count": 6,
       "rain_total": 8.38,
-      "wind_max": 7,
-      "pressure_sum": 4988.83,
-      "pressure_count": 5,
-      "humidity_sum": 442,
-      "humidity_count": 5,
-      "temp_avg": 12.2,
+      "wind_max": 8,
+      "pressure_sum": 5986.8,
+      "pressure_count": 6,
+      "humidity_sum": 523,
+      "humidity_count": 6,
+      "temp_avg": 12.3,
       "pressure_avg": 997.8,
-      "humidity_avg": 88.0
+      "humidity_avg": 87.0
     }
   }
 }
