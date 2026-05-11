@@ -1,8 +1,40 @@
 {
-  "generated_at": "2026-05-11T13:43:28.922934",
+  "generated_at": "2026-05-11T16:10:35.934732",
   "location": "Vinelz, Suisse",
   "total_alerts": 20,
   "alerts": [
+    {
+      "type": "rain_likely",
+      "severity": "info",
+      "date": "2026-05-12",
+      "day_label": "Demain",
+      "rain_probability": 80.0,
+      "message": "🌧️ Pluie probable · 80.0% Demain",
+      "recommendation": "Pensez à votre parapluie.",
+      "detected_at": "2026-05-11T16:10:35.807020"
+    },
+    {
+      "type": "rain_likely",
+      "severity": "warning",
+      "date": "2026-05-11",
+      "day_label": "Aujourd'hui",
+      "rain_probability": 92.0,
+      "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
+      "recommendation": "Prévoyez un parapluie.",
+      "detected_at": "2026-05-11T16:10:35.806497"
+    },
+    {
+      "type": "local_rain_realtime",
+      "severity": "warning",
+      "window": "12:00–16:00",
+      "source": "hourly",
+      "message": "🌧️ Pluie soutenue · 25.4 mm cumulés en 3h",
+      "recommendation": "Précipitations actives — sols saturés possibles.",
+      "metrics": {
+        "rain_cumul": 25.4
+      },
+      "detected_at": "2026-05-11T16:10:35.805967"
+    },
     {
       "type": "rain_likely",
       "severity": "info",
@@ -181,37 +213,6 @@
       "message": "🌧️ Pluie probable · 72.0% Demain",
       "recommendation": "Pensez à votre parapluie.",
       "detected_at": "2026-05-10T15:34:28.605130"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "info",
-      "date": "2026-05-10",
-      "day_label": "Aujourd'hui",
-      "rain_probability": 77.0,
-      "message": "🌧️ Pluie probable · 77.0% Aujourd'hui",
-      "recommendation": "Pensez à votre parapluie.",
-      "detected_at": "2026-05-10T15:34:28.604841"
-    },
-    {
-      "type": "strong_wind_day",
-      "severity": "warning",
-      "date": "2026-05-11",
-      "day_label": "Après-demain",
-      "gust_kmh": 50.0,
-      "message": "💨 Vent fort · rafales jusqu'à 50 km/h Après-demain",
-      "recommendation": "Attention au vent.",
-      "detected_at": "2026-05-10T09:05:22.144568"
-    },
-    {
-      "type": "heavy_rain",
-      "severity": "warning",
-      "date": "2026-05-11",
-      "day_label": "Après-demain",
-      "rain_mm": 26.7,
-      "rain_probability": 15.0,
-      "message": "🌧️ Pluie forte · 27 mm prévus Après-demain (proba 15.0%)",
-      "recommendation": "Prévoyez un parapluie, possibles ruissellements.",
-      "detected_at": "2026-05-10T09:05:22.144229"
     }
   ],
   "status": "warning",
