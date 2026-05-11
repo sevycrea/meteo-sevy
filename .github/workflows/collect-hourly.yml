@@ -2,7 +2,9 @@ name: Collecte données horaires
 
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    # Toutes les 15 min, décalé de 7 min pour éviter la congestion GitHub Actions
+    # qui drop les crons tombant sur des minutes rondes (00, 10, 20…) à fort trafic.
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
 jobs:
