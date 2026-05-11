@@ -127,15 +127,19 @@ def update_hourly_data(all_data, current_data):
         }
     
     # Ajouter les données de cette heure
+    # Défensif : si l'API renvoie null sur un champ, on tombe sur 0 plutôt que de crasher.
+    def _f(key, default=0.0):
+        v = current_data.get(key)
+        return float(v) if v is not None else default
     all_data[date_key]['hourly'][hour_key] = {
-        'temp': round(current_data['temp'], 1),
-        'hum': round(current_data['humidity'], 0),
-        'wind': round(current_data['wind_speed'], 1),
-        'gust': round(current_data['wind_gust'], 1),
-        'wind_dir': int(current_data.get('wind_dir') or 0),
-        'pressure': round(current_data['pressure'], 1),
-        'rain': round(current_data['precip_total'], 1),
-        'timestamp': current_data['timestamp']
+        'temp':     round(_f('temp'),         1),
+        'hum':      round(_f('humidity'),     0),
+        'wind':     round(_f('wind_speed'),   1),
+        'gust':     round(_f('wind_gust'),    1),
+        'wind_dir': int(_f('wind_dir')),
+        'pressure': round(_f('pressure'),     1),
+        'rain':     round(_f('precip_total'), 1),
+        'timestamp': current_data.get('timestamp', '')
     }
     
     # Mettre à jour les statistiques quotidiennes
@@ -194,15 +198,18 @@ def update_realtime_data(current_data):
     # Ajouter la mesure courante avec clé "YYYY-MM-DD HH:MM"
     now = datetime.now()
     key = now.strftime("%Y-%m-%d %H:%M")
+    def _rt(key, default=0.0):
+        v = current_data.get(key)
+        return float(v) if v is not None else default
     realtime[key] = {
-        'temp':      round(current_data['temp'], 1),
-        'hum':       round(current_data['humidity'], 0),
-        'wind':      round(current_data['wind_speed'], 1),
-        'gust':      round(current_data['wind_gust'], 1),
-        'wind_dir':  int(current_data.get('wind_dir') or 0),
-        'pressure':  round(current_data['pressure'], 1),
-        'rain':      round(current_data['precip_total'], 1),
-        'timestamp': current_data['timestamp'],
+        'temp':      round(_rt('temp'),         1),
+        'hum':       round(_rt('humidity'),     0),
+        'wind':      round(_rt('wind_speed'),   1),
+        'gust':      round(_rt('wind_gust'),    1),
+        'wind_dir':  int(_rt('wind_dir')),
+        'pressure':  round(_rt('pressure'),     1),
+        'rain':      round(_rt('precip_total'), 1),
+        'timestamp': current_data.get('timestamp', ''),
     }
 
     # Trim : on ne garde que les dernières REALTIME_RETENTION_HOURS heures
