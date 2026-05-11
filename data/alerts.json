@@ -1,8 +1,40 @@
 {
-  "generated_at": "2026-05-11T16:10:35.934732",
+  "generated_at": "2026-05-11T21:05:48.454175",
   "location": "Vinelz, Suisse",
   "total_alerts": 20,
   "alerts": [
+    {
+      "type": "rain_likely",
+      "severity": "info",
+      "date": "2026-05-12",
+      "day_label": "Demain",
+      "rain_probability": 80.0,
+      "message": "🌧️ Pluie probable · 80.0% Demain",
+      "recommendation": "Pensez à votre parapluie.",
+      "detected_at": "2026-05-11T21:05:48.247289"
+    },
+    {
+      "type": "rain_likely",
+      "severity": "warning",
+      "date": "2026-05-11",
+      "day_label": "Aujourd'hui",
+      "rain_probability": 92.0,
+      "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
+      "recommendation": "Prévoyez un parapluie.",
+      "detected_at": "2026-05-11T21:05:48.246216"
+    },
+    {
+      "type": "local_rain_realtime",
+      "severity": "warning",
+      "window": "13:00–19:00",
+      "source": "hourly",
+      "message": "🌧️ Pluie soutenue · 30.4 mm cumulés en 3h",
+      "recommendation": "Précipitations actives — sols saturés possibles.",
+      "metrics": {
+        "rain_cumul": 30.4
+      },
+      "detected_at": "2026-05-11T21:05:48.243974"
+    },
     {
       "type": "rain_likely",
       "severity": "info",
@@ -180,41 +212,8 @@
       "message": "🌧️ Pluie probable · 72.0% Demain",
       "recommendation": "Pensez à votre parapluie.",
       "detected_at": "2026-05-10T17:40:07.612116"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "info",
-      "date": "2026-05-10",
-      "day_label": "Aujourd'hui",
-      "rain_probability": 77.0,
-      "message": "🌧️ Pluie probable · 77.0% Aujourd'hui",
-      "recommendation": "Pensez à votre parapluie.",
-      "detected_at": "2026-05-10T17:40:07.611784"
-    },
-    {
-      "type": "cold_front_realtime",
-      "severity": "warning",
-      "window": "11:00–15:00",
-      "source": "hourly",
-      "message": "❄️🌧️ Front froid détecté · chute de 3.0°C et hausse de 19% d'humidité en 2h (11:00–15:00)",
-      "recommendation": "Orage probable à proximité — vigilance.",
-      "metrics": {
-        "temp_drop": 3.0,
-        "humidity_jump": 19.0
-      },
-      "detected_at": "2026-05-10T17:40:07.611450"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "info",
-      "date": "2026-05-11",
-      "day_label": "Demain",
-      "rain_probability": 72.0,
-      "message": "🌧️ Pluie probable · 72.0% Demain",
-      "recommendation": "Pensez à votre parapluie.",
-      "detected_at": "2026-05-10T15:34:28.605130"
     }
   ],
   "status": "warning",
-  "message": "6 avertissement(s) en cours"
+  "message": "7 avertissement(s) en cours"
 }
