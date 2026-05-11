@@ -47,5 +47,17 @@ jobs:
           git config user.name "Meteo Bot"
           git config user.email "bot@meteo-sevy.ch"
           git add data/
-          git diff --staged --quiet || git commit -m "⚠️ Alertes $(date -u +'%Y-%m-%d %H:%M')"
-          git push
+          if git diff --staged --quiet; then
+            echo "Aucun changement à commit"
+            exit 0
+          fi
+          git commit -m "⚠️ Alertes $(date -u +'%Y-%m-%d %H:%M')"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin main || true
+            if git push origin main; then
+              echo "Push OK (tentative $i)"
+              exit 0
+            fi
+            sleep $((i * 3))
+          done
+          exit 1
