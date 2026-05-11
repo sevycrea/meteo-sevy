@@ -28,6 +28,7 @@ WU_API_URL    = "https://api.weather.com/v2/pws/observations/all/1day"
 # Chemins — relatifs à la racine du repo
 BASE_DIR      = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JSON_OUTPUT   = os.path.join(BASE_DIR, "data", "meteo_data.json")
+HOURLY_JSON   = os.path.join(BASE_DIR, "data", "meteo_data_hourly.json")
 LOG_FILE      = os.path.join(BASE_DIR, "logs", "auto_update_wunderground.log")
 
 # FTP — credentials via variables d'environnement (GitHub Secrets)
@@ -305,6 +306,48 @@ def backup_json():
     except Exception as e:
         log(f"⚠️  Erreur sauvegarde : {e}")
 
+def correct_rain_from_hourly(merged_data):
+    """
+    L'API « daily summary » de Weather Underground est parfois sous-estimée
+    pour la pluie (réinitialisation manuelle du pluviomètre, retards d'intégration).
+    Cette fonction corrige `rain` en utilisant le maximum du cumul horaire
+    observé pour chaque jour (source de vérité fiable car capturée toutes les
+    10 min depuis la station).
+
+    Ne modifie que les jours pour lesquels `meteo_data_hourly.json` a des
+    données ET dont le max horaire dépasse strictement la valeur daily.
+    """
+    if not os.path.exists(HOURLY_JSON):
+        log("⚠️  meteo_data_hourly.json absent — pas de correction pluie")
+        return merged_data
+
+    try:
+        with open(HOURLY_JSON, 'r', encoding='utf-8') as f:
+            hourly = json.load(f)
+    except Exception as e:
+        log(f"⚠️  Lecture hourly échouée : {e}")
+        return merged_data
+
+    corrections = 0
+    for date_key, day_block in hourly.items():
+        if date_key not in merged_data:
+            continue
+        hours = day_block.get('hourly', {})
+        if not hours:
+            continue
+        # Le champ `rain` dans hourly = cumul quotidien à l'instant de la mesure.
+        # Le max sur la journée = total final (jusqu'au reset minuit).
+        max_rain = max((h.get('rain', 0) or 0 for h in hours.values()), default=0)
+        current = merged_data[date_key].get('rain', 0) or 0
+        if max_rain > current + 0.05:  # seuil pour éviter les floats parasites
+            log(f"   📊 {date_key} : pluie corrigée {current:.1f} → {max_rain:.1f} mm")
+            merged_data[date_key]['rain'] = round(max_rain, 1)
+            corrections += 1
+
+    log(f"   ✅ {corrections} jour(s) corrigé(s) depuis hourly")
+    return merged_data
+
+
 def save_json(data):
     """Sauvegarde le JSON localement"""
     try:
@@ -409,7 +452,10 @@ def main():
     
     existing_data = load_existing_json()
     merged_data = merge_data(existing_data, new_data)
-    
+
+    log("\n🌧️  Correction de la pluie depuis hourly (source fiable)")
+    merged_data = correct_rain_from_hourly(merged_data)
+
     if not save_json(merged_data):
         log("❌ Échec de la sauvegarde. Arrêt.")
         return False
