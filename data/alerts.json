@@ -1,8 +1,28 @@
 {
-  "generated_at": "2026-05-11T06:46:23.826358",
+  "generated_at": "2026-05-11T10:49:57.519724",
   "location": "Vinelz, Suisse",
   "total_alerts": 20,
   "alerts": [
+    {
+      "type": "rain_likely",
+      "severity": "info",
+      "date": "2026-05-12",
+      "day_label": "Demain",
+      "rain_probability": 80.0,
+      "message": "🌧️ Pluie probable · 80.0% Demain",
+      "recommendation": "Pensez à votre parapluie.",
+      "detected_at": "2026-05-11T10:49:57.374931"
+    },
+    {
+      "type": "rain_likely",
+      "severity": "warning",
+      "date": "2026-05-11",
+      "day_label": "Aujourd'hui",
+      "rain_probability": 92.0,
+      "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
+      "recommendation": "Prévoyez un parapluie.",
+      "detected_at": "2026-05-11T10:49:57.374287"
+    },
     {
       "type": "rain_likely",
       "severity": "info",
@@ -198,30 +218,8 @@
         "pressure_drop_full": 4.1
       },
       "detected_at": "2026-05-09T17:38:22.101643"
-    },
-    {
-      "type": "pressure_drop_realtime",
-      "severity": "warning",
-      "window": "07:00–14:00",
-      "source": "hourly",
-      "message": "⚡ Chute de pression rapide · 3.1 hPa en 1h",
-      "recommendation": "Conditions instables — orage approchant possible.",
-      "metrics": {
-        "pressure_drop_short": 3.1
-      },
-      "detected_at": "2026-05-09T14:35:54.948611"
-    },
-    {
-      "type": "strong_wind_day",
-      "severity": "warning",
-      "date": "2026-05-11",
-      "day_label": "Après-demain",
-      "gust_kmh": 50.0,
-      "message": "💨 Vent fort · rafales jusqu'à 50 km/h Après-demain",
-      "recommendation": "Attention au vent.",
-      "detected_at": "2026-05-09T08:06:07.301756"
     }
   ],
   "status": "warning",
-  "message": "7 avertissement(s) en cours"
+  "message": "6 avertissement(s) en cours"
 }
