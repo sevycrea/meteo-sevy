@@ -15,6 +15,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ftp_helpers import upload_data
+from http_helpers import get_json_with_retry
 
 # ══════════════════════════════════════════════════════════════
 # CONFIGURATION
@@ -67,41 +68,34 @@ def fetch_wunderground_data(date=None):
     https://docs.google.com/document/d/1eKCnKXI9xnoMGRRzOL1xPCBihNV2rOet08qpE_gArAY/edit
     """
     log("🌐 Connexion à Weather Underground API...")
-    
-    try:
-        # Paramètres de la requête
-        params = {
-            'stationId': WU_STATION_ID,
-            'format': 'json',
-            'units': 'm',  # Unités métriques
-            'apiKey': WU_API_KEY,
-            'numericPrecision': 'decimal'
-        }
-        
-        if date:
-            params['date'] = date
-        
-        log(f"   📥 Récupération des données pour {WU_STATION_ID}...")
-        
-        response = requests.get(WU_API_URL, params=params, timeout=30)
-        
-        if response.status_code == 200:
-            data = response.json()
-            
-            if 'observations' in data and data['observations']:
-                observations = data['observations']
-                log(f"   ✅ {len(observations)} observations récupérées")
-                return observations
-            else:
-                log("   ⚠️  Aucune observation dans la réponse")
-                return []
-        else:
-            log(f"   ❌ Erreur API : {response.status_code}")
-            log(f"   Réponse : {response.text[:200]}")
-            return []
-            
-    except Exception as e:
-        log(f"❌ Erreur lors de la récupération : {e}")
+
+    # Paramètres de la requête
+    params = {
+        'stationId': WU_STATION_ID,
+        'format': 'json',
+        'units': 'm',  # Unités métriques
+        'apiKey': WU_API_KEY,
+        'numericPrecision': 'decimal'
+    }
+
+    if date:
+        params['date'] = date
+
+    log(f"   📥 Récupération des données pour {WU_STATION_ID}...")
+
+    # Retry helper : 3 tentatives avec backoff exponentiel (2s, 4s, 8s).
+    # Timeout 30s par tentative (l'endpoint daily summary peut être lent).
+    data = get_json_with_retry(WU_API_URL, params=params, timeout=30, attempts=3, log=log)
+    if data is None:
+        log("   ❌ API WU inaccessible après 3 tentatives")
+        return []
+
+    observations = data.get('observations') or []
+    if observations:
+        log(f"   ✅ {len(observations)} observations récupérées")
+        return observations
+    else:
+        log("   ⚠️  Aucune observation dans la réponse")
         return []
 
 # ══════════════════════════════════════════════════════════════
@@ -368,52 +362,24 @@ def save_json(data):
 
 def upload_to_wordpress():
     """Upload le JSON sur WordPress via FTP"""
-    log("📤 Upload vers WordPress...")
-    
+    log("📤 Upload vers WordPress (atomique)...")
+
+    # Le chemin remote est simple maintenant (compte FTP chrooté → racine = data/).
+    # On utilise le helper atomique pour éviter tout JSON tronqué côté client.
+    remote_name = os.path.basename(FTP_REMOTE_PATH)
+    from ftp_helpers import upload_legacy
+
     try:
-        ftp = FTP(FTP_HOST)
-        ftp.login(FTP_USER, FTP_PASS)
-        
-        log(f"   🔐 Connecté à {FTP_HOST}")
-        
-        # Créer le dossier Meteo s'il n'existe pas
-        remote_dir = '/'.join(FTP_REMOTE_PATH.split('/')[:-1])
-        
-        try:
-            # Essayer de créer les dossiers parents si nécessaire
-            dirs = remote_dir.split('/')
-            current_path = ''
-            for d in dirs:
-                if not d:
-                    continue
-                current_path += '/' + d
-                try:
-                    ftp.cwd(current_path)
-                except:
-                    try:
-                        ftp.mkd(current_path)
-                        log(f"   📁 Dossier créé : {current_path}")
-                        ftp.cwd(current_path)
-                    except:
-                        pass
-        except Exception as e:
-            log(f"   ⚠️  Avertissement création dossiers : {e}")
-        
-        # Upload du fichier
-        with open(JSON_OUTPUT, 'rb') as f:
-            ftp.storbinary(f'STOR {FTP_REMOTE_PATH}', f)
-
-        ftp.quit()
-        log("✅ Upload terminé avec succès !")
-
-        # Double upload vers data.sevy-creations.net (best-effort)
-        upload_data(JSON_OUTPUT, os.path.basename(FTP_REMOTE_PATH), log=log)
-
-        return True
-        
+        upload_legacy(JSON_OUTPUT, remote_name, log=log)
+        log("✅ Upload legacy terminé (atomique)")
     except Exception as e:
-        log(f"❌ Erreur upload FTP : {e}")
-        return False
+        log(f"❌ Erreur upload legacy : {e}")
+        # On continue pour tenter le subdomain quand même
+
+    # Double upload vers data.sevy-creations.net (best-effort, atomique aussi)
+    upload_data(JSON_OUTPUT, remote_name, log=log)
+
+    return True
 
 # ══════════════════════════════════════════════════════════════
 # FONCTION PRINCIPALE

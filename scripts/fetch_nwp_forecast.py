@@ -16,11 +16,10 @@ import json
 import os
 import sys
 from datetime import datetime
-from urllib.request import urlopen
-from urllib.error import URLError
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ftp_helpers import upload_data
+from http_helpers import get_json_with_retry
 
 # ============================================
 # CONFIGURATION (chemins relatifs au repo)
@@ -82,6 +81,11 @@ def log(msg):
 # ============================================
 
 def fetch_nwp():
+    """Récupère la prévision NWP via Open-Meteo avec retry.
+
+    3 tentatives avec backoff 2s/4s/8s = jusqu'à 14s pour absorber les
+    coupures réseau ou rate-limiting d'Open-Meteo.
+    """
     daily_params = ",".join(DAILY_VARS)
     hourly_params = ",".join(HOURLY_VARS)
     url = (
@@ -93,17 +97,13 @@ def fetch_nwp():
         f"&forecast_days=8"
         f"&models=metno_seamless"
     )
-    try:
-        with urlopen(url, timeout=30) as resp:
-            raw = json.loads(resp.read().decode('utf-8'))
-        log(f"✅ NWP téléchargé ({raw.get('generationtime_ms', 0):.1f} ms)")
-        return raw
-    except URLError as e:
-        log(f"❌ Erreur réseau : {e}")
+
+    raw = get_json_with_retry(url, timeout=30, attempts=3, log=log)
+    if raw is None:
+        log("❌ Open-Meteo inaccessible après 3 tentatives")
         return None
-    except Exception as e:
-        log(f"❌ Erreur inattendue : {e}")
-        return None
+    log(f"✅ NWP téléchargé ({raw.get('generationtime_ms', 0):.1f} ms)")
+    return raw
 
 # ============================================
 # TRAITEMENT

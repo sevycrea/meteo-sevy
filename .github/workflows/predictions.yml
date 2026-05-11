@@ -20,6 +20,8 @@ concurrency:
 jobs:
   predict:
     runs-on: ubuntu-latest
+    # Plus long car le ML prend 2-3 min sur runner GH Actions.
+    timeout-minutes: 15
     permissions:
       contents: write
 
@@ -80,6 +82,22 @@ jobs:
           python scripts/upload_log_ftp.py logs/predictions_multihorizon.log || true
           python scripts/upload_log_ftp.py logs/nwp_forecast.log || true
           python scripts/upload_log_ftp.py logs/predictions_hourly.log || true
+
+      - name: Update health.json
+        if: always()
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+          DATA_FTP_HOST: ${{ secrets.DATA_FTP_HOST }}
+          DATA_FTP_USER: ${{ secrets.DATA_FTP_USER }}
+          DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            python scripts/update_health.py --component predictions --status ok
+          else
+            python scripts/update_health.py --component predictions --status degraded
+          fi
 
       - name: Commit prévisions
         run: |

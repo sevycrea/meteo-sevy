@@ -126,6 +126,19 @@ def load_alerts_history():
     return load_json(ALERTS_HISTORY) or []
 
 def save_alert(alert):
+    """Sauvegarde une alerte avec écriture atomique pour éviter la corruption.
+
+    Procédure :
+    1. Charge l'historique existant
+    2. Anti-doublon : skip si même type/cible alerté dans la dernière heure
+    3. Ajoute, tronque à 200 alertes max
+    4. Écrit dans `alerts_history.json.tmp` puis `os.replace()` (atomique POSIX)
+
+    L'écriture atomique garantit qu'aucun lecteur (ce script lui-même via
+    `load_alerts_history`, le site web, etc.) ne pourra jamais lire un
+    fichier à moitié écrit. Sur les systèmes POSIX (Linux runner GH Actions),
+    `os.replace` est garanti atomique au niveau du système de fichiers.
+    """
     history = load_alerts_history()
     # Anti-doublon : on évite de re-saver une alerte du même type pour la
     # même cible dans la dernière heure (évite de spammer le ticker).
@@ -145,8 +158,12 @@ def save_alert(alert):
         return  # déjà alerté il y a moins d'1h, on n'ajoute pas
     history.append(alert)
     history = history[-200:]
-    with open(ALERTS_HISTORY, 'w', encoding='utf-8') as f:
+
+    # Écriture atomique : tmp + os.replace
+    tmp_path = ALERTS_HISTORY + ".tmp"
+    with open(tmp_path, 'w', encoding='utf-8') as f:
         json.dump(history, f, indent=2, ensure_ascii=False)
+    os.replace(tmp_path, ALERTS_HISTORY)
 
 def vinelz_today():
     """Date du jour à Vinelz (Europe/Zurich approx via heure locale)."""

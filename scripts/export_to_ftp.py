@@ -12,7 +12,7 @@ from ftplib import FTP
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ftp_helpers import upload_data
+from ftp_helpers import upload_data, upload_legacy
 
 # ============================================
 # CONFIGURATION
@@ -117,31 +117,12 @@ def save_json(data):
         return False
 
 def upload_to_ftp(local_file, remote_name):
-    """Upload un fichier vers le serveur FTP"""
+    """Upload un fichier vers le serveur FTP (atomique via ftp_helpers)."""
     try:
-        # Connexion FTP
-        ftp = FTP(FTP_HOST)
-        ftp.login(FTP_USER, FTP_PASS)
-        
-        # Changer vers le bon dossier (si défini)
-        if FTP_DIR:
-            try:
-                ftp.cwd(FTP_DIR)
-            except:
-                log(f"📁 Création du dossier {FTP_DIR}")
-                ftp.mkd(FTP_DIR)
-                ftp.cwd(FTP_DIR)
-        
-        # Upload du fichier
-        with open(local_file, 'rb') as f:
-            ftp.storbinary(f'STOR {remote_name}', f)
-        
-        ftp.quit()
-        log(f"✅ Upload FTP réussi: {remote_name}")
+        upload_legacy(local_file, remote_name, log=log)
         return True
-        
     except Exception as e:
-        log(f"❌ Erreur upload FTP: {e}")
+        log(f"❌ Erreur upload FTP atomique: {e}")
         return False
 
 # ============================================

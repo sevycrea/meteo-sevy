@@ -14,6 +14,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     permissions:
       contents: write
 
@@ -55,6 +56,22 @@ jobs:
         run: |
           python scripts/upload_log_ftp.py logs/auto_update_wunderground.log
           python scripts/upload_log_ftp.py logs/aggregation.log
+
+      - name: Update health.json
+        if: always()
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+          DATA_FTP_HOST: ${{ secrets.DATA_FTP_HOST }}
+          DATA_FTP_USER: ${{ secrets.DATA_FTP_USER }}
+          DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            python scripts/update_health.py --component daily --status ok
+          else
+            python scripts/update_health.py --component daily --status degraded
+          fi
 
       - name: Commit données mises à jour
         run: |
