@@ -2019,22 +2019,32 @@
         "pressure": 998.0,
         "rain": 7.9,
         "timestamp": "2026-05-11 14:01:30"
+      },
+      "13:00": {
+        "temp": 13,
+        "hum": 79,
+        "wind": 3,
+        "gust": 3,
+        "wind_dir": 192,
+        "pressure": 997.0,
+        "rain": 8.4,
+        "timestamp": "2026-05-11 15:23:30"
       }
     },
     "daily": {
       "temp_min": 11,
-      "temp_max": 12,
-      "temp_sum": 35,
-      "temp_count": 3,
-      "rain_total": 7.87,
+      "temp_max": 13,
+      "temp_sum": 48,
+      "temp_count": 4,
+      "rain_total": 8.38,
       "wind_max": 4,
-      "pressure_sum": 2993.91,
-      "pressure_count": 3,
-      "humidity_sum": 286,
-      "humidity_count": 3,
-      "temp_avg": 11.7,
-      "pressure_avg": 998.0,
-      "humidity_avg": 95.0
+      "pressure_sum": 3990.8599999999997,
+      "pressure_count": 4,
+      "humidity_sum": 365,
+      "humidity_count": 4,
+      "temp_avg": 12.0,
+      "pressure_avg": 997.7,
+      "humidity_avg": 91.0
     }
   }
 }
