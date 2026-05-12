@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-12T09:42:24Z",
+  "generated_at": "2026-05-12T09:45:36Z",
   "components": {
     "hourly": {
-      "last_run": "2026-05-12T09:42:24Z",
+      "last_run": "2026-05-12T09:45:36Z",
       "status": "ok",
       "expected_interval_min": 15,
       "age_min": 0,
@@ -12,21 +12,21 @@
       "last_run": "2026-05-12T09:30:41Z",
       "status": "ok",
       "expected_interval_min": 30,
-      "age_min": 11,
+      "age_min": 14,
       "stale": false
     },
     "daily": {
       "last_run": "2026-05-12T09:00:56Z",
       "status": "ok",
       "expected_interval_min": 15,
-      "age_min": 41,
+      "age_min": 44,
       "stale": true
     },
     "predictions": {
       "last_run": "2026-05-12T09:15:55Z",
       "status": "ok",
       "expected_interval_min": 360,
-      "age_min": 26,
+      "age_min": 29,
       "stale": false
     }
   },
