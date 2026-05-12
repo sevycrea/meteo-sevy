@@ -1,32 +1,32 @@
 {
-  "generated_at": "2026-05-12T12:30:42Z",
+  "generated_at": "2026-05-12T12:45:33Z",
   "components": {
     "hourly": {
       "last_run": "2026-05-12T12:15:37Z",
       "status": "ok",
       "expected_interval_min": 15,
-      "age_min": 15,
+      "age_min": 29,
       "stale": false
     },
     "alerts": {
       "last_run": "2026-05-12T12:30:42Z",
       "status": "ok",
       "expected_interval_min": 30,
-      "age_min": 0,
+      "age_min": 14,
       "stale": false
     },
     "daily": {
-      "last_run": "2026-05-12T12:00:59Z",
+      "last_run": "2026-05-12T12:45:33Z",
       "status": "ok",
       "expected_interval_min": 15,
-      "age_min": 29,
+      "age_min": 0,
       "stale": false
     },
     "predictions": {
       "last_run": "2026-05-12T11:35:49Z",
       "status": "ok",
       "expected_interval_min": 360,
-      "age_min": 54,
+      "age_min": 69,
       "stale": false
     }
   },
