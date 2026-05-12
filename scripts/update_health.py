@@ -84,8 +84,47 @@ def log(msg):
         pass
 
 
+def _fetch_remote_health():
+    """Télécharge la version actuelle de health.json depuis data.sevy-creations.net.
+
+    CRITIQUE pour éviter une race condition : plusieurs workflows GitHub Actions
+    tournent en parallèle sur des runners différents. Si chacun part de SA copie
+    locale (qui date du clone git), ils s'écrasent mutuellement leurs updates.
+
+    En téléchargeant la version distante juste avant de modifier, on garantit
+    de partir de l'état le plus récent. Une petite fenêtre de race subsiste
+    (entre fetch et upload), mais elle est très réduite (~quelques centaines de ms).
+
+    Retourne le dict parsé, ou None si indisponible/erreur.
+    """
+    try:
+        import urllib.request
+        url = "https://data.sevy-creations.net/health.json?t=" + str(int(datetime.now().timestamp()))
+        req = urllib.request.Request(url, headers={'Cache-Control': 'no-cache'})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            if resp.status == 200:
+                return json.loads(resp.read().decode('utf-8'))
+    except Exception as e:
+        log(f"⚠️  Fetch health.json distant échoué (fallback local) : {e}")
+    return None
+
+
 def load_health():
-    """Charge health.json existant, retourne squelette si absent."""
+    """Charge health.json en partant de la version DISTANTE (FTP) si possible.
+
+    Ordre de priorité :
+      1. Version distante https://data.sevy-creations.net/health.json
+         → l'état "vraiment" partagé entre tous les workflows
+      2. Fichier local (si distant indisponible)
+      3. Squelette vide
+
+    Sans cette priorité au distant, plusieurs workflows en parallèle s'écrasent
+    mutuellement (race condition observée le 2026-05-12).
+    """
+    remote = _fetch_remote_health()
+    if remote and isinstance(remote, dict) and 'components' in remote:
+        return remote
+
     if os.path.exists(HEALTH_FILE):
         try:
             with open(HEALTH_FILE, 'r', encoding='utf-8') as f:
