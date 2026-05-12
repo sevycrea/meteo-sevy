@@ -1,8 +1,43 @@
 {
-  "generated_at": "2026-05-12T19:00:50.306789",
+  "generated_at": "2026-05-12T19:30:37.858894",
   "location": "Vinelz, Suisse",
   "total_alerts": 20,
   "alerts": [
+    {
+      "type": "rain_likely",
+      "severity": "warning",
+      "date": "2026-05-12",
+      "day_label": "Aujourd'hui",
+      "rain_probability": 85.0,
+      "message": "🌧️ Pluie quasi certaine · 85.0% Aujourd'hui",
+      "recommendation": "Prévoyez un parapluie.",
+      "detected_at": "2026-05-12T19:30:37.757007"
+    },
+    {
+      "type": "local_rain_realtime",
+      "severity": "info",
+      "window": "18:15–19:15",
+      "source": "realtime",
+      "message": "🌧️ Pluie en cours · 4.0 mm en 1h30",
+      "recommendation": "Précipitations actives.",
+      "metrics": {
+        "rain_cumul": 4.0
+      },
+      "detected_at": "2026-05-12T19:30:37.755594"
+    },
+    {
+      "type": "cold_front_realtime",
+      "severity": "warning",
+      "window": "18:15–19:15",
+      "source": "realtime",
+      "message": "❄️🌧️ Front froid détecté · chute de 3.0°C et hausse de 20% d'humidité en 1h30 (18:15–19:15)",
+      "recommendation": "Orage probable à proximité — vigilance.",
+      "metrics": {
+        "temp_drop": 3.0,
+        "humidity_jump": 20.0
+      },
+      "detected_at": "2026-05-12T19:30:37.753887"
+    },
     {
       "type": "rain_likely",
       "severity": "warning",
@@ -178,38 +213,6 @@
       "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
       "recommendation": "Prévoyez un parapluie.",
       "detected_at": "2026-05-11T21:05:48.246216"
-    },
-    {
-      "type": "local_rain_realtime",
-      "severity": "warning",
-      "window": "13:00–19:00",
-      "source": "hourly",
-      "message": "🌧️ Pluie soutenue · 30.4 mm cumulés en 3h",
-      "recommendation": "Précipitations actives — sols saturés possibles.",
-      "metrics": {
-        "rain_cumul": 30.4
-      },
-      "detected_at": "2026-05-11T21:05:48.243974"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "info",
-      "date": "2026-05-12",
-      "day_label": "Demain",
-      "rain_probability": 80.0,
-      "message": "🌧️ Pluie probable · 80.0% Demain",
-      "recommendation": "Pensez à votre parapluie.",
-      "detected_at": "2026-05-11T16:10:35.807020"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "warning",
-      "date": "2026-05-11",
-      "day_label": "Aujourd'hui",
-      "rain_probability": 92.0,
-      "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
-      "recommendation": "Prévoyez un parapluie.",
-      "detected_at": "2026-05-11T16:10:35.806497"
     }
   ],
   "status": "warning",
