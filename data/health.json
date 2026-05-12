@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-05-12T05:26:15Z",
+  "components": {
+    "hourly": {
+      "last_run": "2026-05-12T05:26:15Z",
+      "status": "ok",
+      "expected_interval_min": 15,
+      "age_min": 0,
+      "stale": false
+    }
+  },
+  "station": "IVINEL2",
+  "location": "Vinelz, Suisse",
+  "stale_components": [],
+  "overall_status": "ok"
+}
