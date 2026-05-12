@@ -5,10 +5,9 @@ on:
     - cron: '0 3 * * *'  # 3h00 UTC = 5h00 CEST chaque nuit
   workflow_dispatch:
 
-# Sérialise avec les autres workflows pour éviter les rejets de push.
 concurrency:
-  group: data-push
-  cancel-in-progress: false
+  group: training-ml
+  cancel-in-progress: false  # ML coûteux : on laisse finir l'ancien
 
 jobs:
   train:

@@ -7,11 +7,19 @@ on:
     - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
-# Sérialise tous les workflows qui poussent sur main pour éviter les
-# rejets de push concurrents (cause #1 des échecs précédents).
+# Concurrency par workflow (pas globale) : un groupe partagé saturait la queue
+# quand 4 workflows fréquents partageaient `data-push` → runs silencieusement
+# annulés par GitHub. On garde la sérialisation INTRA-workflow (un hourly
+# attend la fin du précédent hourly) mais plus de cross-blocking.
+#
+# cancel-in-progress: true → si un nouveau cycle arrive alors qu'un ancien
+# traîne, on annule l'ancien (les données météo sont périssables, mieux vaut
+# une mesure fraîche qu'une vieille en cours d'écriture).
+#
+# Le retry 10× + exit 0 sur push échec couvre les conflits git inter-workflow.
 concurrency:
-  group: data-push
-  cancel-in-progress: false
+  group: collect-hourly
+  cancel-in-progress: true
 
 jobs:
   collect:

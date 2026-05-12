@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: data-push
-  cancel-in-progress: false
+  group: collect-daily
+  cancel-in-progress: true
 
 jobs:
   collect:

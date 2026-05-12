@@ -14,8 +14,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: data-push
-  cancel-in-progress: false
+  group: predictions
+  cancel-in-progress: false  # ML coûteux : on laisse finir l'ancien
 
 jobs:
   predict:
