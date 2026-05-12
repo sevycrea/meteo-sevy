@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T06:51:16Z",
+  "generated_at": "2026-05-12T06:52:07Z",
   "components": {
     "hourly": {
       "last_run": "2026-05-12T06:11:08Z",
@@ -12,11 +12,11 @@
       "last_run": "2026-05-12T05:26:56Z",
       "status": "ok",
       "expected_interval_min": 30,
-      "age_min": 84,
+      "age_min": 85,
       "stale": true
     },
     "daily": {
-      "last_run": "2026-05-12T06:51:16Z",
+      "last_run": "2026-05-12T06:52:07Z",
       "status": "ok",
       "expected_interval_min": 15,
       "age_min": 0,
