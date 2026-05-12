@@ -2190,29 +2190,29 @@
         "timestamp": "2026-05-12 17:45:18"
       },
       "16:00": {
-        "temp": 13.0,
-        "hum": 40.0,
-        "wind": 4.0,
-        "gust": 4.0,
-        "wind_dir": 282,
+        "temp": 14.0,
+        "hum": 37.0,
+        "wind": 0.0,
+        "gust": 0.0,
+        "wind_dir": 288,
         "pressure": 1004.1,
         "rain": 0.8,
-        "timestamp": "2026-05-12 18:30:42"
+        "timestamp": "2026-05-12 18:37:19"
       }
     },
     "daily": {
       "temp_min": 6.0,
       "temp_max": 15.0,
-      "temp_sum": 291.0,
-      "temp_count": 24,
-      "temp_avg": 12.1,
+      "temp_sum": 305.0,
+      "temp_count": 25,
+      "temp_avg": 12.2,
       "rain_total": 0.76,
       "wind_max": 11.0,
-      "pressure_sum": 24121.92000000001,
-      "pressure_count": 24,
-      "pressure_avg": 1005.1,
-      "humidity_sum": 1205.0,
-      "humidity_count": 24,
+      "pressure_sum": 25125.98000000001,
+      "pressure_count": 25,
+      "pressure_avg": 1005.0,
+      "humidity_sum": 1242.0,
+      "humidity_count": 25,
       "humidity_avg": 50.0
     }
   }
