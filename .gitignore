@@ -20,3 +20,7 @@ LaunchAgents/
 
 # Large or sensitive local files
 web/
+
+# health.json géré hors-git pour éviter les conflits de push parallèle
+data/health.json
+/tmp/meteo_sevy_health.json

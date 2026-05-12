@@ -59,7 +59,11 @@ from io_helpers import atomic_write_json
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HEALTH_FILE = os.path.join(BASE_DIR, "data", "health.json")
+# health.json est intentionnellement HORS du repo git : sinon plusieurs
+# workflows en parallèle génèrent des conflits de merge git non résolus
+# (rebase plante, push échoue silencieusement). Le fichier vit sur le FTP
+# comme seule source de vérité ; on l'écrit dans /tmp côté runner.
+HEALTH_FILE = "/tmp/meteo_sevy_health.json"
 LOG_FILE = os.path.join(BASE_DIR, "logs", "health.log")
 
 EXPECTED_INTERVALS_MIN = {
