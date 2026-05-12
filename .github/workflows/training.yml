@@ -2,12 +2,19 @@ name: Entraînement modèle ML
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # 3h00 chaque nuit
+    - cron: '0 3 * * *'  # 3h00 UTC = 5h00 CEST chaque nuit
   workflow_dispatch:
+
+# Sérialise avec les autres workflows pour éviter les rejets de push.
+concurrency:
+  group: data-push
+  cancel-in-progress: false
 
 jobs:
   train:
     runs-on: ubuntu-latest
+    # L'entraînement ML peut prendre 3-5 min. On laisse 30 min de marge.
+    timeout-minutes: 30
     permissions:
       contents: write
 
@@ -41,5 +48,29 @@ jobs:
           git config user.name "Meteo Bot"
           git config user.email "bot@meteo-sevy.ch"
           git add data/models/
-          git diff --staged --quiet || git commit -m "🧠 Modèle ML réentraîné $(date -u +'%Y-%m-%d')"
-          git push
+          if git diff --staged --quiet; then
+            echo "Aucun changement au modèle"
+            exit 0
+          fi
+          git commit -m "🧠 Modèle ML réentraîné $(date -u +'%Y-%m-%d')"
+          # Même boucle retry que les autres workflows : 10 tentatives avec
+          # backoff, exit 0 même si push échoue (modèle déjà sauvegardé localement).
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            git pull --rebase --autostash origin main || true
+            if git push origin main; then
+              echo "Push OK (tentative $i)"
+              exit 0
+            fi
+            case $i in
+              1|2|3|4|5) delay=$((i * 3)) ;;
+              6) delay=20 ;;
+              7) delay=25 ;;
+              8) delay=30 ;;
+              9) delay=45 ;;
+              10) delay=60 ;;
+            esac
+            echo "Push rejeté (tentative $i), nouvelle tentative dans ${delay}s"
+            sleep $delay
+          done
+          echo "Push impossible après 10 tentatives — modèle conservé en cache GA"
+          exit 0
