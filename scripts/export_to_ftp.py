@@ -13,6 +13,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ftp_helpers import upload_data, upload_legacy
+from io_helpers import atomic_write_json
 
 # ============================================
 # CONFIGURATION
@@ -106,10 +107,9 @@ def generate_web_json(alerts):
     return web_data
 
 def save_json(data):
-    """Sauvegarder le JSON"""
+    """Sauvegarder le JSON localement (atomique)."""
     try:
-        with open(EXPORT_JSON, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+        atomic_write_json(EXPORT_JSON, data)
         log(f"✅ JSON généré: {EXPORT_JSON}")
         return True
     except Exception as e:

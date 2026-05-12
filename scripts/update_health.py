@@ -55,6 +55,7 @@ from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ftp_helpers import upload_legacy, upload_data
+from io_helpers import atomic_write_json
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -174,12 +175,8 @@ def update(component, status="ok", extra=None):
     # un état cohérent et à jour, même si un autre composant n'a pas tourné.
     _compute_overall(health)
 
-    # Écriture atomique locale (write -> rename)
-    os.makedirs(os.path.dirname(HEALTH_FILE), exist_ok=True)
-    tmp = HEALTH_FILE + ".tmp"
-    with open(tmp, 'w', encoding='utf-8') as f:
-        json.dump(health, f, ensure_ascii=False, indent=2)
-    os.replace(tmp, HEALTH_FILE)
+    # Écriture atomique via le helper centralisé
+    atomic_write_json(HEALTH_FILE, health)
     log(f"✅ health.json mis à jour ({component} → {status}, overall={health['overall_status']})")
     if health.get("stale_components"):
         log(f"⚠️  Composants en retard : {health['stale_components']}")

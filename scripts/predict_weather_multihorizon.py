@@ -14,6 +14,7 @@ import joblib
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ftp_helpers import upload_data
+from io_helpers import atomic_write_json
 
 # ============================================
 # CONFIGURATION
@@ -379,9 +380,7 @@ def generate_predictions(model_temp, model_rain, metrics, data):
         }
     }
     
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-        json.dump(predictions, f, ensure_ascii=False, indent=2)
-    
+    atomic_write_json(OUTPUT_FILE, predictions)
     log(f"\n✅ Prévisions sauvegardées: {OUTPUT_FILE}")
     
     return predictions

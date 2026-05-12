@@ -18,8 +18,12 @@ le ticker du site via export_to_ftp.py → alerts.json.
 
 import json
 import os
+import sys
 import subprocess
 from datetime import datetime, timedelta
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from io_helpers import atomic_write_json
 
 # ============================================
 # CONFIGURATION
@@ -159,11 +163,8 @@ def save_alert(alert):
     history.append(alert)
     history = history[-200:]
 
-    # Écriture atomique : tmp + os.replace
-    tmp_path = ALERTS_HISTORY + ".tmp"
-    with open(tmp_path, 'w', encoding='utf-8') as f:
-        json.dump(history, f, indent=2, ensure_ascii=False)
-    os.replace(tmp_path, ALERTS_HISTORY)
+    # Écriture atomique via le helper centralisé (.tmp + fsync + os.replace)
+    atomic_write_json(ALERTS_HISTORY, history)
 
 def vinelz_today():
     """Date du jour à Vinelz (Europe/Zurich approx via heure locale)."""

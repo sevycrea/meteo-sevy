@@ -20,6 +20,7 @@ from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ftp_helpers import upload_data
 from http_helpers import get_json_with_retry
+from io_helpers import atomic_write_json
 
 # ============================================
 # CONFIGURATION (chemins relatifs au repo)
@@ -219,8 +220,7 @@ def save_nwp(forecasts):
         'longitude':  LON,
         'forecasts':  forecasts,
     }
-    with open(NWP_FILE, 'w', encoding='utf-8') as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
+    atomic_write_json(NWP_FILE, output)
     log(f"✅ nwp_forecast.json sauvegardé ({len(forecasts)} jours)")
 
 def update_history(forecasts):
@@ -241,8 +241,7 @@ def update_history(forecasts):
         for k in oldest:
             del history[k]
 
-    with open(NWP_HIST_FILE, 'w', encoding='utf-8') as f:
-        json.dump(history, f, ensure_ascii=False, indent=2)
+    atomic_write_json(NWP_HIST_FILE, history)
     log(f"✅ nwp_history.json mis à jour ({len(history)} entrées)")
 
 # ============================================

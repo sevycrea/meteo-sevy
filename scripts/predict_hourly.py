@@ -15,6 +15,7 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ftp_helpers import upload_data
+from io_helpers import atomic_write_json
 
 # ============================================
 # CONFIGURATION (chemins relatifs au repo)
@@ -229,8 +230,7 @@ def save(days_output):
         'slot_hours':   SLOT_SIZE,
         'days':         days_output,
     }
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
+    atomic_write_json(OUTPUT_FILE, output)
     log(f"✅ predictions_hourly.json sauvegardé ({len(days_output)} jours)")
 
 def upload():

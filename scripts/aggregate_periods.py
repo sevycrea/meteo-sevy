@@ -7,9 +7,13 @@ Enrichit meteo_data.json avec les moyennes par période
 
 import json
 import os
+import sys
 from datetime import datetime, timedelta
 from collections import defaultdict
 import numpy as np
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from io_helpers import atomic_write_json
 
 # ============================================
 # CONFIGURATION
@@ -251,10 +255,9 @@ def enrich_daily_data(daily_data, periods_data):
     return enriched, days_enriched
 
 def save_enriched_data(data):
-    """Sauvegarder les données enrichies"""
+    """Sauvegarder les données enrichies (atomique)."""
     try:
-        with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2, sort_keys=True)
+        atomic_write_json(OUTPUT_FILE, data, sort_keys=True)
         log(f"✅ Données enrichies sauvegardées: {OUTPUT_FILE}")
         return True
     except Exception as e:

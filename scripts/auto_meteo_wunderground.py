@@ -16,6 +16,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ftp_helpers import upload_data
 from http_helpers import get_json_with_retry
+from io_helpers import atomic_write_json
 
 # ══════════════════════════════════════════════════════════════
 # CONFIGURATION
@@ -343,11 +344,9 @@ def correct_rain_from_hourly(merged_data):
 
 
 def save_json(data):
-    """Sauvegarde le JSON localement"""
+    """Sauvegarde le JSON localement, écriture atomique (.tmp + os.replace)."""
     try:
-        with open(JSON_OUTPUT, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2, sort_keys=True)
-        
+        atomic_write_json(JSON_OUTPUT, data, sort_keys=True)
         size_kb = os.path.getsize(JSON_OUTPUT) / 1024
         log(f"💾 JSON sauvegardé : {size_kb:.1f} Ko")
         return True

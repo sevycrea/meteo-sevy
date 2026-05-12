@@ -17,6 +17,7 @@ import ftplib
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ftp_helpers import upload_data
 from http_helpers import get_json_with_retry
+from io_helpers import atomic_write_json
 
 # ============================================
 # CONFIGURATION
@@ -241,12 +242,12 @@ def cleanup_old_data(all_data, keep_days=90):
     return all_data
 
 def save_json(data):
-    """Sauvegarder le JSON"""
-    os.makedirs(os.path.dirname(JSON_FILE), exist_ok=True)
+    """Sauvegarder le JSON de façon atomique (.tmp + os.replace).
 
-    with open(JSON_FILE, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
+    Évite qu'un crash mid-write laisse un fichier tronqué qui empoisonne
+    les runs suivants (load_existing_data() lirait du JSON corrompu).
+    """
+    atomic_write_json(JSON_FILE, data)
     log(f"✅ JSON sauvegardé: {JSON_FILE}")
 
 def update_realtime_data(current_data):
@@ -305,8 +306,9 @@ def update_realtime_data(current_data):
     keys_to_keep = [k for k in realtime.keys() if k >= cutoff_key]
     trimmed = {k: realtime[k] for k in sorted(keys_to_keep)}
 
-    with open(REALTIME_FILE, 'w', encoding='utf-8') as f:
-        json.dump(trimmed, f, ensure_ascii=False, indent=2)
+    # Écriture atomique pour éviter qu'un crash laisse le fichier tronqué
+    # (detect_events.py le lit comme fenêtre glissante 24h).
+    atomic_write_json(REALTIME_FILE, trimmed)
     log(f"✅ Realtime mis à jour : {len(trimmed)} points sur {REALTIME_RETENTION_HOURS}h ({key})")
 
 def backup_json():
