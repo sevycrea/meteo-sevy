@@ -392,5 +392,15 @@
     "message": "🌧️ Pluie probable · 80.0% Demain",
     "recommendation": "Pensez à votre parapluie.",
     "detected_at": "2026-05-12T07:08:14.607585"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "info",
+    "date": "2026-05-12",
+    "day_label": "Aujourd'hui",
+    "rain_probability": 75.0,
+    "message": "🌧️ Pluie probable · 75.0% Aujourd'hui",
+    "recommendation": "Pensez à votre parapluie.",
+    "detected_at": "2026-05-12T09:30:36.534306"
   }
 ]
