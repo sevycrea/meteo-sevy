@@ -1,8 +1,30 @@
 {
-  "generated_at": "2026-05-12T22:00:55.321412",
+  "generated_at": "2026-05-12T22:30:36.829777",
   "location": "Vinelz, Suisse",
   "total_alerts": 20,
   "alerts": [
+    {
+      "type": "rain_likely",
+      "severity": "warning",
+      "date": "2026-05-12",
+      "day_label": "Aujourd'hui",
+      "rain_probability": 85.0,
+      "message": "🌧️ Pluie quasi certaine · 85.0% Aujourd'hui",
+      "recommendation": "Prévoyez un parapluie.",
+      "detected_at": "2026-05-12T22:30:36.752413"
+    },
+    {
+      "type": "local_rain_realtime",
+      "severity": "info",
+      "window": "21:15–22:15",
+      "source": "realtime",
+      "message": "🌧️ Pluie en cours · 3.2 mm en 1h30",
+      "recommendation": "Précipitations actives.",
+      "metrics": {
+        "rain_cumul": 3.2
+      },
+      "detected_at": "2026-05-12T22:30:36.750615"
+    },
     {
       "type": "rain_likely",
       "severity": "warning",
@@ -195,26 +217,6 @@
       "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
       "recommendation": "Prévoyez un parapluie.",
       "detected_at": "2026-05-12T05:26:52.126894"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "info",
-      "date": "2026-05-12",
-      "day_label": "Demain",
-      "rain_probability": 80.0,
-      "message": "🌧️ Pluie probable · 80.0% Demain",
-      "recommendation": "Pensez à votre parapluie.",
-      "detected_at": "2026-05-12T00:15:25.286283"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "warning",
-      "date": "2026-05-11",
-      "day_label": "Aujourd'hui",
-      "rain_probability": 92.0,
-      "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
-      "recommendation": "Prévoyez un parapluie.",
-      "detected_at": "2026-05-12T00:15:25.285719"
     }
   ],
   "status": "warning",
