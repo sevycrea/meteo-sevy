@@ -277,8 +277,12 @@ def main():
 
     raw = fetch_nwp()
     if not raw:
-        log("❌ Impossible de récupérer les données NWP")
-        return
+        log("❌ Impossible de récupérer les données NWP — abandon (exit 1)")
+        # CRITIQUE : sys.exit(1) plutôt que return silencieux. Sinon GitHub Actions
+        # voit ✅ success et les steps suivants (predict_weather_multihorizon,
+        # predict_hourly) tournent avec le VIEUX nwp_forecast.json sans signal.
+        # Mieux vaut un workflow rouge qu'une prévision basée sur un NWP périmé.
+        sys.exit(1)
 
     forecasts = parse_nwp(raw)
 

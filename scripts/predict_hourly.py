@@ -264,8 +264,11 @@ def main():
     ml_preds = load_ml_predictions()
 
     if not nwp:
-        log("❌ Données NWP manquantes — abandon")
-        return
+        log("❌ Données NWP manquantes — abandon (exit 1)")
+        # exit 1 plutôt que return : sinon le workflow voit success et le user
+        # croit que les prévisions horaires sont à jour alors qu'elles ne sont
+        # pas mises à jour (ou pire, basées sur un NWP périmé en cache).
+        sys.exit(1)
 
     log("")
     log("📅 Génération des créneaux :")

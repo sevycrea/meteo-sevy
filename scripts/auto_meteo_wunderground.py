@@ -103,12 +103,45 @@ def fetch_wunderground_data(date=None):
 # TRAITEMENT DES DONNÉES
 # ══════════════════════════════════════════════════════════════
 
+# Bornes physiques plausibles pour Vinelz (Suisse). Toute valeur hors bornes
+# est traitée comme None pour ne pas polluer les agrégats journaliers
+# avec des sentinels API (-999) ou des valeurs NaN/inf.
+DAILY_PHYSICAL_BOUNDS = {
+    'temp':     (-40.0, 50.0),    # °C
+    'humidity': (0.0,   100.0),   # %
+    'wind':     (0.0,   200.0),   # km/h
+    'gust':     (0.0,   250.0),   # km/h
+    'pressure': (900.0, 1100.0),  # hPa
+    'precip':   (0.0,   500.0),   # mm/jour
+}
+
+def _validate_physical(value, field):
+    """Convertit en float, rejette NaN/inf/sentinels hors bornes."""
+    if value is None:
+        return None
+    import math
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(v):
+        return None
+    lo, hi = DAILY_PHYSICAL_BOUNDS.get(field, (float('-inf'), float('inf')))
+    if v < lo or v > hi:
+        return None
+    return v
+
+
 def process_observations(observations):
     """
-    Traite les observations et les agrège par jour
+    Traite les observations et les agrège par jour.
+
+    Toutes les valeurs passent par _validate_physical() qui rejette les
+    sentinels (-999) et autres valeurs hors bornes physiques.
+    Cohérent avec auto_meteo_wunderground_hourly.py.
     """
     log("🔢 Traitement des observations...")
-    
+
     daily_data = {}
     
     for obs in observations:
@@ -125,25 +158,24 @@ def process_observations(observations):
             metric = obs.get('metric', {})
             
             # L'API retourne tempHigh, tempLow, tempAvg au lieu de temp
-            temp_high = metric.get('tempHigh')
-            temp_low = metric.get('tempLow')
-            temp_avg = metric.get('tempAvg')
-            
+            # Toutes les valeurs validées contre les bornes physiques.
+            temp_high = _validate_physical(metric.get('tempHigh'), 'temp')
+            temp_low  = _validate_physical(metric.get('tempLow'),  'temp')
+            temp_avg  = _validate_physical(metric.get('tempAvg'),  'temp')
+
             # Humidité est au niveau racine, pas dans metric
-            humidity_high = obs.get('humidityHigh')
-            humidity_low = obs.get('humidityLow')
-            humidity_avg = obs.get('humidityAvg')
-            
+            humidity_avg = _validate_physical(obs.get('humidityAvg'), 'humidity')
+
             # Vent
-            wind_speed_avg = metric.get('windspeedAvg')
-            wind_gust_high = metric.get('windgustHigh')
-            
-            # Pluie
-            precip_total = metric.get('precipTotal', 0)
-            
+            wind_speed_avg = _validate_physical(metric.get('windspeedAvg'), 'wind')
+            wind_gust_high = _validate_physical(metric.get('windgustHigh'), 'gust')
+
+            # Pluie (precipTotal est cumulatif jour)
+            precip_total = _validate_physical(metric.get('precipTotal'), 'precip')
+
             # Pression
-            pressure_max = metric.get('pressureMax')
-            
+            pressure_max = _validate_physical(metric.get('pressureMax'), 'pressure')
+
             # Initialiser le jour si nécessaire
             if date_key not in daily_data:
                 daily_data[date_key] = {
@@ -156,26 +188,24 @@ def process_observations(observations):
                     'precip_total': 0,
                     'pressures': []
                 }
-            
-            # Ajouter les valeurs
+
+            # Ajouter les valeurs (toutes None si hors bornes)
             if temp_high is not None:
-                daily_data[date_key]['temp_highs'].append(float(temp_high))
+                daily_data[date_key]['temp_highs'].append(temp_high)
             if temp_low is not None:
-                daily_data[date_key]['temp_lows'].append(float(temp_low))
+                daily_data[date_key]['temp_lows'].append(temp_low)
             if temp_avg is not None:
-                daily_data[date_key]['temp_avgs'].append(float(temp_avg))
+                daily_data[date_key]['temp_avgs'].append(temp_avg)
             if humidity_avg is not None:
-                daily_data[date_key]['humidity_avgs'].append(float(humidity_avg))
+                daily_data[date_key]['humidity_avgs'].append(humidity_avg)
             if wind_speed_avg is not None:
-                daily_data[date_key]['wind_speeds'].append(float(wind_speed_avg))
+                daily_data[date_key]['wind_speeds'].append(wind_speed_avg)
             if wind_gust_high is not None:
-                daily_data[date_key]['wind_gusts'].append(float(wind_gust_high))
-            if precip_total is not None:
-                current_precip = float(precip_total)
-                if current_precip > daily_data[date_key]['precip_total']:
-                    daily_data[date_key]['precip_total'] = current_precip
+                daily_data[date_key]['wind_gusts'].append(wind_gust_high)
+            if precip_total is not None and precip_total > daily_data[date_key]['precip_total']:
+                daily_data[date_key]['precip_total'] = precip_total
             if pressure_max is not None:
-                daily_data[date_key]['pressures'].append(float(pressure_max))
+                daily_data[date_key]['pressures'].append(pressure_max)
                 
         except Exception as e:
             log(f"   ⚠️  Erreur traitement observation : {e}")
