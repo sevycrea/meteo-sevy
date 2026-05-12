@@ -4480,19 +4480,19 @@
     "wind_min": 0.0
   },
   "2026-05-12": {
-    "gust_max": 12.6,
-    "hum_avg": 78.1,
+    "gust_max": 13.7,
+    "hum_avg": 75.6,
     "hum_max": 91.8,
-    "hum_min": 52.4,
-    "pressure_avg": 1004.4,
+    "hum_min": 47.4,
+    "pressure_avg": 1004.6,
     "pressure_max": 1006.1,
     "pressure_min": 1002.0,
     "rain": 0.8,
-    "temp_avg": 7.5,
-    "temp_max": 11.7,
+    "temp_avg": 8.0,
+    "temp_max": 13.3,
     "temp_min": 5.8,
-    "wind_avg": 2.5,
-    "wind_max": 5.7,
+    "wind_avg": 2.7,
+    "wind_max": 5.8,
     "wind_min": 0.0
   }
 }
