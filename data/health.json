@@ -1,32 +1,30 @@
 {
-  "generated_at": "2026-05-12T07:04:32Z",
+  "generated_at": "2026-05-12T07:08:18Z",
   "components": {
     "hourly": {
       "last_run": "2026-05-12T07:04:32Z",
       "status": "ok",
       "expected_interval_min": 15,
-      "age_min": 0,
+      "age_min": 3,
       "stale": false
     },
     "alerts": {
-      "last_run": "2026-05-12T05:26:56Z",
+      "last_run": "2026-05-12T07:08:18Z",
       "status": "ok",
       "expected_interval_min": 30,
-      "age_min": 97,
-      "stale": true
+      "age_min": 0,
+      "stale": false
     },
     "daily": {
       "last_run": "2026-05-12T07:01:07Z",
       "status": "ok",
       "expected_interval_min": 15,
-      "age_min": 3,
+      "age_min": 7,
       "stale": false
     }
   },
   "station": "IVINEL2",
   "location": "Vinelz, Suisse",
-  "stale_components": [
-    "alerts"
-  ],
-  "overall_status": "stale"
+  "stale_components": [],
+  "overall_status": "ok"
 }
