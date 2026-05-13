@@ -1,9 +1,9 @@
 {
-  "temp_mae": 0.48689691397163826,
-  "rain_accuracy": 0.996316758747698,
-  "n_samples": 543,
+  "temp_mae": 0.48546796557748206,
+  "rain_accuracy": 0.9945054945054945,
+  "n_samples": 546,
   "n_features": 275,
-  "trained_at": "2026-05-12T11:26:41.686809",
+  "trained_at": "2026-05-13T07:27:46.982407",
   "horizons": [
     0,
     1,
