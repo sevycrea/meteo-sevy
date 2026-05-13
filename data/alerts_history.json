@@ -600,5 +600,17 @@
       "humidity_jump": 31.0
     },
     "detected_at": "2026-05-13T20:00:48.904196"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "info",
+    "window": "20:15–21:15",
+    "source": "realtime",
+    "message": "🌧️ Pluie en cours · 4.8 mm en 1h30",
+    "recommendation": "Précipitations actives.",
+    "metrics": {
+      "rain_cumul": 4.8
+    },
+    "detected_at": "2026-05-13T21:30:42.101403"
   }
 ]
