@@ -2401,28 +2401,28 @@
       "11:00": {
         "temp": 15.0,
         "hum": 40.0,
-        "wind": 4.0,
-        "gust": 4.0,
-        "wind_dir": 158,
+        "wind": 7.0,
+        "gust": 8.0,
+        "wind_dir": 204,
         "pressure": 999.0,
         "rain": 0.0,
-        "timestamp": "2026-05-13 13:30:42"
+        "timestamp": "2026-05-13 13:45:18"
       }
     },
     "daily": {
       "temp_min": 4.0,
       "temp_max": 15.0,
-      "temp_sum": 418.0,
-      "temp_count": 48,
-      "temp_avg": 8.7,
+      "temp_sum": 433.0,
+      "temp_count": 49,
+      "temp_avg": 8.8,
       "rain_total": 0.0,
       "wind_max": 8.0,
-      "pressure_sum": 48055.95999999997,
-      "pressure_count": 48,
-      "pressure_avg": 1001.2,
-      "humidity_sum": 3407.0,
-      "humidity_count": 48,
-      "humidity_avg": 71.0
+      "pressure_sum": 49054.93999999997,
+      "pressure_count": 49,
+      "pressure_avg": 1001.1,
+      "humidity_sum": 3447.0,
+      "humidity_count": 49,
+      "humidity_avg": 70.0
     }
   }
 }
