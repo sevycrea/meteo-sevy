@@ -2290,29 +2290,29 @@
     "hourly": {
       "00:00": {
         "temp": 7.0,
-        "hum": 80.0,
+        "hum": 81.0,
         "wind": 0.0,
         "gust": 0.0,
         "wind_dir": 48,
         "pressure": 1002.0,
         "rain": 0.0,
-        "timestamp": "2026-05-13 02:15:18"
+        "timestamp": "2026-05-13 02:30:30"
       }
     },
     "daily": {
       "temp_min": 7.0,
       "temp_max": 7.0,
-      "temp_sum": 14.0,
-      "temp_count": 2,
+      "temp_sum": 21.0,
+      "temp_count": 3,
       "temp_avg": 7.0,
       "rain_total": 0.0,
       "wind_max": 0.0,
-      "pressure_sum": 2004.06,
-      "pressure_count": 2,
+      "pressure_sum": 3006.09,
+      "pressure_count": 3,
       "pressure_avg": 1002.0,
-      "humidity_sum": 157.0,
-      "humidity_count": 2,
-      "humidity_avg": 78.0
+      "humidity_sum": 238.0,
+      "humidity_count": 3,
+      "humidity_avg": 79.0
     }
   }
 }
