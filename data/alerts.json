@@ -1,8 +1,21 @@
 {
-  "generated_at": "2026-05-13T19:30:42.475730",
+  "generated_at": "2026-05-13T20:00:49.075913",
   "location": "Vinelz, Suisse",
   "total_alerts": 20,
   "alerts": [
+    {
+      "type": "cold_front_realtime",
+      "severity": "warning",
+      "window": "18:45–19:45",
+      "source": "realtime",
+      "message": "❄️🌧️ Front froid détecté · chute de 3.0°C et hausse de 31% d'humidité en 1h30 (18:45–19:45)",
+      "recommendation": "Orage probable à proximité — vigilance.",
+      "metrics": {
+        "temp_drop": 3.0,
+        "humidity_jump": 31.0
+      },
+      "detected_at": "2026-05-13T20:00:48.904196"
+    },
     {
       "type": "rain_likely",
       "severity": "warning",
@@ -207,16 +220,6 @@
       "message": "🌧️ Pluie probable · 80.0% Demain",
       "recommendation": "Pensez à votre parapluie.",
       "detected_at": "2026-05-12T07:08:14.607585"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "warning",
-      "date": "2026-05-11",
-      "day_label": "Aujourd'hui",
-      "rain_probability": 92.0,
-      "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
-      "recommendation": "Prévoyez un parapluie.",
-      "detected_at": "2026-05-12T07:08:14.606024"
     }
   ],
   "status": "warning",
