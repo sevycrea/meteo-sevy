@@ -4513,17 +4513,17 @@
   },
   "2026-05-14": {
     "gust_max": 10.0,
-    "hum_avg": 88.0,
+    "hum_avg": 88.2,
     "hum_max": 89.3,
     "hum_min": 86.9,
     "pressure_avg": 991.9,
     "pressure_max": 991.9,
     "pressure_min": 991.9,
     "rain": 5.6,
-    "temp_avg": 6.6,
+    "temp_avg": 6.5,
     "temp_max": 6.8,
     "temp_min": 6.3,
-    "wind_avg": 3.2,
+    "wind_avg": 3.1,
     "wind_max": 4.8,
     "wind_min": 1.9
   }
