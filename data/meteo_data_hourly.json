@@ -2544,5 +2544,34 @@
       "humidity_count": 99,
       "humidity_avg": 67.0
     }
+  },
+  "2026-05-14": {
+    "hourly": {
+      "00:00": {
+        "temp": 8.0,
+        "hum": 95.0,
+        "wind": 4.0,
+        "gust": 4.0,
+        "wind_dir": 150,
+        "pressure": 997.0,
+        "rain": 1.0,
+        "timestamp": "2026-05-14 02:00:42"
+      }
+    },
+    "daily": {
+      "temp_min": 8.0,
+      "temp_max": 8.0,
+      "temp_sum": 8.0,
+      "temp_count": 1,
+      "temp_avg": 8.0,
+      "rain_total": 1.02,
+      "wind_max": 4.0,
+      "pressure_sum": 996.95,
+      "pressure_count": 1,
+      "pressure_avg": 997.0,
+      "humidity_sum": 95.0,
+      "humidity_count": 1,
+      "humidity_avg": 95.0
+    }
   }
 }
