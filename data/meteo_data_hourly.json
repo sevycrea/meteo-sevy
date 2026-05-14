@@ -2760,27 +2760,27 @@
       "21:00": {
         "temp": 7.0,
         "hum": 90.0,
-        "wind": 4.0,
-        "gust": 4.0,
-        "wind_dir": 48,
+        "wind": 7.0,
+        "gust": 7.0,
+        "wind_dir": 108,
         "pressure": 991.9,
         "rain": 5.6,
-        "timestamp": "2026-05-14 23:15:18"
+        "timestamp": "2026-05-14 23:30:30"
       }
     },
     "daily": {
       "temp_min": 6.0,
       "temp_max": 12.0,
-      "temp_sum": 741.0,
-      "temp_count": 88,
+      "temp_sum": 748.0,
+      "temp_count": 89,
       "temp_avg": 8.4,
       "rain_total": 5.59,
       "wind_max": 11.0,
-      "pressure_sum": 87393.63000000003,
-      "pressure_count": 88,
+      "pressure_sum": 88385.50000000003,
+      "pressure_count": 89,
       "pressure_avg": 993.1,
-      "humidity_sum": 7394.0,
-      "humidity_count": 88,
+      "humidity_sum": 7484.0,
+      "humidity_count": 89,
       "humidity_avg": 84.0
     }
   }
