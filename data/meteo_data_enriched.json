@@ -4520,11 +4520,11 @@
     "pressure_max": 991.9,
     "pressure_min": 991.9,
     "rain": 5.6,
-    "temp_avg": 6.7,
+    "temp_avg": 6.6,
     "temp_max": 6.8,
-    "temp_min": 6.6,
-    "wind_avg": 3.7,
+    "temp_min": 6.4,
+    "wind_avg": 3.3,
     "wind_max": 4.8,
-    "wind_min": 3.1
+    "wind_min": 1.9
   }
 }
