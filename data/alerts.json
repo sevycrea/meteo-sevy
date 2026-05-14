@@ -1,8 +1,30 @@
 {
-  "generated_at": "2026-05-14T11:00:49.440037",
+  "generated_at": "2026-05-14T11:30:42.124607",
   "location": "Vinelz, Suisse",
   "total_alerts": 20,
   "alerts": [
+    {
+      "type": "rain_likely",
+      "severity": "warning",
+      "date": "2026-05-14",
+      "day_label": "Aujourd'hui",
+      "rain_probability": 88.0,
+      "message": "🌧️ Pluie quasi certaine · 88.0% Aujourd'hui",
+      "recommendation": "Prévoyez un parapluie.",
+      "detected_at": "2026-05-14T11:30:42.038325"
+    },
+    {
+      "type": "local_rain_realtime",
+      "severity": "warning",
+      "window": "10:15–11:15",
+      "source": "realtime",
+      "message": "🌧️ Pluie soutenue · 19.0 mm cumulés en 1h30",
+      "recommendation": "Précipitations actives — sols saturés possibles.",
+      "metrics": {
+        "rain_cumul": 19.0
+      },
+      "detected_at": "2026-05-14T11:30:42.036482"
+    },
     {
       "type": "rain_likely",
       "severity": "warning",
@@ -202,33 +224,8 @@
         "rain_cumul": 6.4
       },
       "detected_at": "2026-05-13T23:00:51.277513"
-    },
-    {
-      "type": "local_rain_realtime",
-      "severity": "info",
-      "window": "20:15–21:15",
-      "source": "realtime",
-      "message": "🌧️ Pluie en cours · 4.8 mm en 1h30",
-      "recommendation": "Précipitations actives.",
-      "metrics": {
-        "rain_cumul": 4.8
-      },
-      "detected_at": "2026-05-13T21:30:42.101403"
-    },
-    {
-      "type": "cold_front_realtime",
-      "severity": "warning",
-      "window": "18:45–19:45",
-      "source": "realtime",
-      "message": "❄️🌧️ Front froid détecté · chute de 3.0°C et hausse de 31% d'humidité en 1h30 (18:45–19:45)",
-      "recommendation": "Orage probable à proximité — vigilance.",
-      "metrics": {
-        "temp_drop": 3.0,
-        "humidity_jump": 31.0
-      },
-      "detected_at": "2026-05-13T20:00:48.904196"
     }
   ],
   "status": "warning",
-  "message": "16 avertissement(s) en cours"
+  "message": "17 avertissement(s) en cours"
 }
