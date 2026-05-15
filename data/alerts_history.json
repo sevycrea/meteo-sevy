@@ -1126,5 +1126,27 @@
       "rain_cumul": 16.8
     },
     "detected_at": "2026-05-15T11:00:49.554891"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "warning",
+    "window": "10:45–11:45",
+    "source": "realtime",
+    "message": "🌧️ Pluie soutenue · 14.0 mm cumulés en 1h30",
+    "recommendation": "Précipitations actives — sols saturés possibles.",
+    "metrics": {
+      "rain_cumul": 14.0
+    },
+    "detected_at": "2026-05-15T12:00:50.035344"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "warning",
+    "date": "2026-05-15",
+    "day_label": "Aujourd'hui",
+    "rain_probability": 89.0,
+    "message": "🌧️ Pluie quasi certaine · 89.0% Aujourd'hui",
+    "recommendation": "Prévoyez un parapluie.",
+    "detected_at": "2026-05-15T12:00:50.037648"
   }
 ]
