@@ -4535,12 +4535,12 @@
     "pressure_avg": 990.8,
     "pressure_max": 991.9,
     "pressure_min": 989.8,
-    "rain": 0.8,
+    "rain": 1.0,
     "temp_avg": 6.2,
     "temp_max": 6.5,
     "temp_min": 5.9,
-    "wind_avg": 0.2,
-    "wind_max": 1.8,
+    "wind_avg": 0.3,
+    "wind_max": 2.7,
     "wind_min": 0.0
   }
 }
