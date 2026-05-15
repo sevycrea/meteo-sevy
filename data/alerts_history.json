@@ -1078,5 +1078,17 @@
     "message": "🌧️ Pluie quasi certaine · 88.0% Aujourd'hui",
     "recommendation": "Prévoyez un parapluie.",
     "detected_at": "2026-05-15T00:14:21.630672"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "info",
+    "window": "05:45–06:45",
+    "source": "realtime",
+    "message": "🌧️ Pluie en cours · 3.7 mm en 1h30",
+    "recommendation": "Précipitations actives.",
+    "metrics": {
+      "rain_cumul": 3.7
+    },
+    "detected_at": "2026-05-15T07:00:51.406813"
   }
 ]
