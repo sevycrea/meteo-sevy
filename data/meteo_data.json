@@ -4529,17 +4529,17 @@
   },
   "2026-05-15": {
     "gust_max": 19.8,
-    "hum_avg": 91.1,
+    "hum_avg": 90.7,
     "hum_max": 96.0,
-    "hum_min": 75.0,
-    "pressure_avg": 991.5,
+    "hum_min": 74.8,
+    "pressure_avg": 991.6,
     "pressure_max": 992.9,
     "pressure_min": 989.8,
     "rain": 2.8,
-    "temp_avg": 6.8,
-    "temp_max": 10.7,
+    "temp_avg": 6.9,
+    "temp_max": 11.0,
     "temp_min": 5.9,
-    "wind_avg": 1.0,
+    "wind_avg": 1.1,
     "wind_max": 6.0,
     "wind_min": 0.0
   }
