@@ -1,8 +1,20 @@
 {
-  "generated_at": "2026-05-15T09:30:36.865750",
+  "generated_at": "2026-05-15T10:00:47.408661",
   "location": "Vinelz, Suisse",
   "total_alerts": 20,
   "alerts": [
+    {
+      "type": "local_rain_realtime",
+      "severity": "warning",
+      "window": "08:45–09:45",
+      "source": "realtime",
+      "message": "🌧️ Pluie soutenue · 10.7 mm cumulés en 1h30",
+      "recommendation": "Précipitations actives — sols saturés possibles.",
+      "metrics": {
+        "rain_cumul": 10.7
+      },
+      "detected_at": "2026-05-15T10:00:47.296038"
+    },
     {
       "type": "local_rain_realtime",
       "severity": "info",
@@ -213,19 +225,6 @@
         "rain_cumul": 19.0
       },
       "detected_at": "2026-05-14T15:00:57.543863"
-    },
-    {
-      "type": "cold_front_realtime",
-      "severity": "warning",
-      "window": "12:45–13:45",
-      "source": "realtime",
-      "message": "❄️🌧️ Front froid détecté · chute de 3.0°C et hausse de 16% d'humidité en 1h30 (12:45–13:45)",
-      "recommendation": "Orage probable à proximité — vigilance.",
-      "metrics": {
-        "temp_drop": 3.0,
-        "humidity_jump": 16.0
-      },
-      "detected_at": "2026-05-14T14:01:00.135455"
     }
   ],
   "status": "warning",
