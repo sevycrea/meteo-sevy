@@ -3044,22 +3044,22 @@
         "wind_dir": 180,
         "pressure": 998.0,
         "rain": 0.0,
-        "timestamp": "2026-05-16 01:30:31"
+        "timestamp": "2026-05-16 01:45:19"
       }
     },
     "daily": {
       "temp_min": 4.0,
       "temp_max": 11.0,
-      "temp_sum": 719.0,
-      "temp_count": 97,
+      "temp_sum": 723.0,
+      "temp_count": 98,
       "temp_avg": 7.4,
       "rain_total": 3.05,
       "wind_max": 10.0,
-      "pressure_sum": 96391.62000000002,
-      "pressure_count": 97,
-      "pressure_avg": 993.7,
-      "humidity_sum": 8420.0,
-      "humidity_count": 97,
+      "pressure_sum": 97389.59000000003,
+      "pressure_count": 98,
+      "pressure_avg": 993.8,
+      "humidity_sum": 8517.0,
+      "humidity_count": 98,
       "humidity_avg": 87.0
     }
   }
