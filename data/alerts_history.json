@@ -1090,5 +1090,17 @@
       "rain_cumul": 3.7
     },
     "detected_at": "2026-05-15T07:00:51.406813"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "info",
+    "window": "06:00–08:00",
+    "source": "hourly",
+    "message": "🌧️ Pluie en cours · 4.5 mm en 3h",
+    "recommendation": "Précipitations actives.",
+    "metrics": {
+      "rain_cumul": 4.5
+    },
+    "detected_at": "2026-05-15T08:30:38.088474"
   }
 ]
