@@ -2975,21 +2975,31 @@
         "pressure": 994.9,
         "rain": 2.8,
         "timestamp": "2026-05-15 18:45:19"
+      },
+      "17:00": {
+        "temp": 9.0,
+        "hum": 80.0,
+        "wind": 0.0,
+        "gust": 0.0,
+        "wind_dir": 138,
+        "pressure": 994.9,
+        "rain": 2.8,
+        "timestamp": "2026-05-15 19:00:43"
       }
     },
     "daily": {
       "temp_min": 6.0,
       "temp_max": 11.0,
-      "temp_sum": 551.0,
-      "temp_count": 69,
+      "temp_sum": 560.0,
+      "temp_count": 70,
       "temp_avg": 8.0,
       "rain_total": 2.79,
       "wind_max": 10.0,
-      "pressure_sum": 68475.92000000003,
-      "pressure_count": 69,
+      "pressure_sum": 69470.84000000003,
+      "pressure_count": 70,
       "pressure_avg": 992.4,
-      "humidity_sum": 5842.0,
-      "humidity_count": 69,
+      "humidity_sum": 5922.0,
+      "humidity_count": 70,
       "humidity_avg": 85.0
     }
   }
