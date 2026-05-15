@@ -4528,19 +4528,19 @@
     "wind_min": 0.1
   },
   "2026-05-15": {
-    "gust_max": 7.4,
-    "hum_avg": 92.2,
+    "gust_max": 11.1,
+    "hum_avg": 91.9,
     "hum_max": 96.0,
-    "hum_min": 85.9,
+    "hum_min": 83.3,
     "pressure_avg": 991.4,
     "pressure_max": 992.9,
     "pressure_min": 989.8,
     "rain": 2.8,
-    "temp_avg": 6.5,
-    "temp_max": 8.5,
+    "temp_avg": 6.6,
+    "temp_max": 9.3,
     "temp_min": 5.9,
-    "wind_avg": 0.5,
-    "wind_max": 2.9,
+    "wind_avg": 0.7,
+    "wind_max": 5.5,
     "wind_min": 0.0
   }
 }
