@@ -4545,7 +4545,7 @@
   },
   "2026-05-16": {
     "gust_max": 25.1,
-    "hum_avg": 74.3,
+    "hum_avg": 73.8,
     "hum_max": 97.0,
     "hum_min": 40.3,
     "pressure_avg": 1000.0,
@@ -4553,7 +4553,7 @@
     "pressure_min": 998.0,
     "rain": 0,
     "temp_avg": 8.5,
-    "temp_max": 14.1,
+    "temp_max": 14.2,
     "temp_min": 3.8,
     "wind_avg": 1.7,
     "wind_max": 6.1,
