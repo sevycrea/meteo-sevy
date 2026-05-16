@@ -3236,29 +3236,29 @@
         "timestamp": "2026-05-16 18:45:18"
       },
       "17:00": {
-        "temp": 12.0,
-        "hum": 57.0,
-        "wind": 3.0,
-        "gust": 3.0,
-        "wind_dir": 132,
+        "temp": 11.0,
+        "hum": 61.0,
+        "wind": 4.0,
+        "gust": 4.0,
+        "wind_dir": 282,
         "pressure": 1003.0,
         "rain": 0.0,
-        "timestamp": "2026-05-16 19:00:42"
+        "timestamp": "2026-05-16 19:15:18"
       }
     },
     "daily": {
       "temp_min": 4.0,
       "temp_max": 14.0,
-      "temp_sum": 655.0,
-      "temp_count": 73,
+      "temp_sum": 666.0,
+      "temp_count": 74,
       "temp_avg": 9.0,
       "rain_total": 0.0,
       "wind_max": 7.0,
-      "pressure_sum": 73018.29999999996,
-      "pressure_count": 73,
+      "pressure_sum": 74021.34999999996,
+      "pressure_count": 74,
       "pressure_avg": 1000.3,
-      "humidity_sum": 5262.0,
-      "humidity_count": 73,
+      "humidity_sum": 5323.0,
+      "humidity_count": 74,
       "humidity_avg": 72.0
     }
   }
