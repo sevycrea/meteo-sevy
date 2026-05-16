@@ -3116,29 +3116,29 @@
         "timestamp": "2026-05-16 06:45:19"
       },
       "05:00": {
-        "temp": 6.0,
+        "temp": 7.0,
         "hum": 92.0,
         "wind": 0.0,
         "gust": 0.0,
         "wind_dir": 168,
         "pressure": 999.0,
         "rain": 0.0,
-        "timestamp": "2026-05-16 07:30:31"
+        "timestamp": "2026-05-16 07:45:19"
       }
     },
     "daily": {
       "temp_min": 4.0,
-      "temp_max": 6.0,
-      "temp_sum": 120.0,
-      "temp_count": 24,
-      "temp_avg": 5.0,
+      "temp_max": 7.0,
+      "temp_sum": 127.0,
+      "temp_count": 25,
+      "temp_avg": 5.1,
       "rain_total": 0.0,
       "wind_max": 3.0,
-      "pressure_sum": 23956.329999999998,
-      "pressure_count": 24,
+      "pressure_sum": 24955.309999999998,
+      "pressure_count": 25,
       "pressure_avg": 998.2,
-      "humidity_sum": 2303.0,
-      "humidity_count": 24,
+      "humidity_sum": 2395.0,
+      "humidity_count": 25,
       "humidity_avg": 96.0
     }
   }
