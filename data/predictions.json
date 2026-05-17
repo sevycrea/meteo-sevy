@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-17T00:15:43.681087",
+  "generated_at": "2026-05-17T00:30:56.056388",
   "model_version": "2026-05-16T09:14:11.855724",
   "model_type": "multihorizon_sequential",
-  "training_days": 285,
+  "training_days": 286,
   "forecasts": [
     {
       "date": "2026-05-17",
@@ -10,30 +10,30 @@
       "day_number": 0,
       "day_label": "Aujourd'hui",
       "temperature": {
-        "predicted": 5.6,
+        "predicted": 5.7,
         "min_estimate": 5.2,
-        "max_estimate": 6.1
+        "max_estimate": 6.2
       },
       "rain": {
-        "will_rain": false,
-        "probability": 29.0
+        "will_rain": true,
+        "probability": 68.0
       },
       "confidence": 95,
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 3.2,
-          "rain_risk": "low"
+          "temp_estimate": 3.3,
+          "rain_risk": "high"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 9.6,
-          "rain_risk": "low"
+          "temp_estimate": 9.7,
+          "rain_risk": "high"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 4.0,
-          "rain_risk": "low"
+          "temp_estimate": 4.1,
+          "rain_risk": "high"
         }
       }
     },
@@ -45,11 +45,11 @@
       "temperature": {
         "predicted": 6.0,
         "min_estimate": 5.4,
-        "max_estimate": 6.6
+        "max_estimate": 6.7
       },
       "rain": {
         "will_rain": true,
-        "probability": 50.0
+        "probability": 57.0
       },
       "confidence": 86.0,
       "periods": {
@@ -82,7 +82,7 @@
       },
       "rain": {
         "will_rain": false,
-        "probability": 46.0
+        "probability": 47.0
       },
       "confidence": 71.0,
       "periods": {
