@@ -3342,22 +3342,22 @@
         "wind_dir": 108,
         "pressure": 1005.1,
         "rain": 0.0,
-        "timestamp": "2026-05-17 03:00:31"
+        "timestamp": "2026-05-17 03:15:19"
       }
     },
     "daily": {
       "temp_min": 5.0,
       "temp_max": 5.0,
-      "temp_sum": 25.0,
-      "temp_count": 5,
+      "temp_sum": 30.0,
+      "temp_count": 6,
       "temp_avg": 5.0,
       "rain_total": 0.0,
       "wind_max": 0.0,
-      "pressure_sum": 5025.400000000001,
-      "pressure_count": 5,
+      "pressure_sum": 6030.4800000000005,
+      "pressure_count": 6,
       "pressure_avg": 1005.1,
-      "humidity_sum": 465.0,
-      "humidity_count": 5,
+      "humidity_sum": 559.0,
+      "humidity_count": 6,
       "humidity_avg": 93.0
     }
   }
