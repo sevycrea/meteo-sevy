@@ -3362,22 +3362,22 @@
         "wind_dir": 78,
         "pressure": 1005.1,
         "rain": 0.0,
-        "timestamp": "2026-05-17 05:15:19"
+        "timestamp": "2026-05-17 05:30:31"
       }
     },
     "daily": {
       "temp_min": 4.0,
       "temp_max": 5.0,
-      "temp_sum": 64.0,
-      "temp_count": 14,
-      "temp_avg": 4.6,
+      "temp_sum": 68.0,
+      "temp_count": 15,
+      "temp_avg": 4.5,
       "rain_total": 0.0,
       "wind_max": 0.0,
-      "pressure_sum": 14071.12,
-      "pressure_count": 14,
+      "pressure_sum": 15076.2,
+      "pressure_count": 15,
       "pressure_avg": 1005.1,
-      "humidity_sum": 1316.0,
-      "humidity_count": 14,
+      "humidity_sum": 1410.0,
+      "humidity_count": 15,
       "humidity_avg": 94.0
     }
   }
