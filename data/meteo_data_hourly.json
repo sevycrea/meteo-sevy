@@ -3821,22 +3821,22 @@
         "wind_dir": 48,
         "pressure": 1008.8,
         "rain": 0.0,
-        "timestamp": "2026-05-19 01:00:42"
+        "timestamp": "2026-05-19 01:15:18"
       }
     },
     "daily": {
       "temp_min": 8.0,
       "temp_max": 14.0,
-      "temp_sum": 954.0,
-      "temp_count": 96,
+      "temp_sum": 962.0,
+      "temp_count": 97,
       "temp_avg": 9.9,
       "rain_total": 14.99,
       "wind_max": 11.0,
-      "pressure_sum": 96634.33999999987,
-      "pressure_count": 96,
+      "pressure_sum": 97643.14999999986,
+      "pressure_count": 97,
       "pressure_avg": 1006.6,
-      "humidity_sum": 8799.0,
-      "humidity_count": 96,
+      "humidity_sum": 8898.0,
+      "humidity_count": 97,
       "humidity_avg": 92.0
     }
   }
