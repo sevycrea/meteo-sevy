@@ -1,8 +1,40 @@
 {
-  "generated_at": "2026-05-18T21:00:47.673582",
+  "generated_at": "2026-05-18T21:30:36.495177",
   "location": "Vinelz, Suisse",
   "total_alerts": 20,
   "alerts": [
+    {
+      "type": "rain_likely",
+      "severity": "info",
+      "date": "2026-05-19",
+      "day_label": "Demain",
+      "rain_probability": 70.0,
+      "message": "🌧️ Pluie probable · 70.0% Demain",
+      "recommendation": "Pensez à votre parapluie.",
+      "detected_at": "2026-05-18T21:30:36.408258"
+    },
+    {
+      "type": "rain_likely",
+      "severity": "info",
+      "date": "2026-05-18",
+      "day_label": "Aujourd'hui",
+      "rain_probability": 81.0,
+      "message": "🌧️ Pluie probable · 81.0% Aujourd'hui",
+      "recommendation": "Pensez à votre parapluie.",
+      "detected_at": "2026-05-18T21:30:36.405830"
+    },
+    {
+      "type": "local_rain_realtime",
+      "severity": "warning",
+      "window": "20:15–21:15",
+      "source": "realtime",
+      "message": "🌧️ Pluie soutenue · 75.0 mm cumulés en 1h30",
+      "recommendation": "Précipitations actives — sols saturés possibles.",
+      "metrics": {
+        "rain_cumul": 75.0
+      },
+      "detected_at": "2026-05-18T21:30:36.402977"
+    },
     {
       "type": "rain_likely",
       "severity": "info",
@@ -186,44 +218,8 @@
         "rain_cumul": 51.0
       },
       "detected_at": "2026-05-18T12:30:40.790797"
-    },
-    {
-      "type": "local_rain_realtime",
-      "severity": "warning",
-      "window": "10:15–11:15",
-      "source": "realtime",
-      "message": "🌧️ Pluie soutenue · 48.1 mm cumulés en 1h30",
-      "recommendation": "Précipitations actives — sols saturés possibles.",
-      "metrics": {
-        "rain_cumul": 48.1
-      },
-      "detected_at": "2026-05-18T11:30:39.478529"
-    },
-    {
-      "type": "local_rain_realtime",
-      "severity": "warning",
-      "window": "09:15–10:15",
-      "source": "realtime",
-      "message": "🌧️ Pluie soutenue · 27.5 mm cumulés en 1h30",
-      "recommendation": "Précipitations actives — sols saturés possibles.",
-      "metrics": {
-        "rain_cumul": 27.5
-      },
-      "detected_at": "2026-05-18T10:30:38.902469"
-    },
-    {
-      "type": "local_rain_realtime",
-      "severity": "warning",
-      "window": "07:45–08:45",
-      "source": "realtime",
-      "message": "🌧️ Pluie soutenue · 19.0 mm cumulés en 1h30",
-      "recommendation": "Précipitations actives — sols saturés possibles.",
-      "metrics": {
-        "rain_cumul": 19.0
-      },
-      "detected_at": "2026-05-18T09:00:49.481786"
     }
   ],
   "status": "warning",
-  "message": "10 avertissement(s) en cours"
+  "message": "8 avertissement(s) en cours"
 }
