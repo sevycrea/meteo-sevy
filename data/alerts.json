@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-18T00:00:47.742154",
+  "generated_at": "2026-05-18T00:30:33.815655",
   "location": "Vinelz, Suisse",
-  "total_alerts": 3,
+  "total_alerts": 1,
   "alerts": [
     {
       "type": "cold_front_realtime",
@@ -15,28 +15,8 @@
         "humidity_jump": 18.0
       },
       "detected_at": "2026-05-17T19:00:43.684602"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "warning",
-      "date": "2026-05-16",
-      "day_label": "Aujourd'hui",
-      "rain_probability": 89.0,
-      "message": "🌧️ Pluie quasi certaine · 89.0% Aujourd'hui",
-      "recommendation": "Prévoyez un parapluie.",
-      "detected_at": "2026-05-16T00:10:55.554135"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "warning",
-      "date": "2026-05-15",
-      "day_label": "Aujourd'hui",
-      "rain_probability": 89.0,
-      "message": "🌧️ Pluie quasi certaine · 89.0% Aujourd'hui",
-      "recommendation": "Prévoyez un parapluie.",
-      "detected_at": "2026-05-16T00:00:50.824291"
     }
   ],
   "status": "warning",
-  "message": "3 avertissement(s) en cours"
+  "message": "1 avertissement(s) en cours"
 }
