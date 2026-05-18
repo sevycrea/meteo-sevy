@@ -3811,22 +3811,22 @@
         "wind_dir": 48,
         "pressure": 1008.8,
         "rain": 0.0,
-        "timestamp": "2026-05-19 00:15:18"
+        "timestamp": "2026-05-19 00:30:30"
       }
     },
     "daily": {
       "temp_min": 8.0,
       "temp_max": 14.0,
-      "temp_sum": 922.0,
-      "temp_count": 92,
+      "temp_sum": 930.0,
+      "temp_count": 93,
       "temp_avg": 10.0,
       "rain_total": 14.99,
       "wind_max": 11.0,
-      "pressure_sum": 92599.09999999987,
-      "pressure_count": 92,
+      "pressure_sum": 93607.90999999987,
+      "pressure_count": 93,
       "pressure_avg": 1006.5,
-      "humidity_sum": 8403.0,
-      "humidity_count": 92,
+      "humidity_sum": 8502.0,
+      "humidity_count": 93,
       "humidity_avg": 91.0
     }
   }
