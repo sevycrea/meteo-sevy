@@ -1429,5 +1429,17 @@
       "rain_cumul": 48.1
     },
     "detected_at": "2026-05-18T11:30:39.478529"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "warning",
+    "window": "11:15–12:15",
+    "source": "realtime",
+    "message": "🌧️ Pluie soutenue · 51.0 mm cumulés en 1h30",
+    "recommendation": "Précipitations actives — sols saturés possibles.",
+    "metrics": {
+      "rain_cumul": 51.0
+    },
+    "detected_at": "2026-05-18T12:30:40.790797"
   }
 ]
