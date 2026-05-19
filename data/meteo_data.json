@@ -4596,14 +4596,14 @@
     "hum_avg": 81.4,
     "hum_max": 99.0,
     "hum_min": 54.6,
-    "pressure_avg": 1009.4,
-    "pressure_max": 1009.8,
+    "pressure_avg": 1009.5,
+    "pressure_max": 1010.8,
     "pressure_min": 1008.8,
     "rain": 0,
     "temp_avg": 11.8,
     "temp_max": 17.5,
     "temp_min": 6.0,
-    "wind_avg": 1.1,
+    "wind_avg": 1.0,
     "wind_max": 4.2,
     "wind_min": 0.0
   }
