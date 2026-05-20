@@ -4329,22 +4329,22 @@
         "wind_dir": 174,
         "pressure": 1018.0,
         "rain": 0.0,
-        "timestamp": "2026-05-21 00:15:18"
+        "timestamp": "2026-05-21 00:30:30"
       }
     },
     "daily": {
       "temp_min": 11.0,
       "temp_max": 22.0,
-      "temp_sum": 1511.0,
-      "temp_count": 92,
+      "temp_sum": 1524.0,
+      "temp_count": 93,
       "temp_avg": 16.4,
       "rain_total": 3.56,
       "wind_max": 9.0,
-      "pressure_sum": 93365.73999999995,
-      "pressure_count": 92,
-      "pressure_avg": 1014.8,
-      "humidity_sum": 6622.0,
-      "humidity_count": 92,
+      "pressure_sum": 94383.68999999994,
+      "pressure_count": 93,
+      "pressure_avg": 1014.9,
+      "humidity_sum": 6705.0,
+      "humidity_count": 93,
       "humidity_avg": 72.0
     }
   }
