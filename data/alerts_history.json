@@ -2071,5 +2071,18 @@
     "message": "🌧️ Pluie probable · 72.0% Aujourd'hui",
     "recommendation": "Pensez à votre parapluie.",
     "detected_at": "2026-05-20T19:33:12.797660"
+  },
+  {
+    "type": "cold_front_realtime",
+    "severity": "warning",
+    "window": "19:15–20:15",
+    "source": "realtime",
+    "message": "❄️🌧️ Front froid détecté · chute de 3.0°C et hausse de 20% d'humidité en 1h30 (19:15–20:15)",
+    "recommendation": "Orage probable à proximité — vigilance.",
+    "metrics": {
+      "temp_drop": 3.0,
+      "humidity_jump": 20.0
+    },
+    "detected_at": "2026-05-20T20:30:37.070369"
   }
 ]
