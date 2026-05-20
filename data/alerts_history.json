@@ -1939,5 +1939,27 @@
     "message": "🌧️ Pluie probable · 72.0% Aujourd'hui",
     "recommendation": "Pensez à votre parapluie.",
     "detected_at": "2026-05-20T12:30:40.769684"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "warning",
+    "window": "12:15–13:15",
+    "source": "realtime",
+    "message": "🌧️ Pluie soutenue · 18.0 mm cumulés en 1h30",
+    "recommendation": "Précipitations actives — sols saturés possibles.",
+    "metrics": {
+      "rain_cumul": 18.0
+    },
+    "detected_at": "2026-05-20T13:30:42.567520"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "info",
+    "date": "2026-05-20",
+    "day_label": "Aujourd'hui",
+    "rain_probability": 72.0,
+    "message": "🌧️ Pluie probable · 72.0% Aujourd'hui",
+    "recommendation": "Pensez à votre parapluie.",
+    "detected_at": "2026-05-20T13:30:42.570407"
   }
 ]
