@@ -4243,28 +4243,28 @@
       },
       "14:00": {
         "temp": 22.0,
-        "hum": 47.0,
+        "hum": 48.0,
         "wind": 4.0,
         "gust": 4.0,
-        "wind_dir": 182,
+        "wind_dir": 142,
         "pressure": 1014.9,
         "rain": 3.6,
-        "timestamp": "2026-05-20 16:15:30"
+        "timestamp": "2026-05-20 16:30:42"
       }
     },
     "daily": {
       "temp_min": 11.0,
       "temp_max": 22.0,
-      "temp_sum": 924.0,
-      "temp_count": 59,
-      "temp_avg": 15.7,
+      "temp_sum": 946.0,
+      "temp_count": 60,
+      "temp_avg": 15.8,
       "rain_total": 3.56,
       "wind_max": 9.0,
-      "pressure_sum": 59827.27000000005,
-      "pressure_count": 59,
+      "pressure_sum": 60842.17000000005,
+      "pressure_count": 60,
       "pressure_avg": 1014.0,
-      "humidity_sum": 4620.0,
-      "humidity_count": 59,
+      "humidity_sum": 4668.0,
+      "humidity_count": 60,
       "humidity_avg": 78.0
     }
   }
