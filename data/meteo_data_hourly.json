@@ -4418,22 +4418,22 @@
         "wind_dir": 27,
         "pressure": 1019.0,
         "rain": 0.0,
-        "timestamp": "2026-05-21 07:15:18"
+        "timestamp": "2026-05-21 07:30:30"
       }
     },
     "daily": {
       "temp_min": 10.0,
       "temp_max": 13.0,
-      "temp_sum": 250.0,
-      "temp_count": 22,
+      "temp_sum": 262.0,
+      "temp_count": 23,
       "temp_avg": 11.4,
       "rain_total": 0.0,
       "wind_max": 4.0,
-      "pressure_sum": 22397.930000000004,
-      "pressure_count": 22,
+      "pressure_sum": 23416.890000000003,
+      "pressure_count": 23,
       "pressure_avg": 1018.1,
-      "humidity_sum": 1978.0,
-      "humidity_count": 22,
+      "humidity_sum": 2068.0,
+      "humidity_count": 23,
       "humidity_avg": 90.0
     }
   }
