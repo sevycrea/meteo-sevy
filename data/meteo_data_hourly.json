@@ -4429,21 +4429,31 @@
         "pressure": 1019.0,
         "rain": 0.0,
         "timestamp": "2026-05-21 08:45:18"
+      },
+      "07:00": {
+        "temp": 14.0,
+        "hum": 84.0,
+        "wind": 4.0,
+        "gust": 4.0,
+        "wind_dir": 29,
+        "pressure": 1019.0,
+        "rain": 0.0,
+        "timestamp": "2026-05-21 09:00:42"
       }
     },
     "daily": {
       "temp_min": 10.0,
       "temp_max": 14.0,
-      "temp_sum": 329.0,
-      "temp_count": 28,
+      "temp_sum": 343.0,
+      "temp_count": 29,
       "temp_avg": 11.8,
       "rain_total": 0.0,
       "wind_max": 10.0,
-      "pressure_sum": 28511.69,
-      "pressure_count": 28,
+      "pressure_sum": 29530.649999999998,
+      "pressure_count": 29,
       "pressure_avg": 1018.3,
-      "humidity_sum": 2501.0,
-      "humidity_count": 28,
+      "humidity_sum": 2585.0,
+      "humidity_count": 29,
       "humidity_avg": 89.0
     }
   }
