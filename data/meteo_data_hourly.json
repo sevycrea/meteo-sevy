@@ -4511,30 +4511,30 @@
         "timestamp": "2026-05-21 16:45:18"
       },
       "15:00": {
-        "temp": 23.0,
-        "hum": 41.0,
+        "temp": 24.0,
+        "hum": 39.0,
         "wind": 3.0,
         "gust": 3.0,
-        "wind_dir": 29,
+        "wind_dir": 24,
         "pressure": 1015.9,
         "rain": 0.0,
-        "timestamp": "2026-05-21 17:00:54"
+        "timestamp": "2026-05-21 17:15:18"
       }
     },
     "daily": {
       "temp_min": 10.0,
-      "temp_max": 23.0,
-      "temp_sum": 1005.0,
-      "temp_count": 62,
-      "temp_avg": 16.2,
+      "temp_max": 24.0,
+      "temp_sum": 1029.0,
+      "temp_count": 63,
+      "temp_avg": 16.3,
       "rain_total": 0.0,
       "wind_max": 10.0,
-      "pressure_sum": 63100.58999999996,
-      "pressure_count": 62,
-      "pressure_avg": 1017.8,
-      "humidity_sum": 4455.0,
-      "humidity_count": 62,
-      "humidity_avg": 72.0
+      "pressure_sum": 64116.50999999996,
+      "pressure_count": 63,
+      "pressure_avg": 1017.7,
+      "humidity_sum": 4494.0,
+      "humidity_count": 63,
+      "humidity_avg": 71.0
     }
   }
 }
