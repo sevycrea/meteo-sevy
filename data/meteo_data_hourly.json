@@ -4421,29 +4421,29 @@
         "timestamp": "2026-05-21 07:45:18"
       },
       "06:00": {
-        "temp": 13.0,
-        "hum": 87.0,
-        "wind": 4.0,
-        "gust": 4.0,
-        "wind_dir": 29,
+        "temp": 14.0,
+        "hum": 85.0,
+        "wind": 3.0,
+        "gust": 3.0,
+        "wind_dir": 39,
         "pressure": 1019.0,
         "rain": 0.0,
-        "timestamp": "2026-05-21 08:17:30"
+        "timestamp": "2026-05-21 08:30:30"
       }
     },
     "daily": {
       "temp_min": 10.0,
-      "temp_max": 13.0,
-      "temp_sum": 301.0,
-      "temp_count": 26,
-      "temp_avg": 11.6,
+      "temp_max": 14.0,
+      "temp_sum": 315.0,
+      "temp_count": 27,
+      "temp_avg": 11.7,
       "rain_total": 0.0,
       "wind_max": 4.0,
-      "pressure_sum": 26473.77,
-      "pressure_count": 26,
+      "pressure_sum": 27492.73,
+      "pressure_count": 27,
       "pressure_avg": 1018.2,
-      "humidity_sum": 2332.0,
-      "humidity_count": 26,
+      "humidity_sum": 2417.0,
+      "humidity_count": 27,
       "humidity_avg": 90.0
     }
   }
