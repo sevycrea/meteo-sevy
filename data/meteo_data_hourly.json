@@ -4802,27 +4802,27 @@
       "18:00": {
         "temp": 24.0,
         "hum": 44.0,
-        "wind": 7.0,
-        "gust": 8.0,
-        "wind_dir": 322,
+        "wind": 4.0,
+        "gust": 4.0,
+        "wind_dir": 29,
         "pressure": 1015.9,
         "rain": 0.0,
-        "timestamp": "2026-05-22 20:15:19"
+        "timestamp": "2026-05-22 20:30:31"
       }
     },
     "daily": {
       "temp_min": 11.0,
       "temp_max": 26.0,
-      "temp_sum": 1451.0,
-      "temp_count": 76,
-      "temp_avg": 19.1,
+      "temp_sum": 1475.0,
+      "temp_count": 77,
+      "temp_avg": 19.2,
       "rain_total": 0.0,
       "wind_max": 8.0,
-      "pressure_sum": 77260.46999999991,
-      "pressure_count": 76,
+      "pressure_sum": 78276.38999999991,
+      "pressure_count": 77,
       "pressure_avg": 1016.6,
-      "humidity_sum": 4783.0,
-      "humidity_count": 76,
+      "humidity_sum": 4827.0,
+      "humidity_count": 77,
       "humidity_avg": 63.0
     }
   }
