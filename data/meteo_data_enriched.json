@@ -4638,5 +4638,21 @@
     "wind_avg": 0.2,
     "wind_max": 2.7,
     "wind_min": 0.0
+  },
+  "2026-05-22": {
+    "gust_max": 0.0,
+    "hum_avg": 72.5,
+    "hum_max": 73.2,
+    "hum_min": 71.8,
+    "pressure_avg": 1015.9,
+    "pressure_max": 1015.9,
+    "pressure_min": 1015.9,
+    "rain": 0,
+    "temp_avg": 13.8,
+    "temp_max": 13.8,
+    "temp_min": 13.7,
+    "wind_avg": 0.0,
+    "wind_max": 0.0,
+    "wind_min": 0.0
   }
 }
