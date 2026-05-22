@@ -4827,22 +4827,22 @@
         "wind_dir": 36,
         "pressure": 1015.9,
         "rain": 0.0,
-        "timestamp": "2026-05-22 22:30:30"
+        "timestamp": "2026-05-22 22:45:18"
       }
     },
     "daily": {
       "temp_min": 11.0,
       "temp_max": 26.0,
-      "temp_sum": 1641.0,
-      "temp_count": 85,
+      "temp_sum": 1660.0,
+      "temp_count": 86,
       "temp_avg": 19.3,
       "rain_total": 0.0,
       "wind_max": 8.0,
-      "pressure_sum": 86403.7499999999,
-      "pressure_count": 85,
+      "pressure_sum": 87419.6699999999,
+      "pressure_count": 86,
       "pressure_avg": 1016.5,
-      "humidity_sum": 5246.0,
-      "humidity_count": 85,
+      "humidity_sum": 5302.0,
+      "humidity_count": 86,
       "humidity_avg": 62.0
     }
   }
