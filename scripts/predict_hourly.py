@@ -143,6 +143,52 @@ def build_slots(hourly_data, ml_correction, nwp_day_rain_prob):
 
     return slots
 
+
+def build_periods(slots):
+    """Agrège les créneaux 2h en 3 périodes (Matin / Après-midi / Nuit).
+
+    Source UNIQUE et cohérente avec summary + slots : tout vient du NWP corrigé.
+    Évite l'incohérence d'avant (périodes issues d'un modèle ML séparé cassé
+    qui contredisait le résumé du jour).
+
+    Découpage (heure de début du créneau) :
+      - Matin      : 06h–12h
+      - Après-midi : 12h–20h
+      - Nuit       : 20h–06h
+    """
+    def _dominant_icon(sel):
+        # Icône la plus "sévère" présente dans la période (pluie > nuages > soleil).
+        order = ["🌧️", "🌦️", "☁️", "⛅", "☀️"]
+        present = [s['icon'] for s in sel if s.get('icon')]
+        for ic in order:
+            if ic in present:
+                return ic
+        return present[0] if present else "☀️"
+
+    def _agg(start_hours):
+        sel = [s for s in slots if int(s['time_start'][:2]) in start_hours]
+        temps = [s['temperature'] for s in sel if s['temperature'] is not None]
+        rains = [s['rain_prob']   for s in sel if s['rain_prob']   is not None]
+        if not temps:
+            return None
+        rp = max(rains) if rains else 0
+        # Niveau de risque de pluie lisible (cohérent avec le % réel)
+        if rp >= 60:   risk = "élevé"
+        elif rp >= 30: risk = "modéré"
+        else:          risk = "faible"
+        return {
+            'temp':      round(sum(temps) / len(temps), 1),
+            'rain_prob': rp,
+            'rain_risk': risk,
+            'icon':      _dominant_icon(sel),
+        }
+
+    return {
+        'matin':      {'name': 'Matin (06h–12h)',      **( _agg([6, 8, 10])           or {})},
+        'apres_midi': {'name': 'Après-midi (12h–20h)', **( _agg([12, 14, 16, 18])     or {})},
+        'nuit':       {'name': 'Nuit (20h–06h)',       **( _agg([20, 22, 0, 2, 4])    or {})},
+    }
+
 # ============================================
 # GÉNÉRATION
 # ============================================
@@ -210,6 +256,7 @@ def generate_hourly(nwp, ml_preds):
                 'precip_sum':  day_precip,
                 'rain_prob':   nwp_rain_prob,
             },
+            'periods': build_periods(slots),
             'slots': slots,
         })
 
