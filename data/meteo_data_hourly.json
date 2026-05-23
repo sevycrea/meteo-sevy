@@ -4916,22 +4916,22 @@
         "wind_dir": 18,
         "pressure": 1016.9,
         "rain": 0.0,
-        "timestamp": "2026-05-23 05:15:19"
+        "timestamp": "2026-05-23 05:30:31"
       }
     },
     "daily": {
       "temp_min": 13.0,
       "temp_max": 15.0,
-      "temp_sum": 196.0,
-      "temp_count": 14,
-      "temp_avg": 14.0,
+      "temp_sum": 209.0,
+      "temp_count": 15,
+      "temp_avg": 13.9,
       "rain_total": 0.0,
       "wind_max": 0.0,
-      "pressure_sum": 14224.9,
-      "pressure_count": 14,
+      "pressure_sum": 15241.83,
+      "pressure_count": 15,
       "pressure_avg": 1016.1,
-      "humidity_sum": 1033.0,
-      "humidity_count": 14,
+      "humidity_sum": 1114.0,
+      "humidity_count": 15,
       "humidity_avg": 74.0
     }
   }
