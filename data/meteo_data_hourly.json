@@ -4929,29 +4929,29 @@
         "timestamp": "2026-05-23 06:45:19"
       },
       "05:00": {
-        "temp": 13.0,
-        "hum": 82.0,
+        "temp": 14.0,
+        "hum": 83.0,
         "wind": 0.0,
         "gust": 0.0,
         "wind_dir": 18,
         "pressure": 1016.9,
         "rain": 0.0,
-        "timestamp": "2026-05-23 07:15:19"
+        "timestamp": "2026-05-23 07:30:31"
       }
     },
     "daily": {
       "temp_min": 12.0,
       "temp_max": 15.0,
-      "temp_sum": 295.0,
-      "temp_count": 22,
+      "temp_sum": 309.0,
+      "temp_count": 23,
       "temp_avg": 13.4,
       "rain_total": 0.0,
       "wind_max": 0.0,
-      "pressure_sum": 22360.34,
-      "pressure_count": 22,
+      "pressure_sum": 23377.27,
+      "pressure_count": 23,
       "pressure_avg": 1016.4,
-      "humidity_sum": 1693.0,
-      "humidity_count": 22,
+      "humidity_sum": 1776.0,
+      "humidity_count": 23,
       "humidity_avg": 77.0
     }
   }
