@@ -36,7 +36,7 @@ BACKUP_DIR     = os.path.join(BASE_DIR, "data", "backup")
 LOG_FILE       = os.path.join(BASE_DIR, "logs", "auto_wunderground_hourly.log")
 
 # Combien d'heures de données granulaires (10-min) à conserver
-REALTIME_RETENTION_HOURS = 24
+REALTIME_RETENTION_HOURS = 48
 
 # FTP — credentials via variables d'environnement (GitHub Secrets)
 FTP_HOST = os.environ.get("FTP_HOST", "")
