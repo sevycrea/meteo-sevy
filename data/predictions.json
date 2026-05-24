@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-24T07:01:09.757532",
-  "model_version": "2026-05-24T01:01:03.598683",
+  "generated_at": "2026-05-24T07:06:52.641904",
+  "model_version": "2026-05-24T07:05:36.147354",
   "model_type": "multihorizon_sequential",
   "training_days": 293,
   "forecasts": [
@@ -16,7 +16,7 @@
       },
       "rain": {
         "will_rain": false,
-        "probability": 13.0
+        "probability": 14.0
       },
       "confidence": 95,
       "periods": {
@@ -43,30 +43,30 @@
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
-        "predicted": 18.3,
-        "min_estimate": 17.6,
-        "max_estimate": 18.9
+        "predicted": 18.0,
+        "min_estimate": 17.4,
+        "max_estimate": 18.7
       },
       "rain": {
         "will_rain": false,
-        "probability": 27.0
+        "probability": 33.0
       },
       "confidence": 86.0,
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 16.3,
-          "rain_risk": "low"
+          "temp_estimate": 16.0,
+          "rain_risk": "medium"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 21.9,
-          "rain_risk": "low"
+          "temp_estimate": 21.6,
+          "rain_risk": "medium"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 17.1,
-          "rain_risk": "low"
+          "temp_estimate": 16.8,
+          "rain_risk": "medium"
         }
       }
     },
@@ -81,8 +81,8 @@
         "max_estimate": 18.8
       },
       "rain": {
-        "will_rain": false,
-        "probability": 47.0
+        "will_rain": true,
+        "probability": 50.0
       },
       "confidence": 71.0,
       "periods": {
