@@ -5210,27 +5210,27 @@
       "07:00": {
         "temp": 20.0,
         "hum": 65.0,
-        "wind": 9.0,
-        "gust": 10.0,
-        "wind_dir": 18,
-        "pressure": 1019.0,
+        "wind": 7.0,
+        "gust": 8.0,
+        "wind_dir": 22,
+        "pressure": 1018.0,
         "rain": 0.0,
-        "timestamp": "2026-05-24 09:03:07"
+        "timestamp": "2026-05-24 09:15:19"
       }
     },
     "daily": {
       "temp_min": 18.0,
       "temp_max": 20.0,
-      "temp_sum": 556.0,
-      "temp_count": 30,
-      "temp_avg": 18.5,
+      "temp_sum": 576.0,
+      "temp_count": 31,
+      "temp_avg": 18.6,
       "rain_total": 0.0,
       "wind_max": 10.0,
-      "pressure_sum": 30524.200000000008,
-      "pressure_count": 30,
+      "pressure_sum": 31542.15000000001,
+      "pressure_count": 31,
       "pressure_avg": 1017.5,
-      "humidity_sum": 2071.0,
-      "humidity_count": 30,
+      "humidity_sum": 2136.0,
+      "humidity_count": 31,
       "humidity_avg": 69.0
     }
   }
