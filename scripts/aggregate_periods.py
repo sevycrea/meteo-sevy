@@ -113,39 +113,55 @@ def aggregate_by_periods(hourly_data):
         'p3': defaultdict(list)
     })
     
-    for timestamp, values in hourly_data.items():
-        date = get_date_from_timestamp(timestamp)
-        hour = get_hour_from_timestamp(timestamp)
-        
-        if not date or hour is None:
+    # Structure du fichier horaire: {date: {'hourly': {"HH:MM": {...}}, 'daily': {...}}}
+    for date_key, day_obj in hourly_data.items():
+        if not isinstance(day_obj, dict):
             continue
-        
-        # Déterminer la période
-        period = get_period_for_hour(hour)
-        
-        # Pour la période 3 (20h-04h), les heures 00h-03h appartiennent au jour précédent
-        if period == 'p3' and hour < 4:
-            # Cette mesure de nuit appartient au jour d'avant
-            dt = datetime.strptime(date, '%Y-%m-%d')
-            previous_day = (dt - timedelta(days=1)).strftime('%Y-%m-%d')
-            date = previous_day
-        
-        # Ajouter les valeurs à la période correspondante
-        period_dict = periods_data[date][period]
-        
-        if values.get('temp') is not None:
-            period_dict['temps'].append(float(values['temp']))
-        if values.get('humidity') is not None:
-            period_dict['humidity'].append(float(values['humidity']))
-        if values.get('pressure') is not None:
-            period_dict['pressure'].append(float(values['pressure']))
-        if values.get('wind_speed') is not None:
-            period_dict['wind_speeds'].append(float(values['wind_speed']))
-        if values.get('wind_gust') is not None:
-            period_dict['wind_gusts'].append(float(values['wind_gust']))
-        if values.get('rain') is not None:
-            period_dict['rain_amounts'].append(float(values['rain']))
-    
+        hourly_points = day_obj.get('hourly')
+        if not isinstance(hourly_points, dict):
+            continue
+
+        for hhmm, values in hourly_points.items():
+            if not isinstance(values, dict):
+                continue
+
+            # Heure depuis le timestamp interne si dispo, sinon depuis la clé "HH:MM"
+            ts = values.get('timestamp')
+            hour = get_hour_from_timestamp(ts) if ts else None
+            if hour is None:
+                try:
+                    hour = int(str(hhmm).split(':')[0])
+                except (ValueError, IndexError):
+                    continue
+
+            date = date_key
+
+            # Déterminer la période
+            period = get_period_for_hour(hour)
+
+            # Pour la période 3 (20h-04h), les heures 00h-03h appartiennent au jour précédent
+            if period == 'p3' and hour < 4:
+                # Cette mesure de nuit appartient au jour d'avant
+                dt = datetime.strptime(date, '%Y-%m-%d')
+                date = (dt - timedelta(days=1)).strftime('%Y-%m-%d')
+
+            # Ajouter les valeurs à la période correspondante
+            # (clés du fichier horaire: temp / hum / wind / gust / pressure / rain)
+            period_dict = periods_data[date][period]
+
+            if values.get('temp') is not None:
+                period_dict['temps'].append(float(values['temp']))
+            if values.get('hum') is not None:
+                period_dict['humidity'].append(float(values['hum']))
+            if values.get('pressure') is not None:
+                period_dict['pressure'].append(float(values['pressure']))
+            if values.get('wind') is not None:
+                period_dict['wind_speeds'].append(float(values['wind']))
+            if values.get('gust') is not None:
+                period_dict['wind_gusts'].append(float(values['gust']))
+            if values.get('rain') is not None:
+                period_dict['rain_amounts'].append(float(values['rain']))
+
     return periods_data
 
 def calculate_period_stats(period_data):
@@ -157,30 +173,48 @@ def calculate_period_stats(period_data):
         stats['temp_avg'] = round(np.mean(period_data['temps']), 1)
         stats['temp_min'] = round(np.min(period_data['temps']), 1)
         stats['temp_max'] = round(np.max(period_data['temps']), 1)
+        stats['temp_range'] = round(stats['temp_max'] - stats['temp_min'], 1)
     else:
         stats['temp_avg'] = None
-    
+        stats['temp_min'] = None
+        stats['temp_max'] = None
+        stats['temp_range'] = None
+
     # Humidité
     if period_data['humidity']:
         stats['hum_avg'] = round(np.mean(period_data['humidity']), 1)
+        stats['hum_min'] = round(np.min(period_data['humidity']), 1)
+        stats['hum_max'] = round(np.max(period_data['humidity']), 1)
+        stats['hum_range'] = round(stats['hum_max'] - stats['hum_min'], 1)
     else:
         stats['hum_avg'] = None
-    
+        stats['hum_min'] = None
+        stats['hum_max'] = None
+        stats['hum_range'] = None
+
     # Pression
     if period_data['pressure']:
         stats['pressure_avg'] = round(np.mean(period_data['pressure']), 1)
         stats['pressure_min'] = round(np.min(period_data['pressure']), 1)
         stats['pressure_max'] = round(np.max(period_data['pressure']), 1)
+        stats['pressure_range'] = round(stats['pressure_max'] - stats['pressure_min'], 1)
     else:
         stats['pressure_avg'] = None
-    
+        stats['pressure_min'] = None
+        stats['pressure_max'] = None
+        stats['pressure_range'] = None
+
     # Vent
     if period_data['wind_speeds']:
         stats['wind_avg'] = round(np.mean(period_data['wind_speeds']), 1)
         stats['wind_max'] = round(np.max(period_data['wind_speeds']), 1)
+        stats['wind_min'] = round(np.min(period_data['wind_speeds']), 1)
+        stats['wind_range'] = round(stats['wind_max'] - stats['wind_min'], 1)
     else:
         stats['wind_avg'] = None
         stats['wind_max'] = None
+        stats['wind_min'] = None
+        stats['wind_range'] = None
     
     if period_data['wind_gusts']:
         stats['gust_max'] = round(np.max(period_data['wind_gusts']), 1)
@@ -237,8 +271,21 @@ def enrich_daily_data(daily_data, periods_data):
             enriched[date]['temp_amplitude_day'] = round(
                 max(all_temps) - min(all_temps), 1
             )
-        
-        if all(f'p{i}_pressure_avg' in enriched[date] and enriched[date][f'p{i}_pressure_avg'] is not None 
+
+            # Température max absolue du jour (LE VRAI PIC)
+            enriched[date]['temp_max_day'] = round(max(all_temps), 1)
+
+            # Température min absolue du jour
+            enriched[date]['temp_min_day'] = round(min(all_temps), 1)
+
+            # Somme des amplitudes par période (indicateur de stabilité)
+            enriched[date]['temp_total_range'] = round(
+                enriched[date]['p1_temp_range'] +
+                enriched[date]['p2_temp_range'] +
+                enriched[date]['p3_temp_range'], 1
+            )
+
+        if all(f'p{i}_pressure_avg' in enriched[date] and enriched[date][f'p{i}_pressure_avg'] is not None
                for i in [1, 2, 3]):
             # Chute de pression maximale (indicateur d'instabilité)
             all_pressures = [
@@ -249,7 +296,32 @@ def enrich_daily_data(daily_data, periods_data):
             enriched[date]['pressure_drop_max'] = round(
                 max(all_pressures) - min(all_pressures), 1
             )
-        
+
+            # Tendance pression sur la journée
+            enriched[date]['pressure_trend_day'] = round(
+                enriched[date]['p3_pressure_avg'] - enriched[date]['p1_pressure_avg'], 1
+            )
+
+            # Somme des variations de pression (instabilité)
+            enriched[date]['pressure_total_range'] = round(
+                enriched[date]['p1_pressure_range'] +
+                enriched[date]['p2_pressure_range'] +
+                enriched[date]['p3_pressure_range'], 1
+            )
+
+        # Features humidité
+        if all(f'p{i}_hum_avg' in enriched[date] and enriched[date][f'p{i}_hum_avg'] is not None
+               for i in [1, 2, 3]):
+            # Variation humidité (indicateur de temps changeant)
+            all_hums = [
+                enriched[date]['p1_hum_min'], enriched[date]['p1_hum_max'],
+                enriched[date]['p2_hum_min'], enriched[date]['p2_hum_max'],
+                enriched[date]['p3_hum_min'], enriched[date]['p3_hum_max']
+            ]
+            enriched[date]['hum_range_day'] = round(
+                max(all_hums) - min(all_hums), 1
+            )
+
         days_enriched += 1
     
     return enriched, days_enriched
