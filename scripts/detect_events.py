@@ -342,6 +342,53 @@ def realtime_check(hourly_station, realtime_station=None):
     last3 = [today_data[k] for k in keys[-3:]]
     return _analyze_window(last3, f"{keys[-3]}–{keys[-1]}", source='hourly')
 
+
+def realtime_heat_check(hourly_station, realtime_station=None):
+    """
+    Canicule basée sur la T° RÉELLEMENT MESURÉE en ce moment par la station,
+    indépendamment de la prévision. Permet de lever l'alerte immédiatement quand
+    il fait chaud, sans attendre que le modèle de prévision soit à jour.
+
+    Seuils identiques à la canicule prévision (THRESHOLDS['heat_wave']).
+    """
+    out = []
+    temp = None
+
+    # 1) Dernier relevé temps réel (10-15 min) si dispo.
+    if realtime_station:
+        items = _flatten_realtime(realtime_station)
+        if items:
+            temp = _fnum(items[-1][2].get('temp'))
+
+    # 2) Sinon, dernier point horaire du jour le plus récent.
+    if temp is None and hourly_station:
+        for date in sorted(hourly_station.keys(), reverse=True):
+            hrs = hourly_station.get(date, {}).get('hourly', {})
+            if hrs:
+                last_key = sorted(hrs.keys())[-1]
+                temp = _fnum(hrs[last_key].get('temp'))
+                break
+
+    if temp is None:
+        return out
+
+    H = THRESHOLDS['heat_wave']
+    if temp >= H['extreme']:
+        out.append({
+            'type': 'heat_wave_extreme',
+            'severity': 'critical',
+            'message': f"🔥 CANICULE : {round(temp)}°C mesurés actuellement à Vinelz",
+            'recommendation': "Restez au frais, hydratez-vous abondamment.",
+        })
+    elif temp >= H['high']:
+        out.append({
+            'type': 'heat_wave',
+            'severity': 'warning',
+            'message': f"🌡️ Forte chaleur : {round(temp)}°C mesurés actuellement à Vinelz",
+            'recommendation': "Évitez l'exposition au soleil aux heures chaudes.",
+        })
+    return out
+
 # ============================================
 # 2. DÉTECTION NWP HORAIRE (HEURES À VENIR)
 # ============================================
@@ -702,6 +749,13 @@ def detect_events():
     log(f"   → {len(rt)} alerte(s)")
     for a in rt: log(f"     • {a['message']}")
     all_alerts.extend(rt)
+
+    # 1.bis Canicule sur la T° mesurée maintenant (indépendant de la prévision)
+    log("🌡️  Analyse canicule temps réel (T° mesurée)…")
+    rh = realtime_heat_check(hourly_station or {}, realtime_station)
+    log(f"   → {len(rh)} alerte(s)")
+    for a in rh: log(f"     • {a['message']}")
+    all_alerts.extend(rh)
 
     # 2. NWP heures à venir
     log("🛰  Analyse NWP horaire (12 prochaines heures)…")
