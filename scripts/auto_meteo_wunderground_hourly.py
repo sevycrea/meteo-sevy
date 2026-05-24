@@ -26,7 +26,7 @@ from io_helpers import atomic_write_json
 # Weather Underground API — credentials via variables d'environnement (GitHub Secrets)
 API_KEY    = os.environ.get("WU_API_KEY", "")
 STATION_ID = os.environ.get("WU_STATION_ID", "IVINEL2")
-API_URL    = f"https://api.weather.com/v2/pws/observations/current?stationId={STATION_ID}&format=json&units=m&apiKey={API_KEY}"
+API_URL    = f"https://api.weather.com/v2/pws/observations/current?stationId={STATION_ID}&format=json&units=m&numericPrecision=decimal&apiKey={API_KEY}"
 
 # Chemins — relatifs à la racine du repo
 BASE_DIR       = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
