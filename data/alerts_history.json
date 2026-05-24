@@ -2162,5 +2162,12 @@
     "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
     "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
     "detected_at": "2026-05-24T14:30:38.648495"
+  },
+  {
+    "type": "heat_wave",
+    "severity": "warning",
+    "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
+    "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
+    "detected_at": "2026-05-24T15:30:39.393198"
   }
 ]
