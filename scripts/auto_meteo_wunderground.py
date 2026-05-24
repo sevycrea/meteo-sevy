@@ -300,17 +300,42 @@ def load_existing_json():
             log(f"⚠️  Erreur lecture JSON existant : {e}")
     return {}
 
+# Champs « extrêmes » : on ne doit JAMAIS les abaisser lors d'une fusion.
+# L'API WU /all/1day est une fenêtre glissante de 24 h : un run tardif qui ne
+# voit qu'une fraction (fraîche) du jour précédent ne doit pas écraser le vrai
+# max (ou remonter le vrai min) déjà observé plus tôt dans la journée.
+MERGE_MAX_FIELDS = ('temp_max', 'hum_max', 'wind_max', 'gust_max', 'pressure_max', 'rain')
+MERGE_MIN_FIELDS = ('temp_min', 'hum_min', 'wind_min', 'pressure_min')
+
+
 def merge_data(existing, new_data):
-    """Fusionne les nouvelles données avec l'existant"""
+    """Fusionne les nouvelles données avec l'existant en préservant les extrêmes."""
     log("🔄 Fusion des données...")
-    
-    # Copier l'existant
+
     merged = existing.copy()
-    
-    # Ajouter/mettre à jour avec les nouvelles données
+
     for date_key, data in new_data.items():
-        merged[date_key] = data
-    
+        old = merged.get(date_key)
+        if not isinstance(old, dict):
+            merged[date_key] = data
+            continue
+
+        # Repartir de l'existant, écrire par-dessus les nouvelles valeurs…
+        combined = dict(old)
+        combined.update(data)
+
+        # …mais ne jamais régresser un extrême déjà capté sur la journée.
+        for f in MERGE_MAX_FIELDS:
+            o, n = old.get(f), data.get(f)
+            if o is not None and n is not None:
+                combined[f] = max(o, n)
+        for f in MERGE_MIN_FIELDS:
+            o, n = old.get(f), data.get(f)
+            if o is not None and n is not None:
+                combined[f] = min(o, n)
+
+        merged[date_key] = combined
+
     log(f"   ✅ {len(merged)} jours au total après fusion")
     return merged
 
@@ -370,6 +395,57 @@ def correct_rain_from_hourly(merged_data):
             corrections += 1
 
     log(f"   ✅ {corrections} jour(s) corrigé(s) depuis hourly")
+    return merged_data
+
+
+def correct_temps_from_hourly(merged_data):
+    """
+    Corrige les températures journalières depuis meteo_data_hourly.json.
+
+    L'API « daily summary » de WU est sur une fenêtre glissante de 24 h : un run
+    tardif ne voyant qu'une fraction (fraîche) du jour précédent faisait chuter
+    le max (bug observé : 28 °C réels affichés 19.9 °C). Le bloc `daily` du
+    fichier horaire agrège TOUTE la journée depuis la station (compteur ~100
+    mesures/jour) → c'est la source de vérité pour temp_min/avg/max.
+
+    Ne touche que les jours présents dans hourly ET dont le bloc `daily` existe.
+    """
+    if not os.path.exists(HOURLY_JSON):
+        log("⚠️  meteo_data_hourly.json absent — pas de correction température")
+        return merged_data
+
+    try:
+        with open(HOURLY_JSON, 'r', encoding='utf-8') as f:
+            hourly = json.load(f)
+    except Exception as e:
+        log(f"⚠️  Lecture hourly échouée : {e}")
+        return merged_data
+
+    corrections = 0
+    for date_key, day_block in hourly.items():
+        if date_key not in merged_data:
+            continue
+        daily = day_block.get('daily') or {}
+        if not daily:
+            continue
+
+        target = merged_data[date_key]
+        changed = False
+        for field in ('temp_min', 'temp_avg', 'temp_max'):
+            v = daily.get(field)
+            if v is None:
+                continue
+            old = target.get(field)
+            if old is None or abs(float(old) - float(v)) > 0.05:
+                target[field] = round(float(v), 1)
+                changed = True
+
+        if changed:
+            corrections += 1
+            log(f"   🌡️  {date_key} : T° corrigées depuis hourly "
+                f"(min {daily.get('temp_min')} / moy {daily.get('temp_avg')} / max {daily.get('temp_max')})")
+
+    log(f"   ✅ {corrections} jour(s) corrigé(s) (températures)")
     return merged_data
 
 
@@ -450,6 +526,9 @@ def main():
 
     log("\n🌧️  Correction de la pluie depuis hourly (source fiable)")
     merged_data = correct_rain_from_hourly(merged_data)
+
+    log("\n🌡️  Correction des températures depuis hourly (source fiable)")
+    merged_data = correct_temps_from_hourly(merged_data)
 
     if not save_json(merged_data):
         log("❌ Échec de la sauvegarde. Arrêt.")
