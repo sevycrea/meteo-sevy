@@ -557,16 +557,25 @@ def thunderstorm_check(nwp_data):
 def check_heat_wave(forecasts):
     out = []
     for f in forecasts:
-        temp = f.get('temperature', {}).get('predicted')
-        if temp is None: continue
+        t = f.get('temperature', {})
+        # Canicule = on regarde le MAX du jour, pas la moyenne (une moyenne
+        # journalière ≥ 30 °C est quasi impossible → l'alerte ne se déclenchait
+        # jamais). On retombe sur la T° après-midi (p2) puis sur predicted si
+        # le max n'est pas disponible.
+        tmax = t.get('max_estimate')
+        if tmax is None:
+            tmax = f.get('periods', {}).get('p2', {}).get('temp_estimate')
+        if tmax is None:
+            tmax = t.get('predicted')
+        if tmax is None: continue
         date = f.get('date'); label = f.get('day_label', date)
-        if temp >= THRESHOLDS['heat_wave']['extreme']:
+        if tmax >= THRESHOLDS['heat_wave']['extreme']:
             out.append({'type': 'heat_wave_extreme', 'severity': 'critical', 'date': date, 'day_label': label,
-                        'temperature': temp, 'message': f"🔥 CANICULE EXTRÊME : {temp}°C prévu {label}",
+                        'temperature': tmax, 'message': f"🔥 CANICULE EXTRÊME : jusqu'à {round(tmax)}°C prévu {label}",
                         'recommendation': "Restez au frais, hydratez-vous abondamment."})
-        elif temp >= THRESHOLDS['heat_wave']['high']:
+        elif tmax >= THRESHOLDS['heat_wave']['high']:
             out.append({'type': 'heat_wave', 'severity': 'warning', 'date': date, 'day_label': label,
-                        'temperature': temp, 'message': f"🌡️ Forte chaleur : {temp}°C prévu {label}",
+                        'temperature': tmax, 'message': f"🌡️ Forte chaleur : jusqu'à {round(tmax)}°C prévu {label}",
                         'recommendation': "Évitez l'exposition au soleil aux heures chaudes."})
     return out
 
