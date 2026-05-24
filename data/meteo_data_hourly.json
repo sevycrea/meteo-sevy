@@ -5218,29 +5218,29 @@
         "timestamp": "2026-05-24 09:46:55"
       },
       "08:00": {
-        "temp": 22.1,
-        "hum": 60.0,
-        "wind": 6.1,
-        "gust": 6.1,
+        "temp": 22.6,
+        "hum": 58.0,
+        "wind": 7.1,
+        "gust": 7.9,
         "wind_dir": 12,
         "pressure": 1019.0,
         "rain": 0.0,
-        "timestamp": "2026-05-24 10:15:19"
+        "timestamp": "2026-05-24 10:30:31"
       }
     },
     "daily": {
       "temp_min": 18.0,
-      "temp_max": 22.1,
-      "temp_sum": 705.8,
-      "temp_count": 37,
-      "temp_avg": 19.1,
+      "temp_max": 22.6,
+      "temp_sum": 728.4,
+      "temp_count": 38,
+      "temp_avg": 19.2,
       "rain_total": 0.0,
       "wind_max": 10.0,
-      "pressure_sum": 37655.91,
-      "pressure_count": 37,
-      "pressure_avg": 1017.7,
-      "humidity_sum": 2511.0,
-      "humidity_count": 37,
+      "pressure_sum": 38674.87,
+      "pressure_count": 38,
+      "pressure_avg": 1017.8,
+      "humidity_sum": 2569.0,
+      "humidity_count": 38,
       "humidity_avg": 68.0
     }
   }
