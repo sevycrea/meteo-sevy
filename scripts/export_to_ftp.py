@@ -81,7 +81,10 @@ def generate_web_json(alerts):
         except Exception:
             continue
         typ = str(alert.get('type', ''))
-        is_realtime = typ.endswith('_realtime')
+        # Temps réel = type suffixé _realtime OU alerte SANS date (les
+        # prévisions ont toujours une 'date' ; les alertes instantanées non).
+        # Couvre aussi les anciennes alertes 'heat_wave' temps réel sans suffixe.
+        is_realtime = typ.endswith('_realtime') or not alert.get('date')
         if detected <= (cutoff_rt if is_realtime else cutoff_48):
             continue
         # Prévision dont la date est passée → obsolète
