@@ -373,16 +373,19 @@ def realtime_heat_check(hourly_station, realtime_station=None):
         return out
 
     H = THRESHOLDS['heat_wave']
+    # Type suffixé _realtime → expiration courte côté publication (90 min) :
+    # l'alerte disparaît dès que la station refroidit, contrairement à la
+    # canicule "prévision" qui parle des jours à venir.
     if temp >= H['extreme']:
         out.append({
-            'type': 'heat_wave_extreme',
+            'type': 'heat_wave_extreme_realtime',
             'severity': 'critical',
             'message': f"🔥 CANICULE : {round(temp)}°C mesurés actuellement à Vinelz",
             'recommendation': "Restez au frais, hydratez-vous abondamment.",
         })
     elif temp >= H['high']:
         out.append({
-            'type': 'heat_wave',
+            'type': 'heat_wave_realtime',
             'severity': 'warning',
             'message': f"🌡️ Forte chaleur : {round(temp)}°C mesurés actuellement à Vinelz",
             'recommendation': "Évitez l'exposition au soleil aux heures chaudes.",

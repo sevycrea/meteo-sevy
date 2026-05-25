@@ -60,21 +60,44 @@ def load_alerts():
 def generate_web_json(alerts):
     """Générer un JSON propre pour le web"""
     
-    # Filtrer les alertes des dernières 48h
+    # Fenêtres d'ancienneté :
+    #  - alertes TEMPS RÉEL (type se terminant par _realtime) → 90 min :
+    #    elles décrivent l'instant présent, elles doivent disparaître vite
+    #    quand la condition cesse (ex : il faisait 30°, il fait 21° maintenant).
+    #  - alertes PRÉVISION (canicule/gel/pluie des jours à venir) → 48 h, mais
+    #    on jette celles dont la date est déjà passée.
     now = datetime.now()
-    cutoff = now - timedelta(hours=48)
-    
-    recent_alerts = []
+    cutoff_48 = now - timedelta(hours=48)
+    cutoff_rt = now - timedelta(minutes=90)
+    today_str = now.strftime('%Y-%m-%d')
+
+    kept = []
     for alert in alerts:
         try:
             detected = datetime.fromisoformat(alert['detected_at'])
-            if detected > cutoff:
-                recent_alerts.append(alert)
-        except:
+        except Exception:
             continue
-    
-    # Limiter à 20 alertes max
-    recent_alerts = sorted(recent_alerts, key=lambda x: x['detected_at'], reverse=True)[:20]
+        typ = str(alert.get('type', ''))
+        is_realtime = typ.endswith('_realtime')
+        if detected <= (cutoff_rt if is_realtime else cutoff_48):
+            continue
+        # Prévision dont la date est passée → obsolète
+        d = alert.get('date')
+        if d and not is_realtime and str(d) < today_str:
+            continue
+        kept.append((detected, alert))
+
+    # Trier récent → ancien, puis dédoublonner par message (garde le plus récent)
+    kept.sort(key=lambda x: x[0], reverse=True)
+    seen = set()
+    recent_alerts = []
+    for _, alert in kept:
+        msg = alert.get('message', '')
+        if msg in seen:
+            continue
+        seen.add(msg)
+        recent_alerts.append(alert)
+    recent_alerts = recent_alerts[:20]
     
     # Créer le JSON web
     web_data = {
