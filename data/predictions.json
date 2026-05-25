@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-25T00:45:45.690170",
+  "generated_at": "2026-05-25T01:01:06.626631",
   "model_version": "2026-05-24T09:33:26.683529",
   "model_type": "multihorizon_sequential",
   "training_days": 294,
@@ -16,7 +16,7 @@
       },
       "rain": {
         "will_rain": false,
-        "probability": 37.0
+        "probability": 36.0
       },
       "confidence": 94.0,
       "periods": {
