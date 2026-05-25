@@ -30,9 +30,11 @@ LOG_FILE = os.path.join(BASE_DIR, "logs", "sky.log")
 # Sources d'ensoleillement voisines (Vinelz n'a pas de capteur solaire) :
 #  1) Station Weather Underground (API WU, fonctionne depuis le serveur)
 #  2) Station Weathercloud (repli ; bloquée depuis les IP datacenter GitHub)
+# NB : un secret GitHub absent est injecté comme chaîne VIDE (pas absent) →
+# on utilise `or` pour retomber sur le défaut.
 WU_API_KEY  = os.environ.get("WU_API_KEY", "")
-SKY_WU_ID   = os.environ.get("SKY_STATION_ID", "IGAMPE11")   # Gampelen, ~3 km
-DEVICE      = os.environ.get("WEATHERCLOUD_DEVICE", "8539205623")  # Jolimont, Erlach
+SKY_WU_ID   = os.environ.get("SKY_STATION_ID") or "IGAMPE11"      # Gampelen, ~3 km
+DEVICE      = os.environ.get("WEATHERCLOUD_DEVICE") or "8539205623"  # Jolimont, Erlach
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 LAT, LON = 47.0552, 7.1248  # Vinelz
