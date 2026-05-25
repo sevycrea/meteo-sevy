@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-25T07:00:46.942920",
+  "generated_at": "2026-05-25T07:22:37.375537",
   "location": "Vinelz, Suisse",
-  "total_alerts": 3,
+  "total_alerts": 1,
   "alerts": [
     {
       "type": "heat_wave",
@@ -9,22 +9,8 @@
       "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
       "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
       "detected_at": "2026-05-24T15:30:39.393198"
-    },
-    {
-      "type": "heat_wave",
-      "severity": "warning",
-      "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
-      "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
-      "detected_at": "2026-05-24T14:30:38.648495"
-    },
-    {
-      "type": "heat_wave",
-      "severity": "warning",
-      "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
-      "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
-      "detected_at": "2026-05-24T13:00:46.669513"
     }
   ],
   "status": "warning",
-  "message": "3 avertissement(s) en cours"
+  "message": "1 avertissement(s) en cours"
 }
