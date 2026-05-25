@@ -57,8 +57,10 @@ jobs:
           DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
         run: python scripts/auto_meteo_wunderground_hourly.py
 
-      - name: Ciel observé (ensoleillement Jolimont, Erlach)
+      - name: Ciel observé (ensoleillement station voisine)
         env:
+          WU_API_KEY: ${{ secrets.WU_API_KEY }}
+          SKY_STATION_ID: ${{ secrets.SKY_STATION_ID }}
           WEATHERCLOUD_DEVICE: ${{ secrets.WEATHERCLOUD_DEVICE }}
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}

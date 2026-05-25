@@ -27,8 +27,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_FILE = os.path.join(BASE_DIR, "data", "sky.json")
 LOG_FILE = os.path.join(BASE_DIR, "logs", "sky.log")
 
-# Station Weathercloud de référence (device code). Surchargeable par env.
-DEVICE = os.environ.get("WEATHERCLOUD_DEVICE", "8539205623")
+# Sources d'ensoleillement voisines (Vinelz n'a pas de capteur solaire) :
+#  1) Station Weather Underground (API WU, fonctionne depuis le serveur)
+#  2) Station Weathercloud (repli ; bloquée depuis les IP datacenter GitHub)
+WU_API_KEY  = os.environ.get("WU_API_KEY", "")
+SKY_WU_ID   = os.environ.get("SKY_STATION_ID", "IGAMPE11")   # Gampelen, ~3 km
+DEVICE      = os.environ.get("WEATHERCLOUD_DEVICE", "8539205623")  # Jolimont, Erlach
+UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 LAT, LON = 47.0552, 7.1248  # Vinelz
 
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
@@ -43,7 +49,39 @@ def log(msg):
         f.write(line + '\n')
 
 
-def fetch_values():
+def fetch_wu():
+    """Ensoleillement via Weather Underground (marche depuis le serveur)."""
+    if not WU_API_KEY:
+        log("⚠️ WU_API_KEY absente — saut de la source WU")
+        return None
+    url = (f"https://api.weather.com/v2/pws/observations/current?stationId={SKY_WU_ID}"
+           f"&format=json&units=m&numericPrecision=decimal&apiKey={WU_API_KEY}")
+    try:
+        r = requests.get(url, headers={"User-Agent": UA}, timeout=20)
+        r.raise_for_status()
+        obs_list = (r.json() or {}).get('observations') or []
+    except Exception as e:
+        log(f"⚠️ WU {SKY_WU_ID} échec : {e}")
+        return None
+    if not obs_list or not isinstance(obs_list[0], dict):
+        log(f"⚠️ WU {SKY_WU_ID} : pas d'observation.")
+        return None
+    o = obs_list[0]
+    solar = o.get('solarRadiation')
+    if solar is None:
+        log(f"⚠️ WU {SKY_WU_ID} : pas de capteur solaire (solarRadiation absent).")
+        return None
+    log(f"☀️ WU {SKY_WU_ID} OK : solarRadiation={solar}, uv={o.get('uv')}")
+    return {
+        "solarrad": solar,
+        "uvi": o.get('uv'),
+        "epoch": o.get('epoch') or int(datetime.now(timezone.utc).timestamp()),
+        "rainrate": (o.get('metric') or {}).get('precipRate'),
+        "_src": f"Gampelen ({SKY_WU_ID}, WU, ~3 km)",
+    }
+
+
+def fetch_weathercloud():
     url = f"https://app.weathercloud.net/device/values?code={DEVICE}"
     headers = {
         "X-Requested-With": "XMLHttpRequest",
@@ -103,14 +141,24 @@ def classify(kt, is_day):
 
 
 def main():
+    # 1) Weather Underground (fonctionne depuis le serveur GitHub)
+    v = None
     try:
-        v = fetch_values()
+        v = fetch_wu()
     except Exception as e:
-        log(f"❌ Lecture Weathercloud échouée : {e}")
-        return False
+        log(f"⚠️ WU exception : {e}")
+    # 2) Repli Weathercloud (souvent bloqué depuis datacenter, mais on tente)
+    if not (isinstance(v, dict) and v.get('solarrad') is not None):
+        try:
+            wc = fetch_weathercloud()
+            if isinstance(wc, dict) and wc.get('solarrad') is not None:
+                wc['_src'] = "Jolimont, Erlach (Weathercloud, ~3 km)"
+                v = wc
+        except Exception as e:
+            log(f"⚠️ Weathercloud exception : {e}")
 
-    if not isinstance(v, dict) or v.get('solarrad') is None:
-        log("⚠️ Pas de données solaires exploitables — sky.json non mis à jour (repli humidité côté clients).")
+    if not (isinstance(v, dict) and v.get('solarrad') is not None):
+        log("⚠️ Aucune source solaire exploitable — sky.json non mis à jour (repli humidité côté clients).")
         return False
 
     solar = v.get('solarrad')
@@ -133,7 +181,7 @@ def main():
     out = {
         "epoch": epoch,
         "updated": datetime.now(timezone.utc).isoformat(),
-        "source": "Jolimont, Erlach (Weathercloud · ~3 km)",
+        "source": v.get('_src', "ensoleillement station voisine (~3 km)"),
         "solar_rad": solar,
         "uv": uv,
         "rain_rate": rain_rate,
