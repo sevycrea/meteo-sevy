@@ -68,7 +68,10 @@ def generate_web_json(alerts):
     #    on jette celles dont la date est déjà passée.
     now = datetime.now()
     cutoff_48 = now - timedelta(hours=48)
-    cutoff_rt = now - timedelta(minutes=90)
+    # 20 min = un cycle d'analyse (15 min) + marge anti-clignotement : l'alerte
+    # temps réel disparaît ~un cycle après la fin de la condition, mais ne
+    # saute pas si un run prend un peu de retard.
+    cutoff_rt = now - timedelta(minutes=20)
     today_str = now.strftime('%Y-%m-%d')
 
     kept = []

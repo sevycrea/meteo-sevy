@@ -2,9 +2,9 @@ name: Détection événements et alertes
 
 on:
   schedule:
-    # Toutes les 30 min, décalé de 12 min pour éviter la congestion GA
-    # sur les minutes rondes ET pour ne pas chevaucher collect-hourly/daily.
-    - cron: '12,42 * * * *'
+    # Toutes les 15 min (orages/fronts peuvent arriver vite), décalé des
+    # minutes rondes et de collect-hourly/daily pour éviter la congestion GA.
+    - cron: '12,27,42,57 * * * *'
   workflow_dispatch:
 
 concurrency:
