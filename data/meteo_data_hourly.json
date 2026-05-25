@@ -5624,22 +5624,22 @@
         "wind_dir": 132,
         "pressure": 1019.0,
         "rain": 0.0,
-        "timestamp": "2026-05-26 00:15:18"
+        "timestamp": "2026-05-26 00:17:54"
       }
     },
     "daily": {
       "temp_min": 18.0,
       "temp_max": 31.0,
-      "temp_sum": 2404.3000000000006,
-      "temp_count": 99,
-      "temp_avg": 24.3,
+      "temp_sum": 2424.7000000000007,
+      "temp_count": 100,
+      "temp_avg": 24.2,
       "rain_total": 0.0,
       "wind_max": 18.3,
-      "pressure_sum": 100913.97000000006,
-      "pressure_count": 99,
+      "pressure_sum": 101932.93000000007,
+      "pressure_count": 100,
       "pressure_avg": 1019.3,
-      "humidity_sum": 5377.0,
-      "humidity_count": 99,
+      "humidity_sum": 5437.0,
+      "humidity_count": 100,
       "humidity_avg": 54.0
     }
   }
