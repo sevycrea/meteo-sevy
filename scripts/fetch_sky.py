@@ -35,7 +35,9 @@ LOG_FILE = os.path.join(BASE_DIR, "logs", "sky.log")
 WU_API_KEY  = os.environ.get("WU_API_KEY", "")
 # Stations WU voisines avec capteur solaire, par ordre de priorité (la 1re qui
 # répond avec un rayonnement est utilisée). IINS23 = Ins, IGAMPE11 = Gampelen.
-SKY_WU_IDS  = [s.strip() for s in (os.environ.get("SKY_STATION_ID") or "IINS23,IGAMPE11").split(",") if s.strip()]
+# IGAMPE11 (Gampelen) : capteur solaire fiable. IINS23 (Ins) écarté : son capteur
+# lit ~0 W/m² même sous ciel clair (ombragé / en panne). Surchargeable par secret.
+SKY_WU_IDS  = [s.strip() for s in (os.environ.get("SKY_STATION_ID") or "IGAMPE11").split(",") if s.strip()]
 DEVICE      = os.environ.get("WEATHERCLOUD_DEVICE") or "8539205623"  # Jolimont, Erlach
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
