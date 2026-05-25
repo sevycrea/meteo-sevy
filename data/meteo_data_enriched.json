@@ -6230,7 +6230,7 @@
     "p2_wind_max": 4.0,
     "p2_wind_min": 3.0,
     "p2_wind_range": 1.0,
-    "p3_gust_max": 3.2,
+    "p3_gust_max": 3.5,
     "p3_has_rain": false,
     "p3_hum_avg": 57.5,
     "p3_hum_max": 71.0,
@@ -6246,9 +6246,9 @@
     "p3_temp_min": 18.0,
     "p3_temp_range": 7.0,
     "p3_wind_avg": 0.4,
-    "p3_wind_max": 3.2,
+    "p3_wind_max": 3.5,
     "p3_wind_min": 0.0,
-    "p3_wind_range": 3.2,
+    "p3_wind_range": 3.5,
     "pressure_avg": 1016.9,
     "pressure_drop_max": 3.1,
     "pressure_max": 1016.9,
@@ -6271,7 +6271,7 @@
   },
   "2026-05-24": {
     "gust_max": 21.1,
-    "hum_avg": 55.1,
+    "hum_avg": 54.9,
     "hum_max": 76.0,
     "hum_min": 27.0,
     "hum_range_day": 45.0,
@@ -6348,7 +6348,7 @@
     "temp_p1_to_p2": 8.7,
     "temp_p2_to_p3": -4.7,
     "temp_total_range": 14.5,
-    "wind_avg": 1.7,
+    "wind_avg": 1.8,
     "wind_max": 9.6,
     "wind_min": 0.0
   }
