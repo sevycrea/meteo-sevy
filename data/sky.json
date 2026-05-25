@@ -1,15 +1,15 @@
 {
-  "epoch": 1779697849,
-  "updated": "2026-05-25T08:30:53.615031+00:00",
-  "source": "Ins (IINS23, WU, ~3 km)",
-  "solar_rad": 76.8,
-  "uv": 0.0,
+  "epoch": 1779697892,
+  "updated": "2026-05-25T08:31:45.942949+00:00",
+  "source": "Gampelen (IGAMPE11, WU, ~3 km)",
+  "solar_rad": 1244.9,
+  "uv": 6.0,
   "rain_rate": 0.0,
   "raining": false,
-  "sun_elevation": 45.2,
-  "clear_sky_ghi": 717,
-  "clearness": 0.11,
+  "sun_elevation": 45.3,
+  "clear_sky_ghi": 719,
+  "clearness": 1.2,
   "is_day": true,
-  "condition": "overcast",
-  "icon": "☁️"
+  "condition": "clear",
+  "icon": "☀️"
 }
