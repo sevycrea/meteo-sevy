@@ -6423,7 +6423,7 @@
     "pressure_trend_day": -1.3,
     "rain": 0,
     "temp_amplitude_day": 12.6,
-    "temp_avg": 24.3,
+    "temp_avg": 24.2,
     "temp_max": 31.0,
     "temp_max_day": 30.7,
     "temp_min": 18.0,
@@ -6431,7 +6431,7 @@
     "temp_p1_to_p2": 8.5,
     "temp_p2_to_p3": -6.5,
     "temp_total_range": 16.9,
-    "wind_avg": 0.0,
+    "wind_avg": 0.1,
     "wind_max": 6.9,
     "wind_min": 0.0
   }

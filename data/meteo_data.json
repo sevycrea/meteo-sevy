@@ -4696,10 +4696,10 @@
     "pressure_max": 1021.0,
     "pressure_min": 1018.0,
     "rain": 0,
-    "temp_avg": 24.3,
+    "temp_avg": 24.2,
     "temp_max": 31.0,
     "temp_min": 18.0,
-    "wind_avg": 0.0,
+    "wind_avg": 0.1,
     "wind_max": 6.9,
     "wind_min": 0.0
   }
