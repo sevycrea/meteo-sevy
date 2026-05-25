@@ -33,7 +33,9 @@ LOG_FILE = os.path.join(BASE_DIR, "logs", "sky.log")
 # NB : un secret GitHub absent est injecté comme chaîne VIDE (pas absent) →
 # on utilise `or` pour retomber sur le défaut.
 WU_API_KEY  = os.environ.get("WU_API_KEY", "")
-SKY_WU_ID   = os.environ.get("SKY_STATION_ID") or "IGAMPE11"      # Gampelen, ~3 km
+# Stations WU voisines avec capteur solaire, par ordre de priorité (la 1re qui
+# répond avec un rayonnement est utilisée). IINS23 = Ins, IGAMPE11 = Gampelen.
+SKY_WU_IDS  = [s.strip() for s in (os.environ.get("SKY_STATION_ID") or "IINS23,IGAMPE11").split(",") if s.strip()]
 DEVICE      = os.environ.get("WEATHERCLOUD_DEVICE") or "8539205623"  # Jolimont, Erlach
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
@@ -51,36 +53,42 @@ def log(msg):
         f.write(line + '\n')
 
 
+_WU_PLACE = {"IINS23": "Ins", "IGAMPE11": "Gampelen"}
+
 def fetch_wu():
-    """Ensoleillement via Weather Underground (marche depuis le serveur)."""
+    """Ensoleillement via Weather Underground (marche depuis le serveur).
+    Essaie chaque station de SKY_WU_IDS jusqu'à en trouver une avec solaire."""
     if not WU_API_KEY:
         log("⚠️ WU_API_KEY absente — saut de la source WU")
         return None
-    url = (f"https://api.weather.com/v2/pws/observations/current?stationId={SKY_WU_ID}"
-           f"&format=json&units=m&numericPrecision=decimal&apiKey={WU_API_KEY}")
-    try:
-        r = requests.get(url, headers={"User-Agent": UA}, timeout=20)
-        r.raise_for_status()
-        obs_list = (r.json() or {}).get('observations') or []
-    except Exception as e:
-        log(f"⚠️ WU {SKY_WU_ID} échec : {e}")
-        return None
-    if not obs_list or not isinstance(obs_list[0], dict):
-        log(f"⚠️ WU {SKY_WU_ID} : pas d'observation.")
-        return None
-    o = obs_list[0]
-    solar = o.get('solarRadiation')
-    if solar is None:
-        log(f"⚠️ WU {SKY_WU_ID} : pas de capteur solaire (solarRadiation absent).")
-        return None
-    log(f"☀️ WU {SKY_WU_ID} OK : solarRadiation={solar}, uv={o.get('uv')}")
-    return {
-        "solarrad": solar,
-        "uvi": o.get('uv'),
-        "epoch": o.get('epoch') or int(datetime.now(timezone.utc).timestamp()),
-        "rainrate": (o.get('metric') or {}).get('precipRate'),
-        "_src": f"Gampelen ({SKY_WU_ID}, WU, ~3 km)",
-    }
+    for sid in SKY_WU_IDS:
+        url = (f"https://api.weather.com/v2/pws/observations/current?stationId={sid}"
+               f"&format=json&units=m&numericPrecision=decimal&apiKey={WU_API_KEY}")
+        try:
+            r = requests.get(url, headers={"User-Agent": UA}, timeout=20)
+            r.raise_for_status()
+            obs_list = (r.json() or {}).get('observations') or []
+        except Exception as e:
+            log(f"⚠️ WU {sid} échec : {e}")
+            continue
+        if not obs_list or not isinstance(obs_list[0], dict):
+            log(f"⚠️ WU {sid} : pas d'observation.")
+            continue
+        o = obs_list[0]
+        solar = o.get('solarRadiation')
+        if solar is None:
+            log(f"⚠️ WU {sid} : pas de capteur solaire.")
+            continue
+        place = _WU_PLACE.get(sid, sid)
+        log(f"☀️ WU {sid} ({place}) OK : solarRadiation={solar}, uv={o.get('uv')}")
+        return {
+            "solarrad": solar,
+            "uvi": o.get('uv'),
+            "epoch": o.get('epoch') or int(datetime.now(timezone.utc).timestamp()),
+            "rainrate": (o.get('metric') or {}).get('precipRate'),
+            "_src": f"{place} ({sid}, WU, ~3 km)",
+        }
+    return None
 
 
 def fetch_weathercloud():
