@@ -5627,29 +5627,29 @@
         "timestamp": "2026-05-26 00:45:18"
       },
       "23:00": {
-        "temp": 19.7,
-        "hum": 61.0,
+        "temp": 19.3,
+        "hum": 62.0,
         "wind": 0.0,
         "gust": 0.0,
         "wind_dir": 132,
         "pressure": 1019.0,
         "rain": 0.0,
-        "timestamp": "2026-05-26 01:00:42"
+        "timestamp": "2026-05-26 01:15:18"
       }
     },
     "daily": {
       "temp_min": 18.0,
       "temp_max": 31.0,
-      "temp_sum": 2484.500000000001,
-      "temp_count": 103,
+      "temp_sum": 2503.800000000001,
+      "temp_count": 104,
       "temp_avg": 24.1,
       "rain_total": 0.0,
       "wind_max": 18.3,
-      "pressure_sum": 104989.81000000008,
-      "pressure_count": 103,
+      "pressure_sum": 106008.77000000009,
+      "pressure_count": 104,
       "pressure_avg": 1019.3,
-      "humidity_sum": 5623.0,
-      "humidity_count": 103,
+      "humidity_sum": 5685.0,
+      "humidity_count": 104,
       "humidity_avg": 55.0
     }
   }
