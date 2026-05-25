@@ -57,6 +57,14 @@ jobs:
           DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
         run: python scripts/auto_meteo_wunderground_hourly.py
 
+      - name: Ciel observé (ensoleillement Jolimont, Erlach)
+        env:
+          WEATHERCLOUD_DEVICE: ${{ secrets.WEATHERCLOUD_DEVICE }}
+          DATA_FTP_HOST: ${{ secrets.DATA_FTP_HOST }}
+          DATA_FTP_USER: ${{ secrets.DATA_FTP_USER }}
+          DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
+        run: python scripts/fetch_sky.py || true
+
       - name: Upload log FTP
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
