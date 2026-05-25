@@ -1,18 +1,6 @@
 [
   {
     "type": "pressure_drop_realtime",
-    "severity": "warning",
-    "window": "07:00–14:00",
-    "source": "hourly",
-    "message": "⚡ Chute de pression rapide · 3.1 hPa en 1h",
-    "recommendation": "Conditions instables — orage approchant possible.",
-    "metrics": {
-      "pressure_drop_short": 3.1
-    },
-    "detected_at": "2026-05-09T14:35:54.948611"
-  },
-  {
-    "type": "pressure_drop_realtime",
     "severity": "info",
     "window": "10:00–17:00",
     "source": "hourly",
@@ -2173,5 +2161,12 @@
     "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
     "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
     "detected_at": "2026-05-25T14:56:03.225643"
+  },
+  {
+    "type": "heat_wave_realtime",
+    "severity": "warning",
+    "message": "🌡️ Forte chaleur : 31°C mesurés actuellement à Vinelz",
+    "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
+    "detected_at": "2026-05-25T16:00:50.768322"
   }
 ]
