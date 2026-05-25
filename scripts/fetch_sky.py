@@ -48,11 +48,29 @@ def fetch_values():
     headers = {
         "X-Requested-With": "XMLHttpRequest",
         "Referer": f"https://app.weathercloud.net/d{DEVICE}",
-        "User-Agent": "Mozilla/5.0 (MeteoSevy sky fetch)",
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+        "Accept-Language": "fr-CH,fr;q=0.9,en;q=0.8",
+        "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                       "AppleWebKit/537.36 (KHTML, like Gecko) "
+                       "Chrome/124.0 Safari/537.36"),
     }
     r = requests.get(url, headers=headers, timeout=20)
     r.raise_for_status()
-    return r.json()
+    try:
+        data = r.json()
+    except Exception:
+        log(f"⚠️ Réponse non-JSON (len={len(r.text)}): {r.text[:120]!r}")
+        return None
+    # Weathercloud peut renvoyer un dict (OK) ou une liste (vide = bloqué/limité).
+    if isinstance(data, dict):
+        return data
+    if isinstance(data, list):
+        if data and isinstance(data[0], dict):
+            return data[0]
+        log(f"⚠️ Réponse liste inattendue (len={len(data)}) — accès probablement limité.")
+        return None
+    log(f"⚠️ Type de réponse inattendu: {type(data).__name__}")
+    return None
 
 
 def sun_position(epoch):
@@ -89,6 +107,10 @@ def main():
         v = fetch_values()
     except Exception as e:
         log(f"❌ Lecture Weathercloud échouée : {e}")
+        return False
+
+    if not isinstance(v, dict) or v.get('solarrad') is None:
+        log("⚠️ Pas de données solaires exploitables — sky.json non mis à jour (repli humidité côté clients).")
         return False
 
     solar = v.get('solarrad')
