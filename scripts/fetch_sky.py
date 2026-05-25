@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 import requests
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ftp_helpers import upload_data
+from ftp_helpers import upload_data, upload_legacy
 from io_helpers import atomic_write_json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -126,11 +126,17 @@ def main():
     atomic_write_json(OUT_FILE, out)
     log(f"✅ ciel = {condition} {icon}  (kt={out['clearness']}, solar={solar} W/m², h={h:.0f}°)")
 
+    # Upload : legacy (FTP_*) = chemin réellement servi par data.sevy-creations.net,
+    # + data (DATA_FTP_*) si le compte dédié est configuré. Comme le hourly.
+    try:
+        upload_legacy(OUT_FILE, 'sky.json', log=log)
+        log("✅ sky.json uploadé (legacy)")
+    except Exception as e:
+        log(f"⚠️ Upload legacy sky.json échoué : {e}")
     try:
         upload_data(OUT_FILE, 'sky.json', log=log)
-        log("✅ sky.json uploadé")
     except Exception as e:
-        log(f"⚠️ Upload sky.json échoué : {e}")
+        log(f"⚠️ Upload data sky.json échoué : {e}")
 
     return True
 
