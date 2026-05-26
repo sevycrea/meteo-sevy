@@ -1,15 +1,5 @@
 [
   {
-    "type": "strong_wind_day",
-    "severity": "warning",
-    "date": "2026-05-11",
-    "day_label": "Après-demain",
-    "gust_kmh": 50.0,
-    "message": "💨 Vent fort · rafales jusqu'à 50 km/h Après-demain",
-    "recommendation": "Attention au vent.",
-    "detected_at": "2026-05-10T09:05:22.144568"
-  },
-  {
     "type": "rain_likely",
     "severity": "info",
     "date": "2026-05-10",
@@ -2152,5 +2142,12 @@
     "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
     "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
     "detected_at": "2026-05-26T15:06:20.231590"
+  },
+  {
+    "type": "heat_wave_realtime",
+    "severity": "warning",
+    "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
+    "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
+    "detected_at": "2026-05-26T16:15:31.504361"
   }
 ]
