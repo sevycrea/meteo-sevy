@@ -6437,7 +6437,7 @@
   },
   "2026-05-26": {
     "gust_max": 10.8,
-    "hum_avg": 65.2,
+    "hum_avg": 65.8,
     "hum_max": 84.8,
     "hum_min": 30.7,
     "hum_range_day": 46.0,
@@ -6506,7 +6506,7 @@
     "pressure_trend_day": -4.0,
     "rain": 0,
     "temp_amplitude_day": 14.4,
-    "temp_avg": 22.8,
+    "temp_avg": 22.7,
     "temp_max": 30.7,
     "temp_max_day": 30.4,
     "temp_min": 15.9,
