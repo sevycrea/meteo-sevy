@@ -6398,7 +6398,7 @@
     "p2_wind_range": 4.0,
     "p3_gust_max": 0.0,
     "p3_has_rain": false,
-    "p3_hum_avg": 60.3,
+    "p3_hum_avg": 60.6,
     "p3_hum_max": 71.0,
     "p3_hum_min": 46.0,
     "p3_hum_range": 25.0,
@@ -6437,7 +6437,7 @@
   },
   "2026-05-26": {
     "gust_max": 10.8,
-    "hum_avg": 63.5,
+    "hum_avg": 65.2,
     "hum_max": 84.8,
     "hum_min": 30.7,
     "hum_range_day": 46.0,
