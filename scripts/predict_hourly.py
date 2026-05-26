@@ -261,7 +261,12 @@ def generate_hourly(nwp, ml_preds):
         })
 
         correction_str = f"  (correction locale {ml_correction:+.1f}°C)" if abs(ml_correction) >= 0.5 else ""
-        log(f"   {date_str} {label}: {day_temp_min:.0f}–{day_temp_max:.0f}°C  "
+        # Log tolérant au None : un jour sans temp_min/max NWP ne doit pas
+        # faire planter le workflow (le JSON conserve la valeur null, gérée
+        # côté front). On formate seulement si la valeur existe.
+        tmin_s = f"{day_temp_min:.0f}" if day_temp_min is not None else "—"
+        tmax_s = f"{day_temp_max:.0f}" if day_temp_max is not None else "—"
+        log(f"   {date_str} {label}: {tmin_s}–{tmax_s}°C  "
             f"précip {day_precip}mm  {len(slots)} créneaux{correction_str}")
 
     return days_output
