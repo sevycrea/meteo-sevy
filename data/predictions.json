@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-26T03:45:40.499867",
+  "generated_at": "2026-05-26T04:01:14.338722",
   "model_version": "2026-05-26T01:01:05.274656",
   "model_type": "multihorizon_sequential",
   "training_days": 295,
@@ -32,7 +32,7 @@
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 16.7,
+          "temp_estimate": 16.6,
           "rain_risk": "low"
         }
       }
