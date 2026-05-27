@@ -5905,30 +5905,30 @@
         "timestamp": "2026-05-27 02:45:18"
       },
       "01:00": {
-        "temp": 18.2,
+        "temp": 18.1,
         "hum": 87.0,
         "wind": 0.0,
         "gust": 0.0,
         "wind_dir": 42,
         "pressure": 1014.9,
         "rain": 0.0,
-        "timestamp": "2026-05-27 03:15:18"
+        "timestamp": "2026-05-27 03:30:30"
       }
     },
     "daily": {
-      "temp_min": 18.2,
+      "temp_min": 18.1,
       "temp_max": 19.1,
-      "temp_sum": 111.7,
-      "temp_count": 6,
-      "temp_avg": 18.6,
+      "temp_sum": 129.8,
+      "temp_count": 7,
+      "temp_avg": 18.5,
       "rain_total": 0.0,
       "wind_max": 0.0,
-      "pressure_sum": 6089.4,
-      "pressure_count": 6,
+      "pressure_sum": 7104.299999999999,
+      "pressure_count": 7,
       "pressure_avg": 1014.9,
-      "humidity_sum": 494.0,
-      "humidity_count": 6,
-      "humidity_avg": 82.0
+      "humidity_sum": 581.0,
+      "humidity_count": 7,
+      "humidity_avg": 83.0
     }
   }
 }
