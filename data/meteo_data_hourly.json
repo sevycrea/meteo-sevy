@@ -6026,29 +6026,29 @@
       },
       "13:00": {
         "temp": 29.7,
-        "hum": 41.0,
-        "wind": 3.5,
-        "gust": 3.5,
-        "wind_dir": 288,
+        "hum": 40.0,
+        "wind": 3.2,
+        "gust": 3.2,
+        "wind_dir": 314,
         "pressure": 1011.9,
         "rain": 0.0,
-        "timestamp": "2026-05-27 15:00:54"
+        "timestamp": "2026-05-27 15:15:30"
       }
     },
     "daily": {
       "temp_min": 17.2,
       "temp_max": 30.1,
-      "temp_sum": 1174.7999999999997,
-      "temp_count": 53,
-      "temp_avg": 22.2,
+      "temp_sum": 1204.4999999999998,
+      "temp_count": 54,
+      "temp_avg": 22.3,
       "rain_total": 0.0,
       "wind_max": 6.8,
-      "pressure_sum": 53733.73,
-      "pressure_count": 53,
+      "pressure_sum": 54745.58,
+      "pressure_count": 54,
       "pressure_avg": 1013.8,
-      "humidity_sum": 3843.0,
-      "humidity_count": 53,
-      "humidity_avg": 73.0
+      "humidity_sum": 3883.0,
+      "humidity_count": 54,
+      "humidity_avg": 72.0
     }
   }
 }
