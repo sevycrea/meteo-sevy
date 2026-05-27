@@ -6015,29 +6015,29 @@
         "timestamp": "2026-05-27 13:30:42"
       },
       "12:00": {
-        "temp": 29.9,
-        "hum": 41.0,
-        "wind": 3.2,
-        "gust": 3.2,
-        "wind_dir": 300,
+        "temp": 30.0,
+        "hum": 38.0,
+        "wind": 0.0,
+        "gust": 0.0,
+        "wind_dir": 350,
         "pressure": 1011.9,
         "rain": 0.0,
-        "timestamp": "2026-05-27 14:30:42"
+        "timestamp": "2026-05-27 14:32:42"
       }
     },
     "daily": {
       "temp_min": 17.2,
       "temp_max": 30.0,
-      "temp_sum": 1084.9999999999998,
-      "temp_count": 50,
-      "temp_avg": 21.7,
+      "temp_sum": 1114.9999999999998,
+      "temp_count": 51,
+      "temp_avg": 21.9,
       "rain_total": 0.0,
       "wind_max": 6.8,
-      "pressure_sum": 50698.18000000001,
-      "pressure_count": 50,
-      "pressure_avg": 1014.0,
-      "humidity_sum": 3725.0,
-      "humidity_count": 50,
+      "pressure_sum": 51710.030000000006,
+      "pressure_count": 51,
+      "pressure_avg": 1013.9,
+      "humidity_sum": 3763.0,
+      "humidity_count": 51,
       "humidity_avg": 74.0
     }
   }
