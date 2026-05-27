@@ -1,18 +1,5 @@
 [
   {
-    "type": "cold_front_realtime",
-    "severity": "warning",
-    "window": "11:00–15:00",
-    "source": "hourly",
-    "message": "❄️🌧️ Front froid détecté · chute de 3.0°C et hausse de 19% d'humidité en 2h (11:00–15:00)",
-    "recommendation": "Orage probable à proximité — vigilance.",
-    "metrics": {
-      "temp_drop": 3.0,
-      "humidity_jump": 19.0
-    },
-    "detected_at": "2026-05-10T17:40:07.611450"
-  },
-  {
     "type": "rain_likely",
     "severity": "info",
     "date": "2026-05-10",
@@ -2143,5 +2130,12 @@
     "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
     "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
     "detected_at": "2026-05-27T13:01:03.036754"
+  },
+  {
+    "type": "heat_wave_realtime",
+    "severity": "warning",
+    "message": "🌡️ Forte chaleur : 30°C mesurés actuellement à Vinelz",
+    "recommendation": "Évitez l'exposition au soleil aux heures chaudes.",
+    "detected_at": "2026-05-27T15:00:59.424598"
   }
 ]
