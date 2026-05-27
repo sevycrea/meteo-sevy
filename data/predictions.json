@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-05-26T23:45:45.610242",
+  "generated_at": "2026-05-27T00:01:15.201457",
   "model_version": "2026-05-26T12:49:45.204908",
   "model_type": "multihorizon_sequential",
   "training_days": 295,
   "forecasts": [
     {
-      "date": "2026-05-26",
-      "day_name": "Tuesday",
+      "date": "2026-05-27",
+      "day_name": "Wednesday",
       "day_number": 0,
       "day_label": "Aujourd'hui",
       "temperature": {
         "predicted": 19.8,
-        "min_estimate": 19.2,
+        "min_estimate": 19.3,
         "max_estimate": 20.4
       },
       "rain": {
@@ -27,7 +27,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 26.3,
+          "temp_estimate": 26.4,
           "rain_risk": "low"
         },
         "p3": {
@@ -38,8 +38,8 @@
       }
     },
     {
-      "date": "2026-05-27",
-      "day_name": "Wednesday",
+      "date": "2026-05-28",
+      "day_name": "Thursday",
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
@@ -71,8 +71,8 @@
       }
     },
     {
-      "date": "2026-05-28",
-      "day_name": "Thursday",
+      "date": "2026-05-29",
+      "day_name": "Friday",
       "day_number": 2,
       "day_label": "Après-demain",
       "temperature": {
@@ -93,7 +93,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 24.9,
+          "temp_estimate": 25.0,
           "rain_risk": "medium"
         },
         "p3": {
