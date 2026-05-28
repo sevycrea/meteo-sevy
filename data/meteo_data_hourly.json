@@ -6265,28 +6265,28 @@
       },
       "11:00": {
         "temp": 28.4,
-        "hum": 39.0,
-        "wind": 7.1,
-        "gust": 7.4,
-        "wind_dir": 26,
+        "hum": 41.0,
+        "wind": 9.3,
+        "gust": 10.0,
+        "wind_dir": 9,
         "pressure": 1011.9,
         "rain": 0.0,
-        "timestamp": "2026-05-28 13:30:30"
+        "timestamp": "2026-05-28 13:45:18"
       }
     },
     "daily": {
       "temp_min": 19.7,
       "temp_max": 28.4,
-      "temp_sum": 1106.0,
-      "temp_count": 48,
-      "temp_avg": 23.0,
+      "temp_sum": 1134.4,
+      "temp_count": 49,
+      "temp_avg": 23.2,
       "rain_total": 0.0,
       "wind_max": 12.6,
-      "pressure_sum": 48587.16,
-      "pressure_count": 48,
+      "pressure_sum": 49599.01,
+      "pressure_count": 49,
       "pressure_avg": 1012.2,
-      "humidity_sum": 2634.0,
-      "humidity_count": 48,
+      "humidity_sum": 2675.0,
+      "humidity_count": 49,
       "humidity_avg": 55.0
     }
   }
