@@ -6274,29 +6274,29 @@
         "timestamp": "2026-05-28 13:45:18"
       },
       "12:00": {
-        "temp": 29.8,
-        "hum": 32.0,
-        "wind": 3.2,
-        "gust": 3.2,
-        "wind_dir": 318,
+        "temp": 28.8,
+        "hum": 35.0,
+        "wind": 12.6,
+        "gust": 12.6,
+        "wind_dir": 9,
         "pressure": 1011.9,
         "rain": 0.0,
-        "timestamp": "2026-05-28 14:45:18"
+        "timestamp": "2026-05-28 14:53:30"
       }
     },
     "daily": {
       "temp_min": 19.7,
       "temp_max": 29.8,
-      "temp_sum": 1250.3,
-      "temp_count": 53,
-      "temp_avg": 23.6,
+      "temp_sum": 1279.1,
+      "temp_count": 54,
+      "temp_avg": 23.7,
       "rain_total": 0.0,
       "wind_max": 12.6,
-      "pressure_sum": 53646.409999999996,
-      "pressure_count": 53,
+      "pressure_sum": 54658.259999999995,
+      "pressure_count": 54,
       "pressure_avg": 1012.2,
-      "humidity_sum": 2815.0,
-      "humidity_count": 53,
+      "humidity_sum": 2850.0,
+      "humidity_count": 54,
       "humidity_avg": 53.0
     }
   }
