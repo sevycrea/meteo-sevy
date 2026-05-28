@@ -4744,11 +4744,11 @@
     "pressure_max": 1011.9,
     "pressure_min": 1011.9,
     "rain": 0,
-    "temp_avg": 22.6,
+    "temp_avg": 22.5,
     "temp_max": 22.9,
-    "temp_min": 22.4,
-    "wind_avg": 3.3,
-    "wind_max": 4.8,
+    "temp_min": 22.1,
+    "wind_avg": 3.4,
+    "wind_max": 5.0,
     "wind_min": 1.7
   }
 }
