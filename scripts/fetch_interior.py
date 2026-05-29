@@ -30,7 +30,9 @@ import requests
 
 APP_ID        = os.environ["EWELINK_APP_ID"]
 APP_SECRET    = os.environ["EWELINK_APP_SECRET"]
-REFRESH_TOKEN = os.environ["EWELINK_REFRESH_TOKEN"]
+# ACCESS_TOKEN : valide 30 jours, prioritaire sur le refresh
+ACCESS_TOKEN  = os.environ.get("EWELINK_ACCESS_TOKEN", "")
+REFRESH_TOKEN = os.environ.get("EWELINK_REFRESH_TOKEN", "")
 DEVICE_ID     = os.environ.get("EWELINK_DEVICE_ID", "a480075689")
 BASE_URL      = "https://eu-apia.coolkit.cc/v2"
 
@@ -47,26 +49,34 @@ def _sign(body_str: str) -> str:
 
 
 def get_token() -> str:
-    """GET /v2/user/refresh?rt=... → nouvel accessToken.
-    Pour les requêtes GET, on signe la query string (pas le body).
+    """Retourne l'accessToken disponible.
+    Priorité : ACCESS_TOKEN (valide 30j) > tentative refresh.
     """
-    query = f"rt={REFRESH_TOKEN}"
+    if ACCESS_TOKEN:
+        print("   Utilisation de l'accessToken direct (valide 30 j)")
+        return ACCESS_TOKEN
+    if not REFRESH_TOKEN:
+        raise RuntimeError(
+            "Ni EWELINK_ACCESS_TOKEN ni EWELINK_REFRESH_TOKEN configurés."
+        )
+    # Tentative refresh via POST /v2/user/oauth/token
+    payload = {"grantType": "refresh_token", "rt": REFRESH_TOKEN}
+    body_str = json.dumps(payload, separators=(",", ":"))
     headers = {
+        "Content-Type": "application/json",
         "X-CK-Appid":   APP_ID,
-        "Authorization": f"Sign {_sign(query)}",
+        "Authorization": f"Sign {_sign(body_str)}",
     }
-    r = requests.get(
-        f"{BASE_URL}/user/refresh",
-        params={"rt": REFRESH_TOKEN},
-        headers=headers,
-        timeout=15,
-    )
+    r = requests.post(f"{BASE_URL}/user/oauth/token", data=body_str, headers=headers, timeout=15)
     r.raise_for_status()
     resp = r.json()
     if resp.get("error") != 0:
-        raise RuntimeError(f"Refresh token eWeLink échoué : {resp}")
+        raise RuntimeError(
+            f"Refresh échoué : {resp}\n"
+            "→ Relance ewelink_auth_setup.py et mets à jour EWELINK_ACCESS_TOKEN."
+        )
     data = resp["data"]
-    return data.get("accessToken") or data.get("at") or data["accessToken"]
+    return data.get("accessToken") or data["accessToken"]
 
 # ── Lecture du capteur ────────────────────────────────────────────────────────
 
