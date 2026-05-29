@@ -29,7 +29,14 @@ BASE          = "https://eu-apia.coolkit.cc/v2"
 
 
 def get_access_token() -> str:
-    return ACCESS_TOKEN
+    token = ACCESS_TOKEN.strip()
+    if not token:
+        raise RuntimeError(
+            "EWELINK_ACCESS_TOKEN est vide.\n"
+            "Relance scripts/ewelink_auth_setup.py et copie la valeur 'accessToken' (pas refreshToken)."
+        )
+    print(f"   Token (10 premiers chars) : {token[:10]}…")
+    return token
 
 # ── Capteur ───────────────────────────────────────────────────────────────────
 
