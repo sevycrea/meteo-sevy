@@ -28,12 +28,11 @@ import requests
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-APP_ID     = os.environ["EWELINK_APP_ID"]
-APP_SECRET = os.environ["EWELINK_APP_SECRET"]
-EMAIL      = os.environ["EWELINK_EMAIL"]
-PASSWORD   = os.environ["EWELINK_PASSWORD"]
-DEVICE_ID  = os.environ.get("EWELINK_DEVICE_ID", "a480075689")
-BASE_URL   = "https://eu-apia.coolkit.cc/v2"
+APP_ID        = os.environ["EWELINK_APP_ID"]
+APP_SECRET    = os.environ["EWELINK_APP_SECRET"]
+REFRESH_TOKEN = os.environ["EWELINK_REFRESH_TOKEN"]
+DEVICE_ID     = os.environ.get("EWELINK_DEVICE_ID", "a480075689")
+BASE_URL      = "https://eu-apia.coolkit.cc/v2"
 
 # ── Authentification ──────────────────────────────────────────────────────────
 
@@ -48,25 +47,21 @@ def _sign(body_str: str) -> str:
 
 
 def get_token() -> str:
-    """POST /v2/user/login → access_token (at).
-    NB : /v2/user/oauth/token est réservé au flow OAuth2 (code navigateur).
-    Pour un script serveur accédant à son propre compte, on utilise /user/login.
+    """Échange le refreshToken contre un nouvel accessToken.
+    Utilise le flow OAuth2 officiel (grantType=refresh_token).
     """
-    # L'API eWeLink attend le mot de passe en MD5
-    pwd_md5 = hashlib.md5(PASSWORD.encode("utf-8")).hexdigest()
     payload = {
-        "email": EMAIL,
-        "password": pwd_md5,
-        "countryCode": "+41",
+        "grantType": "refresh_token",
+        "rt":        REFRESH_TOKEN,
     }
     body_str = json.dumps(payload, separators=(",", ":"))
     headers = {
         "Content-Type": "application/json",
-        "X-CK-Appid": APP_ID,
+        "X-CK-Appid":   APP_ID,
         "Authorization": f"Sign {_sign(body_str)}",
     }
     r = requests.post(
-        f"{BASE_URL}/user/login",
+        f"{BASE_URL}/user/oauth/token",
         data=body_str,
         headers=headers,
         timeout=15,
@@ -74,10 +69,9 @@ def get_token() -> str:
     r.raise_for_status()
     resp = r.json()
     if resp.get("error") != 0:
-        raise RuntimeError(f"Auth eWeLink échouée : {resp}")
-    # L'API login retourne "at" (access token), pas "accessToken"
+        raise RuntimeError(f"Refresh token eWeLink échoué : {resp}")
     data = resp["data"]
-    return data.get("at") or data.get("accessToken") or data["at"]
+    return data.get("accessToken") or data["accessToken"]
 
 # ── Lecture du capteur ────────────────────────────────────────────────────────
 
