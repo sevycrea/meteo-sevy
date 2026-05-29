@@ -1,0 +1,41 @@
+name: Capteur intérieur SONOFF SNZB-02
+
+on:
+  schedule:
+    # Toutes les 15 min, décalé à :04/:19/:34/:49 pour éviter la congestion
+    - cron: '4,19,34,49 * * * *'
+  workflow_dispatch:   # déclenchement manuel possible
+
+concurrency:
+  group: sonoff-interior
+  cancel-in-progress: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Installer dépendances
+        run: pip install requests
+
+      - name: Récupérer données SNZB-02 → interior.json
+        env:
+          EWELINK_APP_ID:     ${{ secrets.EWELINK_APP_ID }}
+          EWELINK_APP_SECRET: ${{ secrets.EWELINK_APP_SECRET }}
+          EWELINK_EMAIL:      ${{ secrets.EWELINK_EMAIL }}
+          EWELINK_PASSWORD:   ${{ secrets.EWELINK_PASSWORD }}
+          EWELINK_DEVICE_ID:  a480075689
+          DATA_FTP_HOST:      ${{ secrets.DATA_FTP_HOST }}
+          DATA_FTP_USER:      ${{ secrets.DATA_FTP_USER }}
+          DATA_FTP_PASS:      ${{ secrets.DATA_FTP_PASS }}
+        run: python scripts/fetch_interior.py
