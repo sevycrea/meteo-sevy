@@ -2,7 +2,7 @@ name: Capteur intérieur SONOFF SNZB-02
 
 on:
   schedule:
-    - cron: '4,19,34,49 * * * *'   # toutes les 15 min
+    - cron: '4,19,34,49 * * * *'
   workflow_dispatch:
 
 concurrency:
@@ -23,16 +23,14 @@ jobs:
           cache: 'pip'
 
       - name: Installer dépendances
-        run: pip install requests
+        run: pip install aioEweLink
 
       - name: Récupérer données SNZB-02 → interior.json
         env:
-          EWELINK_APP_ID:     ${{ secrets.EWELINK_APP_ID }}
-          EWELINK_APP_SECRET: ${{ secrets.EWELINK_APP_SECRET }}
-          EWELINK_EMAIL:      ${{ secrets.EWELINK_EMAIL }}
-          EWELINK_PASSWORD:   ${{ secrets.EWELINK_PASSWORD }}
-          EWELINK_DEVICE_ID:  a480075689
-          DATA_FTP_HOST:      ${{ secrets.DATA_FTP_HOST }}
-          DATA_FTP_USER:      ${{ secrets.DATA_FTP_USER }}
-          DATA_FTP_PASS:      ${{ secrets.DATA_FTP_PASS }}
+          EWELINK_EMAIL:    ${{ secrets.EWELINK_EMAIL }}
+          EWELINK_PASSWORD: ${{ secrets.EWELINK_PASSWORD }}
+          EWELINK_DEVICE_ID: a480075689
+          DATA_FTP_HOST:    ${{ secrets.DATA_FTP_HOST }}
+          DATA_FTP_USER:    ${{ secrets.DATA_FTP_USER }}
+          DATA_FTP_PASS:    ${{ secrets.DATA_FTP_PASS }}
         run: python scripts/fetch_interior.py
