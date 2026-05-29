@@ -6513,29 +6513,29 @@
         "timestamp": "2026-05-29 11:45:18"
       },
       "10:00": {
-        "temp": 25.8,
-        "hum": 39.0,
-        "wind": 14.3,
-        "gust": 15.0,
-        "wind_dir": 12,
+        "temp": 25.7,
+        "hum": 41.0,
+        "wind": 7.9,
+        "gust": 8.5,
+        "wind_dir": 336,
         "pressure": 1013.9,
         "rain": 0.0,
-        "timestamp": "2026-05-29 12:00:42"
+        "timestamp": "2026-05-29 12:15:30"
       }
     },
     "daily": {
       "temp_min": 18.3,
       "temp_max": 25.8,
-      "temp_sum": 855.6,
-      "temp_count": 41,
-      "temp_avg": 20.9,
+      "temp_sum": 881.3000000000001,
+      "temp_count": 42,
+      "temp_avg": 21.0,
       "rain_total": 0.0,
       "wind_max": 15.0,
-      "pressure_sum": 41544.82999999999,
-      "pressure_count": 41,
+      "pressure_sum": 42558.709999999985,
+      "pressure_count": 42,
       "pressure_avg": 1013.3,
-      "humidity_sum": 1984.0,
-      "humidity_count": 41,
+      "humidity_sum": 2025.0,
+      "humidity_count": 42,
       "humidity_avg": 48.0
     }
   }
