@@ -189,13 +189,17 @@ $humi_raw = $params['humidity']    ?? $params['currentHumidity']    ?? null;
 $bat      = $params['battery']     ?? null;
 
 $temp = $temp_raw !== null ? (float)$temp_raw : null;
-if ($temp !== null && $temp > 100) $temp = round($temp / 10, 1);
+if ($temp !== null && $temp > 1000) $temp = round($temp / 100, 1);
+elseif ($temp !== null && $temp > 100) $temp = round($temp / 10, 1);
+
+// 9999 = valeur sentinelle eWeLink = humidité indisponible
+$humi = ($humi_raw !== null && (int)$humi_raw !== 9999) ? (int)$humi_raw : null;
 
 $interior = [
     'updated'  => gmdate('Y-m-d\TH:i:s\Z'),
     'temp'     => $temp,
-    'humidity' => $humi_raw !== null ? (int)$humi_raw : null,
-    'battery'  => $bat      !== null ? (int)$bat      : null,
+    'humidity' => $humi,
+    'battery'  => $bat !== null ? (int)$bat : null,
     'device'   => 'SNZB-02',
 ];
 echo "  → {$interior['temp']} °C  {$interior['humidity']} %  bat {$interior['battery']}\n";
