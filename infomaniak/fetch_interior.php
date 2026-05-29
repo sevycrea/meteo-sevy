@@ -20,7 +20,7 @@ if (php_sapi_name() !== 'cli' && CRON_SECRET) {
 // ── Config ────────────────────────────────────────────────────────────────────
 $CONFIG_FILE = __DIR__ . '/ewelink_config.json';
 $OUTPUT_FILE = __DIR__ . '/interior.json';
-$DEVICE_ID   = 'a480075689';
+$DEVICE_ID   = 'a48007565d';
 $BASE_URL     = 'https://eu-apia.coolkit.cc/v2';
 
 if (!file_exists($CONFIG_FILE)) {
