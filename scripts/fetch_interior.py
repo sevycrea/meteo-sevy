@@ -47,22 +47,17 @@ def _sign(body_str: str) -> str:
 
 
 def get_token() -> str:
-    """Échange le refreshToken contre un nouvel accessToken.
-    Utilise le flow OAuth2 officiel (grantType=refresh_token).
+    """GET /v2/user/refresh?rt=... → nouvel accessToken.
+    Pour les requêtes GET, on signe la query string (pas le body).
     """
-    payload = {
-        "grantType": "refresh_token",
-        "rt":        REFRESH_TOKEN,
-    }
-    body_str = json.dumps(payload, separators=(",", ":"))
+    query = f"rt={REFRESH_TOKEN}"
     headers = {
-        "Content-Type": "application/json",
         "X-CK-Appid":   APP_ID,
-        "Authorization": f"Sign {_sign(body_str)}",
+        "Authorization": f"Sign {_sign(query)}",
     }
-    r = requests.post(
-        f"{BASE_URL}/user/oauth/token",
-        data=body_str,
+    r = requests.get(
+        f"{BASE_URL}/user/refresh",
+        params={"rt": REFRESH_TOKEN},
         headers=headers,
         timeout=15,
     )
@@ -71,7 +66,7 @@ def get_token() -> str:
     if resp.get("error") != 0:
         raise RuntimeError(f"Refresh token eWeLink échoué : {resp}")
     data = resp["data"]
-    return data.get("accessToken") or data["accessToken"]
+    return data.get("accessToken") or data.get("at") or data["accessToken"]
 
 # ── Lecture du capteur ────────────────────────────────────────────────────────
 
