@@ -21,6 +21,7 @@ import json
 import hmac
 import hashlib
 import base64
+
 from datetime import datetime, timezone
 
 import requests
@@ -51,9 +52,11 @@ def get_token() -> str:
     NB : /v2/user/oauth/token est réservé au flow OAuth2 (code navigateur).
     Pour un script serveur accédant à son propre compte, on utilise /user/login.
     """
+    # L'API eWeLink attend le mot de passe en MD5
+    pwd_md5 = hashlib.md5(PASSWORD.encode("utf-8")).hexdigest()
     payload = {
         "email": EMAIL,
-        "password": PASSWORD,
+        "password": pwd_md5,
         "countryCode": "+41",
     }
     body_str = json.dumps(payload, separators=(",", ":"))

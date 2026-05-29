@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  fetch:
+  collect:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
