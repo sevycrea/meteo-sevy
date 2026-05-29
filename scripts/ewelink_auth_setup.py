@@ -174,6 +174,15 @@ def main():
         print(f"   Commande manuelle :")
         print(f"   gh secret set EWELINK_ACCESS_TOKEN --repo {repo} --body '{at}'")
 
+    # Sauvegarde locale pour usage immédiat (Infomaniak config etc.)
+    local_save = Path.home() / ".config" / "meteo-sevy" / "ewelink_tokens.json"
+    local_save.parent.mkdir(parents=True, exist_ok=True)
+    with open(local_save, "w") as f:
+        json.dump({"access_token": at, "refresh_token": rt,
+                   "at_expires": at_exp, "rt_expires": rt_exp}, f, indent=2)
+    print(f"\n💾 Tokens sauvegardés localement : {local_save}")
+    print(f"   accessToken  : {at}")
+    print(f"   refreshToken : {rt}")
     print("\n✅ Terminé — relance le workflow GitHub Actions.\n")
 
 
