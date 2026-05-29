@@ -47,7 +47,10 @@ def _sign(body_str: str) -> str:
 
 
 def get_token() -> str:
-    """POST /v2/user/oauth/token → access_token."""
+    """POST /v2/user/login → access_token (at).
+    NB : /v2/user/oauth/token est réservé au flow OAuth2 (code navigateur).
+    Pour un script serveur accédant à son propre compte, on utilise /user/login.
+    """
     payload = {
         "email": EMAIL,
         "password": PASSWORD,
@@ -60,7 +63,7 @@ def get_token() -> str:
         "Authorization": f"Sign {_sign(body_str)}",
     }
     r = requests.post(
-        f"{BASE_URL}/user/oauth/token",
+        f"{BASE_URL}/user/login",
         data=body_str,
         headers=headers,
         timeout=15,
@@ -69,7 +72,9 @@ def get_token() -> str:
     resp = r.json()
     if resp.get("error") != 0:
         raise RuntimeError(f"Auth eWeLink échouée : {resp}")
-    return resp["data"]["accessToken"]
+    # L'API login retourne "at" (access token), pas "accessToken"
+    data = resp["data"]
+    return data.get("at") or data.get("accessToken") or data["at"]
 
 # ── Lecture du capteur ────────────────────────────────────────────────────────
 
