@@ -92,9 +92,11 @@ def main():
         json.dump(interior, f)
 
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from ftp_helpers import upload_data
-    if not upload_data(out, "interior.json"):
-        raise RuntimeError("Upload FTP échoué")
+    from ftp_helpers import upload_data, upload_legacy
+    ok = upload_data(out, "interior.json")
+    if not ok:
+        print("   ⚠️  DATA_FTP non configuré, tentative FTP legacy…")
+        upload_legacy(out, "interior.json")
     print("✅ interior.json uploadé")
 
 

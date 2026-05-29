@@ -27,10 +27,13 @@ jobs:
 
       - name: SNZB-02 → interior.json
         env:
-          EWELINK_APP_ID:       ${{ secrets.EWELINK_APP_ID }}
-          EWELINK_ACCESS_TOKEN: ${{ secrets.EWELINK_ACCESS_TOKEN }}
-          EWELINK_DEVICE_ID:    a480075689
-          DATA_FTP_HOST:        ${{ secrets.DATA_FTP_HOST }}
-          DATA_FTP_USER:        ${{ secrets.DATA_FTP_USER }}
-          DATA_FTP_PASS:        ${{ secrets.DATA_FTP_PASS }}
+          EWELINK_APP_ID:        ${{ secrets.EWELINK_APP_ID }}
+          EWELINK_ACCESS_TOKEN:  ${{ secrets.EWELINK_REFRESH_TOKEN }}
+          EWELINK_DEVICE_ID:     a480075689
+          DATA_FTP_HOST:         ${{ secrets.DATA_FTP_HOST }}
+          DATA_FTP_USER:         ${{ secrets.DATA_FTP_USER }}
+          DATA_FTP_PASS:         ${{ secrets.DATA_FTP_PASS }}
+          FTP_HOST:              ${{ secrets.FTP_HOST }}
+          FTP_USER:              ${{ secrets.FTP_USER }}
+          FTP_PASS:              ${{ secrets.FTP_PASS }}
         run: python scripts/fetch_interior.py
