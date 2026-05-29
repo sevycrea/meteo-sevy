@@ -28,11 +28,12 @@ import time
 import random
 import string
 import urllib.parse
+from pathlib import Path
 
 import requests
 
-APP_ID     = os.environ.get("EWELINK_APP_ID")     or input("AppID     : ").strip()
-APP_SECRET = os.environ.get("EWELINK_APP_SECRET") or input("AppSecret : ").strip()
+APP_ID     = os.environ.get("EWELINK_APP_ID")     or "ZMA5xOeQQIWfuAdN43KPNz7CDugeNulc"
+APP_SECRET = os.environ.get("EWELINK_APP_SECRET") or input("AppSecret (dev.ewelink.cc) : ").strip()
 REDIRECT   = "https://sevy-creations.net/"
 BASE_URL   = "https://eu-apia.coolkit.cc/v2"
 
