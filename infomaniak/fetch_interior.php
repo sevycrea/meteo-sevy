@@ -192,8 +192,15 @@ $temp = $temp_raw !== null ? (float)$temp_raw : null;
 if ($temp !== null && $temp > 1000) $temp = round($temp / 100, 1);
 elseif ($temp !== null && $temp > 100) $temp = round($temp / 10, 1);
 
-// 9999 = valeur sentinelle eWeLink = humidité indisponible
-$humi = ($humi_raw !== null && (int)$humi_raw !== 9999) ? (int)$humi_raw : null;
+// Normalisation humidité : même encodage que température (÷100)
+// 9999 = valeur sentinelle = indisponible
+$humi = null;
+if ($humi_raw !== null) {
+    $h = (float)$humi_raw;
+    if ($h === 9999.0) $humi = null;
+    elseif ($h > 100)  $humi = (int)round($h / 100);
+    else               $humi = (int)round($h);
+}
 
 $interior = [
     'updated'  => gmdate('Y-m-d\TH:i:s\Z'),
