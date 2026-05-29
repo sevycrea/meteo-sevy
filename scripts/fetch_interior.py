@@ -13,9 +13,6 @@ Secrets GitHub requis :
   DATA_FTP_HOST / DATA_FTP_USER / DATA_FTP_PASS
 """
 
-import base64
-import hmac
-import hashlib
 import json
 import os
 import sys
@@ -25,43 +22,14 @@ import requests
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-APP_ID        = os.environ["EWELINK_APP_ID"]
-APP_SECRET    = os.environ["EWELINK_APP_SECRET"]
-REFRESH_TOKEN = os.environ["EWELINK_REFRESH_TOKEN"]
-DEVICE_ID     = os.environ.get("EWELINK_DEVICE_ID", "a480075689")
-BASE           = "https://eu-apia.coolkit.cc/v2"
-
-# ── Auth ──────────────────────────────────────────────────────────────────────
-
-def _sign(message: str) -> str:
-    mac = hmac.new(APP_SECRET.encode(), message.encode(), hashlib.sha256)
-    return base64.b64encode(mac.digest()).decode()
+APP_ID       = os.environ["EWELINK_APP_ID"]
+ACCESS_TOKEN = os.environ["EWELINK_ACCESS_TOKEN"]
+DEVICE_ID    = os.environ.get("EWELINK_DEVICE_ID", "a480075689")
+BASE          = "https://eu-apia.coolkit.cc/v2"
 
 
 def get_access_token() -> str:
-    """
-    Refresh token → access token.
-    Selon la doc CoolKit : on signe la VALEUR du refresh token (pas le body JSON).
-    Body : {"rt": "..."} sans grantType.
-    """
-    body     = json.dumps({"rt": REFRESH_TOKEN}, separators=(",", ":"))
-    sign_val = _sign(REFRESH_TOKEN)          # ← signe le RT, pas le body
-
-    r = requests.post(
-        f"{BASE}/user/oauth/token",
-        data=body,
-        headers={
-            "Content-Type":  "application/json",
-            "X-CK-Appid":    APP_ID,
-            "Authorization": f"Sign {sign_val}",
-        },
-        timeout=15,
-    )
-    r.raise_for_status()
-    resp = r.json()
-    if resp.get("error") != 0:
-        raise RuntimeError(f"Refresh échoué : {resp}")
-    return resp["data"]["accessToken"]
+    return ACCESS_TOKEN
 
 # ── Capteur ───────────────────────────────────────────────────────────────────
 
