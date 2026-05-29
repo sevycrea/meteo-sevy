@@ -211,6 +211,26 @@ $interior = [
 ];
 echo "  → {$interior['temp']} °C  {$interior['humidity']} %  bat {$interior['battery']}\n";
 
-// 4. Écriture
+// 4. Écriture interior.json (valeur courante)
 file_put_contents($OUTPUT_FILE, json_encode($interior, JSON_UNESCAPED_UNICODE));
 echo "✅ interior.json écrit\n";
+
+// 5. Historique 48h → interior_history.json
+$HISTORY_FILE = __DIR__ . '/interior_history.json';
+$history = [];
+if (file_exists($HISTORY_FILE)) {
+    $history = json_decode(file_get_contents($HISTORY_FILE), true) ?: [];
+}
+// Ajoute la mesure courante
+$history[] = [
+    'ts'       => time(),
+    'updated'  => $interior['updated'],
+    'temp'     => $interior['temp'],
+    'humidity' => $interior['humidity'],
+    'battery'  => $interior['battery'],
+];
+// Garde seulement les 48 dernières heures (192 mesures × 15 min)
+$cutoff = time() - 48 * 3600;
+$history = array_values(array_filter($history, fn($r) => ($r['ts'] ?? 0) >= $cutoff));
+file_put_contents($HISTORY_FILE, json_encode($history, JSON_UNESCAPED_UNICODE));
+echo "✅ interior_history.json mis à jour (" . count($history) . " points)\n";
