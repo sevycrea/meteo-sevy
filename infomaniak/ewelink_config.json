@@ -1,0 +1,6 @@
+{
+  "app_id":       "ZMA5xOeQQIWfuAdN43KPNz7CDugeNulc",
+  "app_secret":   "TON_APP_SECRET",
+  "refresh_token": "TON_REFRESH_TOKEN",
+  "access_token": "TON_ACCESS_TOKEN"
+}
