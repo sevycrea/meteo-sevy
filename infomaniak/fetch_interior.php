@@ -229,7 +229,7 @@ $history[] = [
     'humidity' => $interior['humidity'],
     'battery'  => $interior['battery'],
 ];
-// Garde seulement les 48 dernières heures (192 mesures × 15 min)
+// Garde seulement les 48 dernières heures (48 mesures × 1h)
 $cutoff = time() - 48 * 3600;
 $history = array_values(array_filter($history, fn($r) => ($r['ts'] ?? 0) >= $cutoff));
 file_put_contents($HISTORY_FILE, json_encode($history, JSON_UNESCAPED_UNICODE));
