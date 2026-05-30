@@ -6730,7 +6730,7 @@
     "p2_wind_range": 3.9,
     "p3_gust_max": 3.5,
     "p3_has_rain": false,
-    "p3_hum_avg": 51.7,
+    "p3_hum_avg": 52.0,
     "p3_hum_max": 62.0,
     "p3_hum_min": 34.0,
     "p3_hum_range": 28.0,
@@ -6769,7 +6769,7 @@
   },
   "2026-05-30": {
     "gust_max": 17.2,
-    "hum_avg": 55.6,
+    "hum_avg": 57.0,
     "hum_max": 73.1,
     "hum_min": 25.5,
     "hum_range_day": 44.0,
@@ -6846,7 +6846,7 @@
     "temp_p1_to_p2": 8.3,
     "temp_p2_to_p3": -6.8,
     "temp_total_range": 15.3,
-    "wind_avg": 0.0,
+    "wind_avg": 0.1,
     "wind_max": 7.9,
     "wind_min": 0.0
   }
