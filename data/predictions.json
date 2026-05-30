@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T22:15:44.824017",
+  "generated_at": "2026-05-30T22:30:53.416143",
   "model_version": "2026-05-30T10:20:21.339919",
   "model_type": "multihorizon_sequential",
   "training_days": 299,
@@ -12,7 +12,7 @@
       "temperature": {
         "predicted": 19.3,
         "min_estimate": 18.7,
-        "max_estimate": 19.8
+        "max_estimate": 19.9
       },
       "rain": {
         "will_rain": false,
@@ -27,7 +27,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 24.8,
+          "temp_estimate": 24.9,
           "rain_risk": "low"
         },
         "p3": {
@@ -45,7 +45,7 @@
       "temperature": {
         "predicted": 19.3,
         "min_estimate": 18.6,
-        "max_estimate": 20.0
+        "max_estimate": 20.1
       },
       "rain": {
         "will_rain": false,
