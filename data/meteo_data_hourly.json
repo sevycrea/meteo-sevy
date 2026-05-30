@@ -6712,29 +6712,29 @@
         "timestamp": "2026-05-30 05:45:19"
       },
       "04:00": {
-        "temp": 17.0,
-        "hum": 60.0,
+        "temp": 16.5,
+        "hum": 67.0,
         "wind": 0.0,
         "gust": 0.0,
         "wind_dir": 17,
         "pressure": 1011.9,
         "rain": 0.0,
-        "timestamp": "2026-05-30 06:30:31"
+        "timestamp": "2026-05-30 06:45:19"
       }
     },
     "daily": {
       "temp_min": 15.4,
       "temp_max": 18.6,
-      "temp_sum": 337.1,
-      "temp_count": 20,
-      "temp_avg": 16.9,
+      "temp_sum": 353.6,
+      "temp_count": 21,
+      "temp_avg": 16.8,
       "rain_total": 0.0,
       "wind_max": 0.0,
-      "pressure_sum": 20239.04,
-      "pressure_count": 20,
-      "pressure_avg": 1012.0,
-      "humidity_sum": 1277.0,
-      "humidity_count": 20,
+      "pressure_sum": 21250.89,
+      "pressure_count": 21,
+      "pressure_avg": 1011.9,
+      "humidity_sum": 1344.0,
+      "humidity_count": 21,
       "humidity_avg": 64.0
     }
   }
