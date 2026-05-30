@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T02:30:56.429997",
+  "generated_at": "2026-05-30T02:45:48.055189",
   "model_version": "2026-05-30T01:01:07.555453",
   "model_type": "multihorizon_sequential",
   "training_days": 299,
@@ -22,17 +22,17 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 15.0,
+          "temp_estimate": 14.8,
           "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 23.9,
+          "temp_estimate": 24.1,
           "rain_risk": "low"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 16.1,
+          "temp_estimate": 16.0,
           "rain_risk": "low"
         }
       }
@@ -55,17 +55,17 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 15.5,
+          "temp_estimate": 15.4,
           "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 23.3,
+          "temp_estimate": 23.5,
           "rain_risk": "low"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 16.6,
+          "temp_estimate": 16.5,
           "rain_risk": "low"
         }
       }
@@ -88,12 +88,12 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 16.0,
+          "temp_estimate": 15.9,
           "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 22.7,
+          "temp_estimate": 22.8,
           "rain_risk": "low"
         },
         "p3": {
