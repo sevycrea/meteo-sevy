@@ -5,14 +5,14 @@
 define('LOG_PASSWORD', 'meteo2026');   // ← ton mot de passe
 define('SESSION_NAME', 'meteo_logs');
 
-// Logs disponibles (nom affiché => fichier)
+// Logs disponibles (nom affiché => URL)
 $logs = [
-    '⏱️ Horaire'      => __DIR__ . '/logs/auto_wunderground_hourly.log',
-    '📊 Journalier'   => __DIR__ . '/logs/auto_update_wunderground.log',
-    '🔮 Prévisions'   => __DIR__ . '/logs/predictions_multihorizon.log',
-    '🧠 Entraînement' => __DIR__ . '/logs/training_multihorizon.log',
-    '⚠️ Événements'   => __DIR__ . '/logs/events.log',
-    '📤 FTP Upload'   => __DIR__ . '/logs/ftp_upload.log',
+    '⏱️ Horaire'      => 'https://data.sevy-creations.net/logs/auto_wunderground_hourly.log',
+    '📊 Journalier'   => 'https://data.sevy-creations.net/logs/auto_update_wunderground.log',
+    '🔮 Prévisions'   => 'https://data.sevy-creations.net/logs/predictions_multihorizon.log',
+    '🧠 Entraînement' => 'https://data.sevy-creations.net/logs/training_multihorizon.log',
+    '⚠️ Événements'   => 'https://data.sevy-creations.net/logs/events.log',
+    '📤 FTP Upload'   => 'https://data.sevy-creations.net/logs/ftp_upload.log',
 ];
 
 $max_lines = 200; // Nombre de lignes affichées par log
@@ -128,21 +128,37 @@ function get_interior() {
     return $data ?: null;
 }
 
+function get_interior_history() {
+    $path = '/home/clients/171f38877b3223469356bb2d7409b781/sites/data.sevy-creations.net/interior_history.json';
+    if (!file_exists($path)) return [];
+    $data = json_decode(file_get_contents($path), true);
+    return is_array($data) ? $data : [];
+}
+
 // ============================================================
 // PAGE LOGS (authentifié)
 // ============================================================
 
-// Log actif (onglet)
+// Onglet actif (log ou capteur)
+$view = $_GET['view'] ?? 'logs';
 $active_log = $_GET['log'] ?? array_key_first($logs);
 if (!array_key_exists($active_log, $logs)) {
     $active_log = array_key_first($logs);
 }
 
-// Lire le contenu du log actif
+// Lire le contenu du log actif (depuis URL ou fichier)
 function read_log($path, $max_lines) {
-    if (!file_exists($path)) return null;
-    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    if (!$lines) return [];
+    if (filter_var($path, FILTER_VALIDATE_URL)) {
+        // URL HTTP
+        $content = @file_get_contents($path, false, stream_context_create(['http' => ['timeout' => 15]]));
+        if ($content === false) return null;
+        $lines = array_filter(explode("\n", $content), fn($l) => trim($l) !== '');
+    } else {
+        // Fichier local
+        if (!file_exists($path)) return null;
+        $lines = @file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if (!$lines) return [];
+    }
     return array_slice($lines, -$max_lines);
 }
 
@@ -202,6 +218,14 @@ $lines = read_log($logs[$active_log], $max_lines);
   .int-sep  { color: #8b949e; }
   .int-bat  { font-size: 11px; color: #8b949e; margin-left: 4px; }
   .int-time { font-size: 11px; color: #8b949e; margin-left: 4px; }
+
+  /* Graphe */
+  .chart-container {
+    background: #0d1117;
+    padding: 24px;
+    border-radius: 8px;
+    height: 400px;
+  }
   header h1 { font-size: 1.1rem; color: #e6edf3; }
   header .meta { font-size: 0.8rem; color: #8b949e; }
   .logout-btn {
@@ -311,43 +335,124 @@ $lines = read_log($logs[$active_log], $max_lines);
 </header>
 
 <nav>
+<?php
+  $interior_hist = get_interior_history();
+  $has_chart = !empty($interior_hist);
+?>
+  <a href="?view=chart" class="<?= $view === 'chart' ? 'active' : '' ?>">
+    📈 Capteur 48h <?= $has_chart ? '✓' : '🔴' ?>
+  </a>
 <?php foreach ($logs as $label => $path): ?>
   <?php
     $exists = file_exists($path);
-    $class  = ($label === $active_log) ? 'active' : '';
+    $class  = ($view === 'logs' && $label === $active_log) ? 'active' : '';
     $dot    = $exists ? '' : ' 🔴';
   ?>
-  <a href="?log=<?= urlencode($label) ?>" class="<?= $class ?>">
+  <a href="?view=logs&log=<?= urlencode($label) ?>" class="<?= $class ?>">
     <?= htmlspecialchars($label . $dot) ?>
   </a>
 <?php endforeach; ?>
 </nav>
 
 <div class="content">
-  <div class="log-header">
-    <span><?= htmlspecialchars($logs[$active_log]) ?></span>
-    <span>
-      <?php if ($lines !== null): ?>
-        <?= count($lines) ?> dernières lignes
-        — modifié le <?= date('d/m/Y H:i', filemtime($logs[$active_log])) ?>
-      <?php else: ?>
-        Fichier non trouvé
-      <?php endif; ?>
-    </span>
-  </div>
-  <div class="log-body">
-    <?php if ($lines === null): ?>
-      <div class="empty">Ce log n'existe pas encore — le workflow n'a pas encore tourné.</div>
-    <?php elseif (empty($lines)): ?>
-      <div class="empty">Log vide.</div>
-    <?php else: ?>
-      <pre><?php
-        foreach (array_reverse($lines) as $line) {
-            echo colorize_line($line) . "\n";
+  <?php if ($view === 'chart'): ?>
+    <!-- Graphe 48h -->
+    <div class="chart-container">
+      <canvas id="interiorChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script>
+      const histData = <?= json_encode($interior_hist) ?>;
+      const labels = histData.map(p => {
+        const d = new Date(p.ts * 1000);
+        return d.toLocaleTimeString('fr-CH', {hour: '2-digit', minute: '2-digit'});
+      });
+      const temps = histData.map(p => p.temp);
+      const humis = histData.map(p => p.humidity);
+
+      const ctx = document.getElementById('interiorChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Température (°C)',
+              data: temps,
+              borderColor: '#ff9800',
+              backgroundColor: 'rgba(255, 152, 0, 0.1)',
+              yAxisID: 'y',
+              tension: 0.4,
+              fill: true,
+            },
+            {
+              label: 'Humidité (%)',
+              data: humis,
+              borderColor: '#2196F3',
+              backgroundColor: 'rgba(33, 150, 243, 0)',
+              borderDash: [4, 3],
+              yAxisID: 'y1',
+              tension: 0.4,
+              fill: false,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { labels: { color: '#c9d1d9' } },
+            title: { display: true, text: 'Capteur intérieur SNZB-02 — 48 dernières heures', color: '#c9d1d9' }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#8b949e' },
+              grid: { color: 'rgba(48, 54, 61, 0.3)' }
+            },
+            y: {
+              type: 'linear',
+              position: 'left',
+              ticks: { color: '#ff9800' },
+              grid: { color: 'rgba(48, 54, 61, 0.3)' },
+              title: { display: true, text: 'Température (°C)', color: '#ff9800' }
+            },
+            y1: {
+              type: 'linear',
+              position: 'right',
+              ticks: { color: '#2196F3' },
+              grid: { drawOnChartArea: false },
+              title: { display: true, text: 'Humidité (%)', color: '#2196F3' }
+            }
+          }
         }
-      ?></pre>
-    <?php endif; ?>
-  </div>
+      });
+    </script>
+  <?php else: ?>
+    <!-- Logs -->
+    <div class="log-header">
+      <span><?= htmlspecialchars($active_log) ?></span>
+      <span>
+        <?php if ($lines !== null): ?>
+          <?= count($lines) ?> dernières lignes
+        <?php else: ?>
+          Log non disponible
+        <?php endif; ?>
+      </span>
+    </div>
+    <div class="log-body">
+      <?php if ($lines === null): ?>
+        <div class="empty">Ce log n'existe pas encore — le workflow n'a pas encore tourné.</div>
+      <?php elseif (empty($lines)): ?>
+        <div class="empty">Log vide.</div>
+      <?php else: ?>
+        <pre><?php
+          foreach (array_reverse($lines) as $line) {
+              echo colorize_line($line) . "\n";
+          }
+        ?></pre>
+      <?php endif; ?>
+    </div>
+  <?php endif; ?>
 </div>
 
 <div class="refresh-bar">
