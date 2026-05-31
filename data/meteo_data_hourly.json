@@ -7091,29 +7091,29 @@
         "timestamp": "2026-05-31 17:45:19"
       },
       "16:00": {
-        "temp": 20.9,
+        "temp": 21.1,
         "hum": 64.0,
-        "wind": 7.4,
-        "gust": 7.9,
-        "wind_dir": 310,
+        "wind": 0.0,
+        "gust": 0.0,
+        "wind_dir": 0,
         "pressure": 1006.8,
         "rain": 2.3,
-        "timestamp": "2026-05-31 18:30:31"
+        "timestamp": "2026-05-31 18:45:19"
       }
     },
     "daily": {
       "temp_min": 14.8,
       "temp_max": 28.4,
-      "temp_sum": 1398.4999999999993,
-      "temp_count": 68,
+      "temp_sum": 1419.5999999999992,
+      "temp_count": 69,
       "temp_avg": 20.6,
       "rain_total": 2.29,
       "wind_max": 8.5,
-      "pressure_sum": 68514.85999999997,
-      "pressure_count": 68,
+      "pressure_sum": 69521.62999999998,
+      "pressure_count": 69,
       "pressure_avg": 1007.6,
-      "humidity_sum": 4710.0,
-      "humidity_count": 68,
+      "humidity_sum": 4774.0,
+      "humidity_count": 69,
       "humidity_avg": 69.0
     }
   }
