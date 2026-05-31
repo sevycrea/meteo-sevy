@@ -6851,13 +6851,13 @@
     "wind_min": 0.0
   },
   "2026-05-31": {
-    "gust_max": 0.0,
-    "hum_avg": 82.0,
-    "hum_max": 87.0,
+    "gust_max": 3.2,
+    "hum_avg": 82.3,
+    "hum_max": 87.8,
     "hum_min": 73.4,
     "p1_gust_max": 0.0,
     "p1_has_rain": false,
-    "p1_hum_avg": 85.3,
+    "p1_hum_avg": 85.7,
     "p1_hum_max": 87.0,
     "p1_hum_min": 83.0,
     "p1_hum_range": 4.0,
@@ -6867,9 +6867,9 @@
     "p1_pressure_range": 0.0,
     "p1_rain": 0.0,
     "p1_temp_avg": 15.0,
-    "p1_temp_max": 15.2,
+    "p1_temp_max": 15.3,
     "p1_temp_min": 14.8,
-    "p1_temp_range": 0.4,
+    "p1_temp_range": 0.5,
     "p1_wind_avg": 0.0,
     "p1_wind_max": 0.0,
     "p1_wind_min": 0.0,
@@ -6920,7 +6920,7 @@
     "temp_max": 17.0,
     "temp_min": 14.8,
     "wind_avg": 0.0,
-    "wind_max": 0.0,
+    "wind_max": 0.2,
     "wind_min": 0.0
   }
 }
