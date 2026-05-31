@@ -1,17 +1,5 @@
 [
   {
-    "type": "local_rain_realtime",
-    "severity": "info",
-    "window": "14:00–20:00",
-    "source": "hourly",
-    "message": "🌧️ Pluie en cours · 3.5 mm en 3h",
-    "recommendation": "Précipitations actives.",
-    "metrics": {
-      "rain_cumul": 3.5
-    },
-    "detected_at": "2026-05-10T23:12:59.387785"
-  },
-  {
     "type": "rain_likely",
     "severity": "info",
     "date": "2026-05-10",
@@ -2137,5 +2125,17 @@
       "rain_cumul": 4.6
     },
     "detected_at": "2026-05-31T13:15:30.056962"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "warning",
+    "window": "13:00–14:00",
+    "source": "realtime",
+    "message": "🌧️ Pluie soutenue · 11.5 mm cumulés en 1h30",
+    "recommendation": "Précipitations actives — sols saturés possibles.",
+    "metrics": {
+      "rain_cumul": 11.5
+    },
+    "detected_at": "2026-05-31T14:15:30.809019"
   }
 ]
