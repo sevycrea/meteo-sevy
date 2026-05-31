@@ -7031,29 +7031,29 @@
         "timestamp": "2026-05-31 11:45:19"
       },
       "10:00": {
-        "temp": 26.9,
-        "hum": 49.0,
+        "temp": 26.8,
+        "hum": 51.0,
         "wind": 2.7,
         "gust": 2.7,
-        "wind_dir": 181,
-        "pressure": 1007.8,
+        "wind_dir": 143,
+        "pressure": 1006.8,
         "rain": 0.0,
-        "timestamp": "2026-05-31 12:01:07"
+        "timestamp": "2026-05-31 12:15:19"
       }
     },
     "daily": {
       "temp_min": 14.8,
       "temp_max": 26.9,
-      "temp_sum": 748.3,
-      "temp_count": 41,
-      "temp_avg": 18.3,
+      "temp_sum": 775.0999999999999,
+      "temp_count": 42,
+      "temp_avg": 18.5,
       "rain_total": 0.0,
       "wind_max": 6.1,
-      "pressure_sum": 41338.770000000026,
-      "pressure_count": 41,
-      "pressure_avg": 1008.3,
-      "humidity_sum": 3013.0,
-      "humidity_count": 41,
+      "pressure_sum": 42345.54000000002,
+      "pressure_count": 42,
+      "pressure_avg": 1008.2,
+      "humidity_sum": 3064.0,
+      "humidity_count": 42,
       "humidity_avg": 73.0
     }
   }
