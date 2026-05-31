@@ -6971,29 +6971,29 @@
         "timestamp": "2026-05-31 05:45:19"
       },
       "04:00": {
-        "temp": 15.2,
-        "hum": 86.0,
+        "temp": 15.3,
+        "hum": 87.0,
         "wind": 0.0,
         "gust": 0.0,
         "wind_dir": 102,
         "pressure": 1007.8,
         "rain": 0.0,
-        "timestamp": "2026-05-31 06:30:31"
+        "timestamp": "2026-05-31 06:45:19"
       }
     },
     "daily": {
       "temp_min": 14.8,
       "temp_max": 17.0,
-      "temp_sum": 296.0,
-      "temp_count": 19,
+      "temp_sum": 311.3,
+      "temp_count": 20,
       "temp_avg": 15.6,
       "rain_total": 0.0,
       "wind_max": 0.0,
-      "pressure_sum": 19154.13000000001,
-      "pressure_count": 19,
+      "pressure_sum": 20161.92000000001,
+      "pressure_count": 20,
       "pressure_avg": 1008.1,
-      "humidity_sum": 1557.0,
-      "humidity_count": 19,
+      "humidity_sum": 1644.0,
+      "humidity_count": 20,
       "humidity_avg": 82.0
     }
   }
