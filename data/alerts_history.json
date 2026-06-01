@@ -1,36 +1,6 @@
 [
   {
     "type": "rain_likely",
-    "severity": "warning",
-    "date": "2026-05-11",
-    "day_label": "Aujourd'hui",
-    "rain_probability": 92.0,
-    "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
-    "recommendation": "Prévoyez un parapluie.",
-    "detected_at": "2026-05-12T05:26:52.126894"
-  },
-  {
-    "type": "rain_likely",
-    "severity": "info",
-    "date": "2026-05-12",
-    "day_label": "Demain",
-    "rain_probability": 80.0,
-    "message": "🌧️ Pluie probable · 80.0% Demain",
-    "recommendation": "Pensez à votre parapluie.",
-    "detected_at": "2026-05-12T05:26:52.127564"
-  },
-  {
-    "type": "rain_likely",
-    "severity": "warning",
-    "date": "2026-05-11",
-    "day_label": "Aujourd'hui",
-    "rain_probability": 92.0,
-    "message": "🌧️ Pluie quasi certaine · 92.0% Aujourd'hui",
-    "recommendation": "Prévoyez un parapluie.",
-    "detected_at": "2026-05-12T07:08:14.606024"
-  },
-  {
-    "type": "rain_likely",
     "severity": "info",
     "date": "2026-05-12",
     "day_label": "Demain",
@@ -2154,5 +2124,35 @@
     "message": "🌧️ Pluie probable · 76.0% Après-demain",
     "recommendation": "Pensez à votre parapluie.",
     "detected_at": "2026-06-01T21:45:25.741995"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "info",
+    "date": "2026-06-01",
+    "day_label": "Aujourd'hui",
+    "rain_probability": 79.0,
+    "message": "🌧️ Pluie probable · 79.0% Aujourd'hui",
+    "recommendation": "Pensez à votre parapluie.",
+    "detected_at": "2026-06-01T23:00:49.285934"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "info",
+    "date": "2026-06-02",
+    "day_label": "Demain",
+    "rain_probability": 73.0,
+    "message": "🌧️ Pluie probable · 73.0% Demain",
+    "recommendation": "Pensez à votre parapluie.",
+    "detected_at": "2026-06-01T23:00:49.289513"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "info",
+    "date": "2026-06-03",
+    "day_label": "Après-demain",
+    "rain_probability": 75.0,
+    "message": "🌧️ Pluie probable · 75.0% Après-demain",
+    "recommendation": "Pensez à votre parapluie.",
+    "detected_at": "2026-06-01T23:00:49.292707"
   }
 ]
