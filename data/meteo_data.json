@@ -4801,7 +4801,7 @@
   },
   "2026-06-01": {
     "gust_max": 6.1,
-    "hum_avg": 83.3,
+    "hum_avg": 83.0,
     "hum_max": 96.0,
     "hum_min": 67.8,
     "pressure_avg": 1008.8,
