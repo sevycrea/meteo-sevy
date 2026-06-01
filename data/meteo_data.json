@@ -4801,17 +4801,17 @@
   },
   "2026-06-01": {
     "gust_max": 11.1,
-    "hum_avg": 68.1,
+    "hum_avg": 67.1,
     "hum_max": 96.0,
-    "hum_min": 43.1,
+    "hum_min": 39.0,
     "pressure_avg": 1008.7,
     "pressure_max": 1009.8,
     "pressure_min": 1007.8,
     "rain": 0,
-    "temp_avg": 18.5,
+    "temp_avg": 18.6,
     "temp_max": 24.2,
     "temp_min": 14.5,
-    "wind_avg": 1.7,
+    "wind_avg": 1.8,
     "wind_max": 6.5,
     "wind_min": 0.0
   }
