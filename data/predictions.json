@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01T11:15:49.739803",
+  "generated_at": "2026-06-01T11:31:04.889878",
   "model_version": "2026-06-01T01:01:03.409781",
   "model_type": "multihorizon_sequential",
   "training_days": 301,
@@ -27,12 +27,12 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 22.4,
+          "temp_estimate": 22.5,
           "rain_risk": "low"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 14.4,
+          "temp_estimate": 14.3,
           "rain_risk": "low"
         }
       }
@@ -93,7 +93,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 21.2,
+          "temp_estimate": 21.3,
           "rain_risk": "low"
         },
         "p3": {
