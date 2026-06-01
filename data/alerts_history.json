@@ -1,15 +1,5 @@
 [
   {
-    "type": "rain_likely",
-    "severity": "info",
-    "date": "2026-05-12",
-    "day_label": "Demain",
-    "rain_probability": 80.0,
-    "message": "🌧️ Pluie probable · 80.0% Demain",
-    "recommendation": "Pensez à votre parapluie.",
-    "detected_at": "2026-05-11T13:43:28.861067"
-  },
-  {
     "type": "local_rain_realtime",
     "severity": "warning",
     "window": "12:00–16:00",
@@ -2152,5 +2142,17 @@
       "rain_cumul": 19.0
     },
     "detected_at": "2026-05-31T22:00:52.349972"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "info",
+    "window": "18:00–19:28",
+    "source": "realtime",
+    "message": "🌧️ Pluie en cours · 3.0 mm en 1h30",
+    "recommendation": "Précipitations actives.",
+    "metrics": {
+      "rain_cumul": 3.0
+    },
+    "detected_at": "2026-06-01T19:29:27.790453"
   }
 ]
