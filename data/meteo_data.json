@@ -4807,7 +4807,7 @@
     "pressure_avg": 1007.8,
     "pressure_max": 1009.8,
     "pressure_min": 1005.1,
-    "rain": 0,
+    "rain": 1.0,
     "temp_avg": 20.4,
     "temp_max": 24.7,
     "temp_min": 14.5,
