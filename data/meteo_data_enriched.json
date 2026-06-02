@@ -6992,7 +6992,7 @@
     "p3_temp_max": 21.3,
     "p3_temp_min": 16.0,
     "p3_temp_range": 5.3,
-    "p3_wind_avg": 4.9,
+    "p3_wind_avg": 4.7,
     "p3_wind_max": 7.1,
     "p3_wind_min": 2.4,
     "p3_wind_range": 4.7,
@@ -7018,9 +7018,9 @@
   },
   "2026-06-02": {
     "gust_max": 8.9,
-    "hum_avg": 74.3,
-    "hum_max": 74.8,
-    "hum_min": 73.6,
+    "hum_avg": 74.2,
+    "hum_max": 75.0,
+    "hum_min": 72.7,
     "pressure_avg": 1004.1,
     "pressure_max": 1004.1,
     "pressure_min": 1004.1,
@@ -7028,8 +7028,8 @@
     "temp_avg": 15.9,
     "temp_max": 16.0,
     "temp_min": 15.9,
-    "wind_avg": 5.3,
+    "wind_avg": 4.9,
     "wind_max": 6.4,
-    "wind_min": 4.2
+    "wind_min": 3.9
   }
 }
