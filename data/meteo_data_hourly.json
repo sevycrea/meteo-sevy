@@ -7529,29 +7529,29 @@
         "timestamp": "2026-06-02 09:45:30"
       },
       "08:00": {
-        "temp": 18.1,
-        "hum": 79.0,
-        "wind": 4.2,
-        "gust": 4.2,
-        "wind_dir": 144,
-        "pressure": 1003.0,
+        "temp": 18.5,
+        "hum": 78.0,
+        "wind": 3.5,
+        "gust": 3.5,
+        "wind_dir": 188,
+        "pressure": 1002.0,
         "rain": 0.0,
-        "timestamp": "2026-06-02 10:15:30"
+        "timestamp": "2026-06-02 10:30:42"
       }
     },
     "daily": {
       "temp_min": 13.8,
-      "temp_max": 18.3,
-      "temp_sum": 548.8,
-      "temp_count": 35,
-      "temp_avg": 15.7,
+      "temp_max": 18.5,
+      "temp_sum": 567.3,
+      "temp_count": 36,
+      "temp_avg": 15.8,
       "rain_total": 0.0,
       "wind_max": 6.1,
-      "pressure_sum": 35108.73999999999,
-      "pressure_count": 35,
+      "pressure_sum": 36110.76999999999,
+      "pressure_count": 36,
       "pressure_avg": 1003.1,
-      "humidity_sum": 2869.0,
-      "humidity_count": 35,
+      "humidity_sum": 2947.0,
+      "humidity_count": 36,
       "humidity_avg": 82.0
     }
   }
