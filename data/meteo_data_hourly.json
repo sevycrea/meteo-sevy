@@ -7457,21 +7457,31 @@
         "pressure": 1004.1,
         "rain": 0.0,
         "timestamp": "2026-06-02 02:45:18"
+      },
+      "01:00": {
+        "temp": 15.8,
+        "hum": 76.0,
+        "wind": 3.5,
+        "gust": 3.5,
+        "wind_dir": 71,
+        "pressure": 1003.0,
+        "rain": 0.0,
+        "timestamp": "2026-06-02 03:00:42"
       }
     },
     "daily": {
-      "temp_min": 15.9,
+      "temp_min": 15.8,
       "temp_max": 16.0,
-      "temp_sum": 79.7,
-      "temp_count": 5,
+      "temp_sum": 95.5,
+      "temp_count": 6,
       "temp_avg": 15.9,
       "rain_total": 0.0,
       "wind_max": 4.2,
-      "pressure_sum": 5020.299999999999,
-      "pressure_count": 5,
-      "pressure_avg": 1004.1,
-      "humidity_sum": 371.0,
-      "humidity_count": 5,
+      "pressure_sum": 6023.349999999999,
+      "pressure_count": 6,
+      "pressure_avg": 1003.9,
+      "humidity_sum": 447.0,
+      "humidity_count": 6,
       "humidity_avg": 74.0
     }
   }
