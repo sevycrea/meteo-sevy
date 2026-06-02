@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-fetch_lightning.py — Détection d'orage autour de Vinelz via Blitzortung.
+fetch_lightning.py — Détection d'orage via Blitzortung (backend GitHub Actions).
 
-Tourne dans GitHub Actions (le mutualisé Infomaniak bloque les ports data de
-Blitzortung). Se connecte à la WebSocket temps réel de Blitzortung, écoute
-~quelques minutes, garde les impacts dans un rayon autour de Vinelz, et écrit
-`lightning.json` sur data.sevy-creations.net (FTPS).
+Écoute la WebSocket temps réel de Blitzortung (wss/443, format compressé décodé
+en interne), puis publie sur data.sevy-creations.net :
+  • lightning.json — résumé orage autour de VINELZ (app Météo Sevy + site).
+  • strikes.json   — éclairs récents de la RÉGION (CH + voisins), fenêtre 60 min,
+                     pour l'app OrageDetection (distance calculée côté app selon
+                     la position GPS de l'utilisateur).
 
-L'app et le site lisent `lightning.json` (jamais Blitzortung directement) →
-conforme à la politique non-commerciale de Blitzortung (serveur intermédiaire).
+Conforme Blitzortung : c'est NOTRE serveur qui sert NOS clients, l'app/le site
+ne touchent jamais Blitzortung directement.
 """
 import asyncio
 import json
@@ -24,12 +26,20 @@ import ftplib
 import urllib.request
 from datetime import datetime, timezone
 
+# --- Vinelz (lightning.json) ---
 VINELZ_LAT = 47.0552
 VINELZ_LON = 7.1248
 RADIUS_KM = float(os.environ.get("RADIUS_KM", "30"))
+PUBLIC_URL = "https://data.sevy-creations.net/lightning.json"
+
+# --- Région (strikes.json pour OrageDetection) : CH + ~200 km ---
+REGION = {"lat_min": 43.5, "lat_max": 49.5, "lon_min": 3.5, "lon_max": 12.5}
+STRIKES_URL = "https://data.sevy-creations.net/strikes.json"
+STRIKES_MAX_AGE = 3600   # garder 60 min d'historique
+STRIKES_MAX = 5000       # plafond de points
+
 LISTEN_SECONDS = int(os.environ.get("LISTEN_SECONDS", "270"))
 SERVERS = [1, 2, 3, 7, 8]
-PUBLIC_URL = "https://data.sevy-creations.net/lightning.json"
 
 FTP_HOST = os.environ.get("FTP_HOST") or os.environ.get("DATA_FTP_HOST", "")
 FTP_USER = os.environ.get("FTP_USER") or os.environ.get("DATA_FTP_USER", "")
@@ -50,8 +60,7 @@ def haversine_km(lat1, lon1, lat2, lon2):
 
 
 def bo_decode(s):
-    """Décompresse le format « maison » de Blitzortung (variante LZW) → JSON.
-    Repli si les messages ne sont pas du JSON brut."""
+    """Décompresse le format « maison » de Blitzortung (variante LZW) → JSON."""
     d = {}
     c = list(s)
     if not c:
@@ -62,10 +71,7 @@ def bo_decode(s):
     p = 256
     for i in range(1, len(c)):
         code = ord(c[i])
-        if 256 > code:
-            a = c[i]
-        else:
-            a = d.get(code, g + f)
+        a = c[i] if 256 > code else d.get(code, g + f)
         out.append(a)
         f = a[0]
         d[p] = g + f
@@ -77,31 +83,32 @@ def bo_decode(s):
 def parse_message(raw):
     if isinstance(raw, (bytes, bytearray)):
         raw = raw.decode("utf-8", "replace")
-    for candidate in (raw, None):
+    try:
+        return json.loads(raw)
+    except Exception:
         try:
-            return json.loads(raw if candidate is raw else bo_decode(raw))
+            return json.loads(bo_decode(raw))
         except Exception:
-            continue
-    return None
+            return None
 
 
 async def listen():
     import websockets
 
-    strikes = []        # (epoch_s, distance_km)
+    near = []            # (epoch, distance_km) proches de Vinelz
+    region = []          # [epoch, lat, lon] dans la région
     total_msgs = 0
     total_strikes = 0
     last_err = None
-    samples = []
 
     for sid in random.sample(SERVERS, len(SERVERS)):
-        uri = f"wss://ws{sid}.blitzortung.org/"   # port 443 (joignable partout)
+        uri = f"wss://ws{sid}.blitzortung.org/"   # port 443
         try:
             async with websockets.connect(
                 uri, open_timeout=15, ping_interval=20, ping_timeout=20, max_size=None
             ) as ws:
                 await ws.send(json.dumps({"a": 111}))
-                log(f"connecté à {uri} (subscribe a:111) — écoute {LISTEN_SECONDS}s")
+                log(f"connecté à {uri} — écoute {LISTEN_SECONDS}s")
                 end = time.monotonic() + LISTEN_SECONDS
                 tried_alt = False
                 while time.monotonic() < end:
@@ -114,100 +121,97 @@ async def listen():
                         if not tried_alt and total_msgs == 0:
                             await ws.send(json.dumps({"time": 0}))
                             tried_alt = True
-                            log('aucun message — tentative subscribe {"time":0}')
                             continue
                         if total_msgs == 0:
                             break
                         continue
                     total_msgs += 1
-                    if len(samples) < 3:
-                        s = raw if isinstance(raw, str) else raw.decode("utf-8", "replace")
-                        samples.append(s[:160])
                     obj = parse_message(raw)
                     if not isinstance(obj, dict):
                         continue
                     lat, lon = obj.get("lat"), obj.get("lon")
                     if lat is None or lon is None:
                         continue
-                    total_strikes += 1
                     try:
-                        dist = haversine_km(VINELZ_LAT, VINELZ_LON, float(lat), float(lon))
+                        flat, flon = float(lat), float(lon)
                     except Exception:
                         continue
-                    if dist <= RADIUS_KM:
-                        t_ns = obj.get("time") or 0
-                        epoch = (t_ns / 1e9) if t_ns else time.time()
-                        strikes.append((epoch, dist))
+                    total_strikes += 1
+                    t_ns = obj.get("time") or 0
+                    epoch = (t_ns / 1e9) if t_ns else time.time()
+                    # région (app OrageDetection)
+                    if (REGION["lat_min"] <= flat <= REGION["lat_max"]
+                            and REGION["lon_min"] <= flon <= REGION["lon_max"]):
+                        region.append([round(epoch), round(flat, 4), round(flon, 4)])
+                    # proche de Vinelz (lightning.json)
+                    if haversine_km(VINELZ_LAT, VINELZ_LON, flat, flon) <= RADIUS_KM:
+                        near.append((epoch, haversine_km(VINELZ_LAT, VINELZ_LON, flat, flon)))
             if total_msgs > 0:
-                break  # un serveur a fourni des données, on arrête
+                break
         except Exception as e:
             last_err = e
             log(f"échec {uri}: {type(e).__name__} {e}")
             continue
 
-    for i, s in enumerate(samples):
-        log(f"  sample[{i}]: {s!r}")
-    log(f"reçu {total_msgs} messages · {total_strikes} éclairs (monde) · "
-        f"{len(strikes)} dans {RADIUS_KM:.0f} km de Vinelz")
+    log(f"reçu {total_msgs} msg · {total_strikes} éclairs · "
+        f"{len(near)} proches Vinelz · {len(region)} dans la région")
     if total_msgs == 0 and last_err:
         log(f"⚠️ aucune donnée (dernier err: {last_err})")
-    return strikes
+    return near, region
 
 
 def previous_nearest():
     try:
         with urllib.request.urlopen(PUBLIC_URL + "?t=" + str(int(time.time())), timeout=10) as r:
-            prev = json.load(r)
-        return prev.get("nearest_km")
+            return json.load(r).get("nearest_km")
     except Exception:
         return None
 
 
-def build_payload(strikes):
+def build_lightning(near):
     now = datetime.now(timezone.utc)
-    count = len(strikes)
-    if count == 0:
-        return {
-            "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "status": "calme",
-            "severity": "none",
-            "nearest_km": None,
-            "strike_count": 0,
-            "window_min": round(LISTEN_SECONDS / 60, 1),
-            "trend": None,
-            "last_strike_at": None,
-        }
-    nearest = round(min(d for _, d in strikes), 1)
-    last_epoch = max(e for e, _ in strikes)
+    if not near:
+        return {"generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "status": "calme",
+                "severity": "none", "nearest_km": None, "strike_count": 0,
+                "window_min": round(LISTEN_SECONDS / 60, 1), "trend": None, "last_strike_at": None}
+    nearest = round(min(d for _, d in near), 1)
+    last_epoch = max(e for e, _ in near)
     severity = "critical" if nearest < 10 else "warning" if nearest < 20 else "info"
     prev = previous_nearest()
     trend = None
     if isinstance(prev, (int, float)):
-        if nearest < prev - 2:
-            trend = "approche"
-        elif nearest > prev + 2:
-            trend = "eloigne"
-        else:
-            trend = "stable"
-    return {
-        "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "status": "orage",
-        "severity": severity,
-        "nearest_km": nearest,
-        "strike_count": count,
-        "window_min": round(LISTEN_SECONDS / 60, 1),
-        "trend": trend,
-        "last_strike_at": datetime.fromtimestamp(last_epoch, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-    }
+        trend = "approche" if nearest < prev - 2 else "eloigne" if nearest > prev + 2 else "stable"
+    return {"generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "status": "orage",
+            "severity": severity, "nearest_km": nearest, "strike_count": len(near),
+            "window_min": round(LISTEN_SECONDS / 60, 1), "trend": trend,
+            "last_strike_at": datetime.fromtimestamp(last_epoch, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
 
 
-def upload(payload):
+def build_strikes(region):
+    """Fusionne les nouveaux éclairs régionaux avec l'existant (fenêtre glissante 60 min)."""
+    now = datetime.now(timezone.utc)
+    existing = []
+    try:
+        with urllib.request.urlopen(STRIKES_URL + "?t=" + str(int(time.time())), timeout=10) as r:
+            existing = json.load(r).get("strikes", [])
+    except Exception:
+        existing = []
+    cutoff = time.time() - STRIKES_MAX_AGE
+    merged = [s for s in existing if isinstance(s, list) and len(s) == 3 and s[0] >= cutoff]
+    merged += region
+    merged.sort(key=lambda s: s[0])
+    if len(merged) > STRIKES_MAX:
+        merged = merged[-STRIKES_MAX:]
+    return {"generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "region": REGION,
+            "window_min": STRIKES_MAX_AGE // 60, "count": len(merged), "strikes": merged}
+
+
+def upload_json(payload, name, summary):
     if not (FTP_HOST and FTP_USER and FTP_PASS):
-        log("⚠️ FTP creds manquants — pas d'upload (dry-run)")
-        log(json.dumps(payload, ensure_ascii=False))
+        log(f"⚠️ FTP creds manquants — {name} non uploadé ({summary})")
         return
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False)
+        json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
         tmp = f.name
     ctx = ssl.create_default_context()
     with ftplib.FTP_TLS(context=ctx) as ftp:
@@ -215,20 +219,22 @@ def upload(payload):
         ftp.login(FTP_USER, FTP_PASS)
         ftp.prot_p()
         with open(tmp, "rb") as fh:
-            ftp.storbinary("STOR lightning.json.tmp", fh)
+            ftp.storbinary(f"STOR {name}.tmp", fh)
         try:
-            ftp.delete("lightning.json")
+            ftp.delete(name)
         except ftplib.error_perm:
             pass
-        ftp.rename("lightning.json.tmp", "lightning.json")
+        ftp.rename(f"{name}.tmp", name)
     os.unlink(tmp)
-    log("✅ lightning.json uploadé : " + json.dumps(payload, ensure_ascii=False))
+    log(f"✅ {name} uploadé ({summary})")
 
 
 def main():
-    strikes = asyncio.run(listen())
-    payload = build_payload(strikes)
-    upload(payload)
+    near, region = asyncio.run(listen())
+    lightning = build_lightning(near)
+    strikes = build_strikes(region)
+    upload_json(lightning, "lightning.json", lightning["status"] + " nearest=" + str(lightning["nearest_km"]))
+    upload_json(strikes, "strikes.json", f"{strikes['count']} éclairs / {strikes['window_min']} min")
 
 
 if __name__ == "__main__":
