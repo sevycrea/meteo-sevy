@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-06-02T23:00:49.368269",
+  "generated_at": "2026-06-02T23:15:27.561180",
   "location": "Vinelz, Suisse",
-  "total_alerts": 8,
+  "total_alerts": 10,
   "alerts": [
     {
       "type": "rain_likely",
       "severity": "info",
       "date": "2026-06-04",
       "day_label": "Après-demain",
-      "rain_probability": 73.0,
-      "message": "🌧️ Pluie probable · 73.0% Après-demain",
+      "rain_probability": 72.0,
+      "message": "🌧️ Pluie probable · 72.0% Après-demain",
       "recommendation": "Pensez à votre parapluie.",
-      "detected_at": "2026-06-02T22:00:51.051513"
+      "detected_at": "2026-06-02T23:15:27.475281"
     },
     {
       "type": "rain_likely",
@@ -21,7 +21,7 @@
       "rain_probability": 77.0,
       "message": "🌧️ Pluie probable · 77.0% Demain",
       "recommendation": "Pensez à votre parapluie.",
-      "detected_at": "2026-06-02T22:00:51.048339"
+      "detected_at": "2026-06-02T23:15:27.471835"
     },
     {
       "type": "rain_likely",
@@ -31,7 +31,29 @@
       "rain_probability": 87.0,
       "message": "🌧️ Pluie quasi certaine · 87.0% Aujourd'hui",
       "recommendation": "Prévoyez un parapluie.",
-      "detected_at": "2026-06-02T22:00:51.044971"
+      "detected_at": "2026-06-02T23:15:27.468596"
+    },
+    {
+      "type": "local_rain_realtime",
+      "severity": "warning",
+      "window": "22:00–23:00",
+      "source": "realtime",
+      "message": "🌧️ Pluie soutenue · 17.4 mm cumulés en 1h30",
+      "recommendation": "Précipitations actives — sols saturés possibles.",
+      "metrics": {
+        "rain_cumul": 17.4
+      },
+      "detected_at": "2026-06-02T23:15:27.465118"
+    },
+    {
+      "type": "rain_likely",
+      "severity": "info",
+      "date": "2026-06-04",
+      "day_label": "Après-demain",
+      "rain_probability": 73.0,
+      "message": "🌧️ Pluie probable · 73.0% Après-demain",
+      "recommendation": "Pensez à votre parapluie.",
+      "detected_at": "2026-06-02T22:00:51.051513"
     },
     {
       "type": "rain_likely",
@@ -85,5 +107,5 @@
     }
   ],
   "status": "warning",
-  "message": "1 avertissement(s) en cours"
+  "message": "2 avertissement(s) en cours"
 }
