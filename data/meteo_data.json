@@ -4817,17 +4817,17 @@
   },
   "2026-06-02": {
     "gust_max": 18.3,
-    "hum_avg": 77.8,
-    "hum_max": 88.9,
+    "hum_avg": 78.1,
+    "hum_max": 89.4,
     "hum_min": 60.1,
     "pressure_avg": 1002.4,
     "pressure_max": 1004.1,
     "pressure_min": 1000.0,
-    "rain": 1.8,
+    "rain": 3.0,
     "temp_avg": 17.2,
     "temp_max": 21.8,
     "temp_min": 13.8,
-    "wind_avg": 3.1,
+    "wind_avg": 3.2,
     "wind_max": 9.1,
     "wind_min": 0.0
   }
