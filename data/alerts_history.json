@@ -1,18 +1,5 @@
 [
   {
-    "type": "cold_front_realtime",
-    "severity": "warning",
-    "window": "18:15–19:15",
-    "source": "realtime",
-    "message": "❄️🌧️ Front froid détecté · chute de 3.0°C et hausse de 20% d'humidité en 1h30 (18:15–19:15)",
-    "recommendation": "Orage probable à proximité — vigilance.",
-    "metrics": {
-      "temp_drop": 3.0,
-      "humidity_jump": 20.0
-    },
-    "detected_at": "2026-05-12T19:30:37.753887"
-  },
-  {
     "type": "local_rain_realtime",
     "severity": "info",
     "window": "18:15–19:15",
@@ -2162,5 +2149,17 @@
       "humidity_jump": 19.0
     },
     "detected_at": "2026-06-02T16:45:36.468625"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "warning",
+    "window": "16:01–17:15",
+    "source": "realtime",
+    "message": "🌧️ Pluie soutenue · 21.0 mm cumulés en 1h30",
+    "recommendation": "Précipitations actives — sols saturés possibles.",
+    "metrics": {
+      "rain_cumul": 21.0
+    },
+    "detected_at": "2026-06-02T17:30:45.162724"
   }
 ]
