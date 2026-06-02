@@ -5,15 +5,26 @@ on:
     - cron: '1,6,11,16,21,26,31,36,41,46,51,56 * * * *'
   workflow_dispatch:
 
+# Boucle AUTO-RELANCANTE : chaque execution redeclenche la suivante via le
+# GITHUB_TOKEN integre (workflow_dispatch est l'exception a la protection
+# anti-recursion → fonctionne SANS Personal Access Token). Cadence ~5 min en
+# continu, sans dependre du cron GitHub (peu fiable). Pour ARRETER la boucle :
+# Actions → "Detection foudre (Blitzortung)" → menu ··· → Disable workflow.
+permissions:
+  contents: read
+  actions: write
+
 concurrency:
   group: collect-lightning
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   listen:
     runs-on: ubuntu-latest
-    timeout-minutes: 9
+    timeout-minutes: 11
     steps:
+      - name: Marquer le debut du cycle
+        run: echo "JOB_START=$(date +%s)" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -27,4 +38,14 @@ jobs:
           FTP_PASS: ${{ secrets.FTP_PASS }}
           LISTEN_SECONDS: '270'
           RADIUS_KM: '30'
-        run: python scripts/fetch_lightning.py
+        run: python scripts/fetch_lightning.py || echo "::warning::ecoute terminee en erreur, on relance quand meme"
+      - name: Relancer la prochaine ecoute (boucle continue ~5 min)
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Plancher anti-spam : garantir >= 270 s par cycle avant de relancer,
+          # meme si une etape a echoue rapidement.
+          ELAPSED=$(( $(date +%s) - ${JOB_START:-0} ))
+          if [ "$ELAPSED" -lt 270 ]; then sleep $(( 270 - ELAPSED )); fi
+          gh workflow run collect-lightning.yml --ref main
