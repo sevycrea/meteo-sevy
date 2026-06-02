@@ -31,9 +31,9 @@ LISTEN_SECONDS = int(os.environ.get("LISTEN_SECONDS", "270"))
 SERVERS = [1, 2, 3, 7, 8]
 PUBLIC_URL = "https://data.sevy-creations.net/lightning.json"
 
-FTP_HOST = os.environ.get("DATA_FTP_HOST", "")
-FTP_USER = os.environ.get("DATA_FTP_USER", "")
-FTP_PASS = os.environ.get("DATA_FTP_PASS", "")
+FTP_HOST = os.environ.get("FTP_HOST") or os.environ.get("DATA_FTP_HOST", "")
+FTP_USER = os.environ.get("FTP_USER") or os.environ.get("DATA_FTP_USER", "")
+FTP_PASS = os.environ.get("FTP_PASS") or os.environ.get("DATA_FTP_PASS", "")
 
 
 def log(m):
