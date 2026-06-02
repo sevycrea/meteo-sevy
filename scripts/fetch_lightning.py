@@ -32,11 +32,11 @@ VINELZ_LON = 7.1248
 RADIUS_KM = float(os.environ.get("RADIUS_KM", "30"))
 PUBLIC_URL = "https://data.sevy-creations.net/lightning.json"
 
-# --- Région (strikes.json pour OrageDetection) : CH + ~200 km ---
-REGION = {"lat_min": 43.5, "lat_max": 49.5, "lon_min": 3.5, "lon_max": 12.5}
+# --- Région (strikes.json pour OrageDetection) : Suisse + France + Allemagne + Italie ---
+REGION = {"lat_min": 35.0, "lat_max": 55.5, "lon_min": -5.5, "lon_max": 19.0}
 STRIKES_URL = "https://data.sevy-creations.net/strikes.json"
 STRIKES_MAX_AGE = 3600   # garder 60 min d'historique
-STRIKES_MAX = 5000       # plafond de points
+STRIKES_MAX = 8000       # plafond de points (4 pays = beaucoup d'éclairs)
 
 LISTEN_SECONDS = int(os.environ.get("LISTEN_SECONDS", "270"))
 SERVERS = [1, 2, 3, 7, 8]
