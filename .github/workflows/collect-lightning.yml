@@ -25,6 +25,6 @@ jobs:
           DATA_FTP_HOST: ${{ secrets.DATA_FTP_HOST }}
           DATA_FTP_USER: ${{ secrets.DATA_FTP_USER }}
           DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
-          LISTEN_SECONDS: '270'
+          LISTEN_SECONDS: '45'
           RADIUS_KM: '30'
         run: python scripts/fetch_lightning.py
