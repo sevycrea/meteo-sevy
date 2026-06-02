@@ -2,28 +2,6 @@
   {
     "type": "local_rain_realtime",
     "severity": "info",
-    "window": "13:15–14:00",
-    "source": "realtime",
-    "message": "🌧️ Pluie en cours · 3.2 mm en 1h30",
-    "recommendation": "Précipitations actives.",
-    "metrics": {
-      "rain_cumul": 3.2
-    },
-    "detected_at": "2026-05-12T14:30:39.366920"
-  },
-  {
-    "type": "rain_likely",
-    "severity": "warning",
-    "date": "2026-05-12",
-    "day_label": "Aujourd'hui",
-    "rain_probability": 85.0,
-    "message": "🌧️ Pluie quasi certaine · 85.0% Aujourd'hui",
-    "recommendation": "Prévoyez un parapluie.",
-    "detected_at": "2026-05-12T14:30:39.368189"
-  },
-  {
-    "type": "local_rain_realtime",
-    "severity": "info",
     "window": "15:01–16:15",
     "source": "realtime",
     "message": "🌧️ Pluie en cours · 4.0 mm en 1h30",
@@ -2154,5 +2132,30 @@
     "message": "🌧️ Pluie probable · 74.0% Après-demain",
     "recommendation": "Pensez à votre parapluie.",
     "detected_at": "2026-06-02T00:15:26.206792"
+  },
+  {
+    "type": "cold_front_realtime",
+    "severity": "warning",
+    "window": "11:30–12:30",
+    "source": "realtime",
+    "message": "❄️🌧️ Front froid détecté · chute de 4.5°C et hausse de 18% d'humidité en 1h30 (11:30–12:30)",
+    "recommendation": "Orage probable à proximité — vigilance.",
+    "metrics": {
+      "temp_drop": 4.5,
+      "humidity_jump": 18.0
+    },
+    "detected_at": "2026-06-02T12:45:34.987188"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "info",
+    "window": "11:30–12:30",
+    "source": "realtime",
+    "message": "🌧️ Pluie en cours · 4.0 mm en 1h30",
+    "recommendation": "Précipitations actives.",
+    "metrics": {
+      "rain_cumul": 4.0
+    },
+    "detected_at": "2026-06-02T12:45:34.990790"
   }
 ]
