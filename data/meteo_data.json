@@ -4822,12 +4822,12 @@
     "hum_min": 72.7,
     "pressure_avg": 1003.2,
     "pressure_max": 1004.1,
-    "pressure_min": 1003.0,
+    "pressure_min": 1002.0,
     "rain": 0,
     "temp_avg": 15.1,
     "temp_max": 16.7,
     "temp_min": 13.8,
-    "wind_avg": 2.7,
+    "wind_avg": 2.6,
     "wind_max": 6.4,
     "wind_min": 0.0
   }
