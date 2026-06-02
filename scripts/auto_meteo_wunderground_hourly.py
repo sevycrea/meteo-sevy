@@ -202,6 +202,7 @@ def update_hourly_data(all_data, current_data):
         'wind_dir': int(_disp('wind_dir')),
         'pressure': round(_disp('pressure'),     1),
         'rain':     round(_disp('precip_total'), 1),
+        'rain_rate': (round(current_data['precip_rate'], 1) if current_data.get('precip_rate') is not None else None),
         'timestamp': current_data.get('timestamp', '')
     }
 
@@ -297,6 +298,7 @@ def update_realtime_data(current_data):
         'wind_dir':  _rt_int('wind_dir'),
         'pressure':  _rt('pressure',     1),
         'rain':      _rt('precip_total', 1),
+        'rain_rate': _rt('precip_rate',  1),
         'timestamp': current_data.get('timestamp', ''),
     }
 
