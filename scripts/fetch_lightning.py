@@ -92,25 +92,37 @@ async def listen():
     total_msgs = 0
     total_strikes = 0
     last_err = None
+    samples = []
 
     for sid in random.sample(SERVERS, len(SERVERS)):
-        uri = f"wss://ws{sid}.blitzortung.org:3000/"
+        uri = f"wss://ws{sid}.blitzortung.org/"   # port 443 (joignable partout)
         try:
             async with websockets.connect(
                 uri, open_timeout=15, ping_interval=20, ping_timeout=20, max_size=None
             ) as ws:
-                await ws.send(json.dumps({"time": 0}))
-                log(f"connecté à {uri} — écoute {LISTEN_SECONDS}s")
+                await ws.send(json.dumps({"a": 111}))
+                log(f"connecté à {uri} (subscribe a:111) — écoute {LISTEN_SECONDS}s")
                 end = time.monotonic() + LISTEN_SECONDS
+                tried_alt = False
                 while time.monotonic() < end:
                     remaining = end - time.monotonic()
                     if remaining <= 0:
                         break
                     try:
-                        raw = await asyncio.wait_for(ws.recv(), timeout=remaining)
+                        raw = await asyncio.wait_for(ws.recv(), timeout=min(remaining, 10))
                     except asyncio.TimeoutError:
-                        break
+                        if not tried_alt and total_msgs == 0:
+                            await ws.send(json.dumps({"time": 0}))
+                            tried_alt = True
+                            log('aucun message — tentative subscribe {"time":0}')
+                            continue
+                        if total_msgs == 0:
+                            break
+                        continue
                     total_msgs += 1
+                    if len(samples) < 3:
+                        s = raw if isinstance(raw, str) else raw.decode("utf-8", "replace")
+                        samples.append(s[:160])
                     obj = parse_message(raw)
                     if not isinstance(obj, dict):
                         continue
@@ -126,12 +138,15 @@ async def listen():
                         t_ns = obj.get("time") or 0
                         epoch = (t_ns / 1e9) if t_ns else time.time()
                         strikes.append((epoch, dist))
-            break  # un serveur a marché, on arrête
+            if total_msgs > 0:
+                break  # un serveur a fourni des données, on arrête
         except Exception as e:
             last_err = e
             log(f"échec {uri}: {type(e).__name__} {e}")
             continue
 
+    for i, s in enumerate(samples):
+        log(f"  sample[{i}]: {s!r}")
     log(f"reçu {total_msgs} messages · {total_strikes} éclairs (monde) · "
         f"{len(strikes)} dans {RADIUS_KM:.0f} km de Vinelz")
     if total_msgs == 0 and last_err:
