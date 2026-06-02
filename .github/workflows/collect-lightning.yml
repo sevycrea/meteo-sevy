@@ -1,0 +1,30 @@
+name: Detection foudre (Blitzortung)
+
+on:
+  schedule:
+    - cron: '1,6,11,16,21,26,31,36,41,46,51,56 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: collect-lightning
+  cancel-in-progress: true
+
+jobs:
+  listen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Installer dependances
+        run: pip install websockets
+      - name: Ecoute Blitzortung et ecriture lightning.json
+        env:
+          DATA_FTP_HOST: ${{ secrets.DATA_FTP_HOST }}
+          DATA_FTP_USER: ${{ secrets.DATA_FTP_USER }}
+          DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
+          LISTEN_SECONDS: '270'
+          RADIUS_KM: '30'
+        run: python scripts/fetch_lightning.py
