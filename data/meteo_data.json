@@ -4842,9 +4842,9 @@
     "rain": 4.3,
     "temp_avg": 12.8,
     "temp_max": 13.1,
-    "temp_min": 12.5,
-    "wind_avg": 4.4,
+    "temp_min": 12.3,
+    "wind_avg": 4.2,
     "wind_max": 6.5,
-    "wind_min": 2.1
+    "wind_min": 1.4
   }
 }
