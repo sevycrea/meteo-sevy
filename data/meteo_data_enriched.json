@@ -7101,7 +7101,7 @@
   },
   "2026-06-03": {
     "gust_max": 26.6,
-    "hum_avg": 71.1,
+    "hum_avg": 71.0,
     "hum_max": 96.2,
     "hum_min": 42.5,
     "hum_range_day": 51.0,
@@ -7178,8 +7178,8 @@
     "temp_p1_to_p2": 5.6,
     "temp_p2_to_p3": -0.9,
     "temp_total_range": 8.6,
-    "wind_avg": 6.2,
+    "wind_avg": 6.1,
     "wind_max": 11.7,
-    "wind_min": 0.6
+    "wind_min": 0.0
   }
 }
