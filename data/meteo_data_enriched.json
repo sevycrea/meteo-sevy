@@ -7145,10 +7145,10 @@
     "p2_wind_range": 9.3,
     "p3_gust_max": 2.7,
     "p3_has_rain": true,
-    "p3_hum_avg": 59.5,
-    "p3_hum_max": 69.0,
+    "p3_hum_avg": 58.5,
+    "p3_hum_max": 67.0,
     "p3_hum_min": 50.0,
-    "p3_hum_range": 19.0,
+    "p3_hum_range": 17.0,
     "p3_pressure_avg": 1004.1,
     "p3_pressure_max": 1004.1,
     "p3_pressure_min": 1004.1,
@@ -7178,7 +7178,7 @@
     "temp_p1_to_p2": 5.6,
     "temp_p2_to_p3": -1.8,
     "temp_total_range": 10.5,
-    "wind_avg": 6.0,
+    "wind_avg": 5.9,
     "wind_max": 11.7,
     "wind_min": 0.0
   }
