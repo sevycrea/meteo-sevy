@@ -4840,10 +4840,10 @@
     "pressure_max": 1005.1,
     "pressure_min": 1004.1,
     "rain": 4.3,
-    "temp_avg": 12.8,
+    "temp_avg": 12.7,
     "temp_max": 13.1,
-    "temp_min": 12.3,
-    "wind_avg": 4.2,
+    "temp_min": 12.2,
+    "wind_avg": 4.1,
     "wind_max": 6.5,
     "wind_min": 1.4
   }
