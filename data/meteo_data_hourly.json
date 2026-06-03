@@ -7911,31 +7911,31 @@
         "timestamp": "2026-06-03 13:45:18"
       },
       "12:00": {
-        "temp": 18.7,
-        "hum": 59.0,
-        "wind": 6.4,
-        "gust": 6.4,
-        "wind_dir": 252,
+        "temp": 18.5,
+        "hum": 57.0,
+        "wind": 8.9,
+        "gust": 10.0,
+        "wind_dir": 282,
         "pressure": 1006.1,
         "rain": 4.3,
         "rain_rate": 0.0,
-        "timestamp": "2026-06-03 14:30:42"
+        "timestamp": "2026-06-03 14:45:30"
       }
     },
     "daily": {
       "temp_min": 12.2,
       "temp_max": 18.9,
-      "temp_sum": 766.4000000000002,
-      "temp_count": 53,
+      "temp_sum": 784.9000000000002,
+      "temp_count": 54,
       "temp_avg": 14.5,
       "rain_total": 4.32,
       "wind_max": 18.3,
-      "pressure_sum": 53287.59999999998,
-      "pressure_count": 53,
+      "pressure_sum": 54293.699999999975,
+      "pressure_count": 54,
       "pressure_avg": 1005.4,
-      "humidity_sum": 4381.0,
-      "humidity_count": 53,
-      "humidity_avg": 83.0
+      "humidity_sum": 4438.0,
+      "humidity_count": 54,
+      "humidity_avg": 82.0
     }
   }
 }
