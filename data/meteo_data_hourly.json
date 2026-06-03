@@ -7838,7 +7838,7 @@
         "rain": 4.3,
         "rain_rate": 0.0,
         "timestamp": "2026-06-03 07:45:18",
-        "gust_max": 10.0
+        "gust_max": 7.4
       },
       "06:00": {
         "temp": 14.1,
@@ -7864,30 +7864,30 @@
         "timestamp": "2026-06-03 09:45:30"
       },
       "08:00": {
-        "temp": 14.8,
+        "temp": 15.1,
         "hum": 76.0,
-        "wind": 8.2,
-        "gust": 8.9,
-        "wind_dir": 138,
+        "wind": 6.1,
+        "gust": 6.1,
+        "wind_dir": 264,
         "pressure": 1006.1,
         "rain": 4.3,
         "rain_rate": 0.0,
-        "timestamp": "2026-06-03 10:00:56"
+        "timestamp": "2026-06-03 10:15:30"
       }
     },
     "daily": {
       "temp_min": 12.2,
-      "temp_max": 14.8,
-      "temp_sum": 446.6000000000001,
-      "temp_count": 34,
-      "temp_avg": 13.1,
+      "temp_max": 15.1,
+      "temp_sum": 461.7000000000001,
+      "temp_count": 35,
+      "temp_avg": 13.2,
       "rain_total": 4.32,
       "wind_max": 13.2,
-      "pressure_sum": 34171.700000000004,
-      "pressure_count": 34,
+      "pressure_sum": 35177.8,
+      "pressure_count": 35,
       "pressure_avg": 1005.1,
-      "humidity_sum": 3107.0,
-      "humidity_count": 34,
+      "humidity_sum": 3183.0,
+      "humidity_count": 35,
       "humidity_avg": 91.0
     }
   }
