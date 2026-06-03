@@ -4833,18 +4833,18 @@
   },
   "2026-06-03": {
     "gust_max": 17.5,
-    "hum_avg": 92.5,
+    "hum_avg": 91.6,
     "hum_max": 96.2,
-    "hum_min": 81.4,
-    "pressure_avg": 1004.9,
+    "hum_min": 76.3,
+    "pressure_avg": 1005.0,
     "pressure_max": 1006.1,
     "pressure_min": 1004.1,
     "rain": 4.3,
-    "temp_avg": 13.0,
+    "temp_avg": 13.1,
     "temp_max": 14.6,
     "temp_min": 12.2,
-    "wind_avg": 4.6,
-    "wind_max": 8.1,
+    "wind_avg": 4.8,
+    "wind_max": 9.3,
     "wind_min": 1.4
   }
 }
