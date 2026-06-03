@@ -4836,14 +4836,14 @@
     "hum_avg": 94.8,
     "hum_max": 96.2,
     "hum_min": 92.5,
-    "pressure_avg": 1004.2,
+    "pressure_avg": 1004.4,
     "pressure_max": 1005.1,
     "pressure_min": 1004.1,
     "rain": 4.3,
     "temp_avg": 12.9,
     "temp_max": 13.1,
     "temp_min": 12.7,
-    "wind_avg": 4.7,
+    "wind_avg": 4.4,
     "wind_max": 6.4,
     "wind_min": 2.1
   }
