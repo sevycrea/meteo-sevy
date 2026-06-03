@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03T10:30:59.964429",
+  "generated_at": "2026-06-03T10:45:48.755294",
   "model_version": "2026-06-03T08:11:17.501098",
   "model_type": "multihorizon_sequential",
   "training_days": 303,
@@ -60,7 +60,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 16.5,
+          "temp_estimate": 16.6,
           "rain_risk": "high"
         },
         "p3": {
