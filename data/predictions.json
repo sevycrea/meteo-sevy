@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03T23:01:09.420932",
+  "generated_at": "2026-06-03T23:15:46.174871",
   "model_version": "2026-06-03T08:11:17.501098",
   "model_type": "multihorizon_sequential",
   "training_days": 303,
@@ -44,8 +44,8 @@
       "day_label": "Demain",
       "temperature": {
         "predicted": 13.4,
-        "min_estimate": 12.7,
-        "max_estimate": 14.2
+        "min_estimate": 12.6,
+        "max_estimate": 14.1
       },
       "rain": {
         "will_rain": true,
