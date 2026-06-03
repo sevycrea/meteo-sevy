@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03T02:15:48.653918",
+  "generated_at": "2026-06-03T02:30:57.816965",
   "model_version": "2026-06-03T01:01:03.765922",
   "model_type": "multihorizon_sequential",
   "training_days": 303,
@@ -22,17 +22,17 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 10.3,
+          "temp_estimate": 10.1,
           "rain_risk": "high"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 18.4,
+          "temp_estimate": 18.8,
           "rain_risk": "high"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 11.3,
+          "temp_estimate": 11.2,
           "rain_risk": "high"
         }
       }
@@ -43,7 +43,7 @@
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
-        "predicted": 13.1,
+        "predicted": 13.0,
         "min_estimate": 12.3,
         "max_estimate": 13.8
       },
@@ -55,17 +55,17 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 10.5,
+          "temp_estimate": 10.3,
           "rain_risk": "high"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 17.6,
+          "temp_estimate": 17.9,
           "rain_risk": "high"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 11.5,
+          "temp_estimate": 11.4,
           "rain_risk": "high"
         }
       }
@@ -88,17 +88,17 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 10.8,
+          "temp_estimate": 10.6,
           "rain_risk": "high"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 16.9,
+          "temp_estimate": 17.1,
           "rain_risk": "high"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 11.8,
+          "temp_estimate": 11.7,
           "rain_risk": "high"
         }
       }
