@@ -11,7 +11,7 @@ import json
 import math
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 import ftplib
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -371,6 +371,58 @@ def upload_to_ftp():
 # MAIN
 # ============================================
 
+def enrich_hourly_gust_max(all_data, log):
+    """Renseigne le VRAI pic de rafale par heure (champ `gust_max`) à partir de
+    l'historique WU (`windgustHigh` des observations ~5 min), buckété par heure UTC.
+
+    Les snapshots horaires (relevé HH:45) ratent les rafales brèves (orages) ;
+    ce champ permet au graphe « Rafales 48 h » de monter au vrai pic, à la bonne
+    heure. ADDITIF et best-effort : toute erreur est ignorée et ne modifie jamais
+    les données déjà présentes (on n'enrichit que des heures existantes).
+    """
+    try:
+        observations = []
+        # 3 derniers jours UTC → couvre la fenêtre 48 h du graphe + marge/backfill.
+        for offset in range(3):
+            d = (datetime.utcnow() - timedelta(days=offset)).strftime("%Y%m%d")
+            url = (f"https://api.weather.com/v2/pws/history/all"
+                   f"?stationId={STATION_ID}&format=json&units=m"
+                   f"&numericPrecision=decimal&date={d}&apiKey={API_KEY}")
+            data = get_json_with_retry(url, timeout=30, attempts=2, log=log)
+            observations += (data or {}).get('observations') or []
+        if not observations:
+            log("⚠️ gust_max horaire : aucune observation historique WU — sauté")
+            return all_data
+        # Pic de rafale (windgustHigh) par heure UTC.
+        buckets = {}
+        for obs in observations:
+            epoch = obs.get('epoch')
+            g = (obs.get('metric') or {}).get('windgustHigh')
+            if epoch is None or g is None:
+                continue
+            try:
+                g = float(g)
+            except (TypeError, ValueError):
+                continue
+            if not (0.0 <= g <= 250.0):   # bornes physiques (idem collecteur daily)
+                continue
+            dt = datetime.utcfromtimestamp(int(epoch))
+            key = (dt.strftime("%Y-%m-%d"), dt.strftime("%H:00"))
+            if g > buckets.get(key, -1.0):
+                buckets[key] = g
+        # Applique uniquement aux heures DÉJÀ présentes (enrichissement, pas de création).
+        applied = 0
+        for (dkey, hkey), gmax in buckets.items():
+            hourly = (all_data.get(dkey) or {}).get('hourly') or {}
+            if hkey in hourly:
+                hourly[hkey]['gust_max'] = round(gmax, 1)
+                applied += 1
+        log(f"💨 gust_max horaire renseigné sur {applied} h (pic réel station)")
+    except Exception as e:
+        log(f"⚠️ gust_max horaire : enrichissement échoué ({e}) — ignoré")
+    return all_data
+
+
 def main():
     log("=" * 60)
     log("🚀 Démarrage collecte horaire")
@@ -399,6 +451,9 @@ def main():
     
     # 3. Mettre à jour avec les données horaires (snapshot HH:00)
     all_data = update_hourly_data(all_data, current_data)
+
+    # 3.ter Pic de rafale RÉEL par heure (windgustHigh historique) — additif, best-effort.
+    all_data = enrich_hourly_gust_max(all_data, log)
 
     # 3.bis Conserver les mesures sub-horaires (10-min) sur les 24 dernières heures
     update_realtime_data(current_data)
