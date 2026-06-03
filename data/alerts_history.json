@@ -1,37 +1,5 @@
 [
   {
-    "type": "rain_likely",
-    "severity": "warning",
-    "date": "2026-05-14",
-    "day_label": "Aujourd'hui",
-    "rain_probability": 88.0,
-    "message": "🌧️ Pluie quasi certaine · 88.0% Aujourd'hui",
-    "recommendation": "Prévoyez un parapluie.",
-    "detected_at": "2026-05-14T20:00:55.342960"
-  },
-  {
-    "type": "local_rain_realtime",
-    "severity": "warning",
-    "window": "20:15–21:15",
-    "source": "realtime",
-    "message": "🌧️ Pluie soutenue · 28.0 mm cumulés en 1h30",
-    "recommendation": "Précipitations actives — sols saturés possibles.",
-    "metrics": {
-      "rain_cumul": 28.0
-    },
-    "detected_at": "2026-05-14T21:30:41.272326"
-  },
-  {
-    "type": "rain_likely",
-    "severity": "warning",
-    "date": "2026-05-14",
-    "day_label": "Aujourd'hui",
-    "rain_probability": 88.0,
-    "message": "🌧️ Pluie quasi certaine · 88.0% Aujourd'hui",
-    "recommendation": "Prévoyez un parapluie.",
-    "detected_at": "2026-05-14T21:30:41.274625"
-  },
-  {
     "type": "local_rain_realtime",
     "severity": "warning",
     "window": "21:15–22:15",
@@ -2134,5 +2102,37 @@
     "message": "🌧️ Pluie probable · 80.0% Demain",
     "recommendation": "Pensez à votre parapluie.",
     "detected_at": "2026-06-03T08:45:34.004202"
+  },
+  {
+    "type": "local_rain_realtime",
+    "severity": "warning",
+    "window": "08:45–09:45",
+    "source": "realtime",
+    "message": "🌧️ Pluie soutenue · 21.5 mm cumulés en 1h30",
+    "recommendation": "Précipitations actives — sols saturés possibles.",
+    "metrics": {
+      "rain_cumul": 21.5
+    },
+    "detected_at": "2026-06-03T10:00:54.972662"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "warning",
+    "date": "2026-06-03",
+    "day_label": "Aujourd'hui",
+    "rain_probability": 86.0,
+    "message": "🌧️ Pluie quasi certaine · 86.0% Aujourd'hui",
+    "recommendation": "Prévoyez un parapluie.",
+    "detected_at": "2026-06-03T10:00:54.978449"
+  },
+  {
+    "type": "rain_likely",
+    "severity": "info",
+    "date": "2026-06-04",
+    "day_label": "Demain",
+    "rain_probability": 80.0,
+    "message": "🌧️ Pluie probable · 80.0% Demain",
+    "recommendation": "Pensez à votre parapluie.",
+    "detected_at": "2026-06-03T10:00:54.981541"
   }
 ]
