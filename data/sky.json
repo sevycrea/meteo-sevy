@@ -1,15 +1,15 @@
 {
-  "epoch": 1780472725,
-  "updated": "2026-06-03T07:45:38.913253+00:00",
+  "epoch": 1780473644,
+  "updated": "2026-06-03T08:01:05.278781+00:00",
   "source": "Gampelen (IGAMPE11, WU, ~3 km)",
-  "solar_rad": 321.7,
-  "uv": 1.0,
+  "solar_rad": 590.6,
+  "uv": 2.0,
   "rain_rate": 0.0,
   "raining": false,
-  "sun_elevation": 38.7,
-  "clear_sky_ghi": 625,
-  "clearness": 0.51,
+  "sun_elevation": 41.3,
+  "clear_sky_ghi": 663,
+  "clearness": 0.89,
   "is_day": true,
-  "condition": "cloudy",
-  "icon": "⛅"
+  "condition": "clear",
+  "icon": "☀️"
 }
