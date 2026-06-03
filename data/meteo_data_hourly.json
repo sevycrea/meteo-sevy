@@ -7829,31 +7829,31 @@
         "gust_max": 12.6
       },
       "05:00": {
-        "temp": 13.1,
-        "hum": 92.0,
-        "wind": 2.4,
-        "gust": 2.4,
-        "wind_dir": 168,
+        "temp": 13.2,
+        "hum": 93.0,
+        "wind": 8.5,
+        "gust": 8.9,
+        "wind_dir": 156,
         "pressure": 1005.1,
         "rain": 4.3,
         "rain_rate": 0.0,
-        "timestamp": "2026-06-03 07:15:18",
-        "gust_max": 7.4
+        "timestamp": "2026-06-03 07:30:30",
+        "gust_max": 10.0
       }
     },
     "daily": {
       "temp_min": 12.2,
-      "temp_max": 13.1,
-      "temp_sum": 292.4,
-      "temp_count": 23,
+      "temp_max": 13.2,
+      "temp_sum": 305.59999999999997,
+      "temp_count": 24,
       "temp_avg": 12.7,
       "rain_total": 4.32,
-      "wind_max": 7.9,
-      "pressure_sum": 23108.680000000008,
-      "pressure_count": 23,
+      "wind_max": 8.9,
+      "pressure_sum": 24113.76000000001,
+      "pressure_count": 24,
       "pressure_avg": 1004.7,
-      "humidity_sum": 2159.0,
-      "humidity_count": 23,
+      "humidity_sum": 2252.0,
+      "humidity_count": 24,
       "humidity_avg": 94.0
     }
   }
