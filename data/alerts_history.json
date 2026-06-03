@@ -1,15 +1,5 @@
 [
   {
-    "type": "rain_likely",
-    "severity": "warning",
-    "date": "2026-05-15",
-    "day_label": "Aujourd'hui",
-    "rain_probability": 89.0,
-    "message": "🌧️ Pluie quasi certaine · 89.0% Aujourd'hui",
-    "recommendation": "Prévoyez un parapluie.",
-    "detected_at": "2026-05-15T20:00:48.377378"
-  },
-  {
     "type": "local_rain_realtime",
     "severity": "warning",
     "window": "20:15–21:15",
@@ -2124,5 +2114,18 @@
     "message": "🌧️ Pluie probable · 80.0% Demain",
     "recommendation": "Pensez à votre parapluie.",
     "detected_at": "2026-06-03T18:45:35.525809"
+  },
+  {
+    "type": "cold_front_realtime",
+    "severity": "warning",
+    "window": "18:15–19:15",
+    "source": "realtime",
+    "message": "❄️🌧️ Front froid détecté · chute de 3.4°C et hausse de 17% d'humidité en 1h30 (18:15–19:15)",
+    "recommendation": "Orage probable à proximité — vigilance.",
+    "metrics": {
+      "temp_drop": 3.4,
+      "humidity_jump": 17.0
+    },
+    "detected_at": "2026-06-03T19:30:39.811680"
   }
 ]
