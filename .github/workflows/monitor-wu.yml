@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '17 5,17 * * *'   # 2x/jour (best-effort GitHub) ; + workflow_dispatch
   workflow_dispatch:
+    inputs:
+      force_test:
+        description: "Envoyer un email de TEST (cocher pour tester la livraison)"
+        type: boolean
+        default: false
 
 jobs:
   check:
@@ -14,9 +19,15 @@ jobs:
       - name: Controle endpoint live + echeance cle
         id: chk
         run: |
-          OUT=$(python3 scripts/check_wu_health.py)
-          echo "result=$OUT" >> "$GITHUB_OUTPUT"
-          echo "Resultat: $OUT"
+          if [ "${{ github.event.inputs.force_test }}" = "true" ]; then
+            printf '%s\n' "TEST du moniteur Meteo Sevy." "" "Si tu recois ce message, les alertes email fonctionnent." > alert_body.txt
+            echo "result=ALERT" >> "$GITHUB_OUTPUT"
+            echo "Mode TEST"
+          else
+            OUT=$(python3 scripts/check_wu_health.py)
+            echo "result=$OUT" >> "$GITHUB_OUTPUT"
+            echo "Resultat: $OUT"
+          fi
       - name: Alerte email (si besoin)
         if: steps.chk.outputs.result == 'ALERT'
         uses: dawidd6/action-send-mail@v3
@@ -26,7 +37,7 @@ jobs:
           secure: true
           username: ${{ secrets.MAIL_USER }}
           password: ${{ secrets.MAIL_PASS }}
-          subject: "Meteo Sevy - action sur la cle Wunderground"
+          subject: "Meteo Sevy - alerte cle Wunderground"
           to: ${{ secrets.MAIL_TO }}
           from: "Meteo Sevy <${{ secrets.MAIL_USER }}>"
           body: file://alert_body.txt
