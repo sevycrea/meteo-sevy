@@ -63,6 +63,14 @@ FTP_HOST = os.environ.get("FTP_HOST", "")
 FTP_USER = os.environ.get("FTP_USER", "")
 FTP_PASS = os.environ.get("FTP_PASS", "")
 
+# Repli si Open-Meteo est indisponible (429/502/timeout) : on réutilise le DERNIER
+# NWP publié (servi par data.sevy-creations.net, donc dispo même quand Open-Meteo
+# est down), À CONDITION qu'il ne soit pas trop vieux. Objectif : ne plus figer
+# l'écran de prévisions sur un simple hoquet passager. Au-delà du plafond, on
+# échoue franchement (exit 1) comme avant — pas de NWP ancien servi en douce.
+FALLBACK_URL       = "https://data.sevy-creations.net/nwp_forecast.json"
+MAX_FALLBACK_HOURS = 12   # NWP de repli accepté jusqu'à 12 h (cadence normale = 4×/j)
+
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 
@@ -84,8 +92,9 @@ def log(msg):
 def fetch_nwp():
     """Récupère la prévision NWP via Open-Meteo avec retry.
 
-    3 tentatives avec backoff 2s/4s/8s = jusqu'à 14s pour absorber les
-    coupures réseau ou rate-limiting d'Open-Meteo.
+    4 tentatives avec backoff pour absorber les coupures réseau ou le
+    rate-limiting (429/502) d'Open-Meteo. Si tout échoue → None (le main
+    tentera alors le repli sur le dernier NWP connu).
     """
     daily_params = ",".join(DAILY_VARS)
     hourly_params = ",".join(HOURLY_VARS)
@@ -99,12 +108,26 @@ def fetch_nwp():
         f"&models=metno_seamless"
     )
 
-    raw = get_json_with_retry(url, timeout=30, attempts=3, log=log)
+    raw = get_json_with_retry(url, timeout=30, attempts=4, log=log)
     if raw is None:
-        log("❌ Open-Meteo inaccessible après 3 tentatives")
+        log("❌ Open-Meteo inaccessible après 4 tentatives")
         return None
     log(f"✅ NWP téléchargé ({raw.get('generationtime_ms', 0):.1f} ms)")
     return raw
+
+def load_fallback():
+    """Repli : récupère le dernier nwp_forecast.json publié (data.sevy-creations.net)
+    et renvoie (contenu, âge_en_heures). Sert quand Open-Meteo est momentanément
+    indisponible — ce fichier est servi par l'hébergeur, pas par Open-Meteo."""
+    bust = int(datetime.now().timestamp())
+    data = get_json_with_retry(f"{FALLBACK_URL}?t={bust}", timeout=20, attempts=2, log=log)
+    if not data:
+        return None, None
+    try:
+        age_h = (datetime.now() - datetime.fromisoformat(data["fetched_at"])).total_seconds() / 3600
+    except Exception:
+        return None, None
+    return data, age_h
 
 # ============================================
 # TRAITEMENT
@@ -277,11 +300,22 @@ def main():
 
     raw = fetch_nwp()
     if not raw:
-        log("❌ Impossible de récupérer les données NWP — abandon (exit 1)")
-        # CRITIQUE : sys.exit(1) plutôt que return silencieux. Sinon GitHub Actions
-        # voit ✅ success et les steps suivants (predict_weather_multihorizon,
-        # predict_hourly) tournent avec le VIEUX nwp_forecast.json sans signal.
-        # Mieux vaut un workflow rouge qu'une prévision basée sur un NWP périmé.
+        # Open-Meteo indisponible. Plutôt que de tout faire échouer (et figer
+        # l'écran de prévisions), on tente un REPLI sur le dernier NWP connu —
+        # uniquement s'il est encore assez frais (≤ MAX_FALLBACK_HOURS).
+        log("⚠️  Open-Meteo indisponible — tentative de repli sur le dernier NWP connu…")
+        fb, age_h = load_fallback()
+        if fb and age_h is not None and age_h <= MAX_FALLBACK_HOURS:
+            # On réécrit le dernier bon NWP sur le disque pour que les étapes ML
+            # (predict_weather_multihorizon, predict_hourly) tournent dessus.
+            atomic_write_json(NWP_FILE, fb)
+            log(f"✅ Repli accepté : NWP daté de {age_h:.1f} h (≤ {MAX_FALLBACK_HOURS} h).")
+            log("ℹ️  Workflow vert : prévisions régénérées sur ce NWP encore valable "
+                "(évite l'écran figé). Le NWP frais reviendra au prochain run.")
+            return  # exit 0 → les étapes suivantes s'exécutent
+        # Pas de repli exploitable (introuvable ou trop vieux) → échec franc, comme avant.
+        log(f"❌ Aucun repli exploitable (NWP introuvable ou > {MAX_FALLBACK_HOURS} h) "
+            "— abandon (exit 1)")
         sys.exit(1)
 
     forecasts = parse_nwp(raw)
