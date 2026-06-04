@@ -7184,7 +7184,7 @@
   },
   "2026-06-04": {
     "gust_max": 29.1,
-    "hum_avg": 81.3,
+    "hum_avg": 81.4,
     "hum_max": 94.1,
     "hum_min": 63.6,
     "p1_gust_max": 8.9,
@@ -7247,7 +7247,7 @@
     "pressure_avg": 1002.0,
     "pressure_max": 1004.1,
     "pressure_min": 1000.0,
-    "rain": 6.3,
+    "rain": 6.6,
     "temp_avg": 14.7,
     "temp_max": 19.1,
     "temp_min": 12.2,
