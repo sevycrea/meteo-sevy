@@ -4852,15 +4852,15 @@
     "hum_avg": 79.3,
     "hum_max": 89.0,
     "hum_min": 63.6,
-    "pressure_avg": 1001.6,
+    "pressure_avg": 1001.7,
     "pressure_max": 1003.0,
     "pressure_min": 1000.0,
     "rain": 2.3,
     "temp_avg": 15.1,
     "temp_max": 19.1,
     "temp_min": 12.2,
-    "wind_avg": 2.9,
-    "wind_max": 10.7,
+    "wind_avg": 3.0,
+    "wind_max": 11.0,
     "wind_min": 0.0
   }
 }
