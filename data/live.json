@@ -1,18 +1,18 @@
 {
   "success": true,
   "data": {
-    "ts": "2026-06-04 13:00:55",
-    "obsTimeLocal": "2026-06-04 13:00:55",
-    "timestamp": "2026-06-04 13:00:55",
-    "temp": 16.2,
-    "humidity": 86.0,
-    "hum": 86.0,
-    "windSpeed": 3.9,
-    "wind": 3.9,
-    "windDir": 162,
-    "wind_dir": 162,
+    "ts": "2026-06-04 13:15:30",
+    "obsTimeLocal": "2026-06-04 13:15:30",
+    "timestamp": "2026-06-04 13:15:30",
+    "temp": 16.4,
+    "humidity": 83.0,
+    "hum": 83.0,
+    "windSpeed": 6.4,
+    "wind": 6.4,
+    "windDir": 144,
+    "wind_dir": 144,
     "pressure": 1001.0,
-    "gust": 3.9,
+    "gust": 6.4,
     "rain": 0.8,
     "rain_rate": 0.0,
     "rainRate": 0.0,
@@ -22,6 +22,6 @@
     "solar_radiation": null,
     "solarRadiation": null,
     "solar": null,
-    "dewpt": 13.8
+    "dewpt": 13.5
   }
 }
