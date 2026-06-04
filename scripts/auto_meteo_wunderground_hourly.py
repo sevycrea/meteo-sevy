@@ -32,6 +32,7 @@ API_URL    = f"https://api.weather.com/v2/pws/observations/current?stationId={ST
 BASE_DIR       = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JSON_FILE      = os.path.join(BASE_DIR, "data", "meteo_data_hourly.json")
 REALTIME_FILE  = os.path.join(BASE_DIR, "data", "meteo_data_realtime.json")
+LIVE_FILE      = os.path.join(BASE_DIR, "data", "live.json")   # source UNIQUE du « live » (app + site)
 BACKUP_DIR     = os.path.join(BASE_DIR, "data", "backup")
 LOG_FILE       = os.path.join(BASE_DIR, "logs", "auto_wunderground_hourly.log")
 
@@ -362,14 +363,77 @@ def upload_to_ftp():
         except Exception as e:
             log(f"❌ Upload legacy meteo_data_realtime.json échoué: {e}")
 
+    # Live (source unique du header temps réel app + site)
+    if os.path.exists(LIVE_FILE):
+        try:
+            upload_legacy(LIVE_FILE, 'live.json', log=log)
+        except Exception as e:
+            log(f"❌ Upload legacy live.json échoué: {e}")
+
     # Double upload vers data.sevy-creations.net (best-effort, ne casse pas si KO)
     upload_data(JSON_FILE, 'meteo_data_hourly.json', log=log)
     if os.path.exists(REALTIME_FILE):
         upload_data(REALTIME_FILE, 'meteo_data_realtime.json', log=log)
+    if os.path.exists(LIVE_FILE):
+        upload_data(LIVE_FILE, 'live.json', log=log)
 
 # ============================================
 # MAIN
 # ============================================
+
+def write_live_json(current_data):
+    """Écrit data/live.json = observation courante. C'est la source UNIQUE du
+    « live » pour l'app ET le site → la clé WU ne vit plus que dans les Secrets
+    GitHub (plus de dépendance au plugin WordPress). Structure compatible app
+    (camelCase, wrapper success/data) ET site (snake_case)."""
+    try:
+        def _n(key, ndigits=1, default=None):
+            v = current_data.get(key)
+            if v is None:
+                return default
+            try:
+                return round(float(v), ndigits)
+            except (TypeError, ValueError):
+                return default
+
+        ts   = current_data.get('timestamp', '') or ''
+        temp = _n('temp', 1)
+        hum  = _n('humidity', 0)
+        wind = _n('wind_speed', 1, 0.0)
+        pres = _n('pressure', 1)
+        wdir = current_data.get('wind_dir')
+        try:
+            wdir = int(wdir) if wdir is not None else None
+        except (TypeError, ValueError):
+            wdir = None
+
+        # Champs requis par l'app (LiveObservation, non-optionnels) → on n'écrit
+        # pas un live.json invalide : mieux vaut garder le précédent.
+        if temp is None or pres is None or hum is None:
+            log("⚠️ live.json : champs critiques manquants — non écrit (on garde l'ancien)")
+            return
+
+        rate = _n('precip_rate', 1)
+        obs = {
+            "ts": ts, "obsTimeLocal": ts, "timestamp": ts,
+            "temp": temp,
+            "humidity": hum, "hum": hum,
+            "windSpeed": wind if wind is not None else 0.0,
+            "wind": wind if wind is not None else 0.0,
+            "windDir": wdir, "wind_dir": wdir,
+            "pressure": pres,
+            "gust": _n('wind_gust', 1),
+            "rain": _n('precip_total', 1),
+            "rain_rate": rate, "rainRate": rate,
+            "uv": _n('uv', 1),
+            "solar_radiation": _n('solar_radiation', 1),
+            "dewpt": _n('dewpt', 1),
+        }
+        atomic_write_json(LIVE_FILE, {"success": True, "data": obs})
+        log(f"📍 live.json écrit (temp={temp}°C, vent={wind}km/h)")
+    except Exception as e:
+        log(f"⚠️ live.json : écriture échouée ({e}) — ignoré")
+
 
 def enrich_hourly_gust_max(all_data, log):
     """Renseigne le VRAI pic de rafale par heure (champ `gust_max`) à partir de
@@ -457,6 +521,9 @@ def main():
 
     # 3.bis Conserver les mesures sub-horaires (10-min) sur les 24 dernières heures
     update_realtime_data(current_data)
+
+    # 3.quater Observation « live » → source unique app + site (clé WU = Secrets GitHub).
+    write_live_json(current_data)
 
     # 4. Nettoyer les anciennes données
     all_data = cleanup_old_data(all_data, keep_days=90)
