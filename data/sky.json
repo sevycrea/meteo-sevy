@@ -1,15 +1,15 @@
 {
-  "epoch": 1780598148,
-  "updated": "2026-06-04T18:45:33.549541+00:00",
+  "epoch": 1780599397,
+  "updated": "2026-06-04T19:00:54.751028+00:00",
   "source": "Jolimont, Erlach (Weathercloud, ~3 km)",
-  "solar_rad": 9,
+  "solar_rad": 3.1,
   "uv": 0,
-  "rain_rate": 0,
-  "raining": false,
-  "sun_elevation": 6.0,
-  "clear_sky_ghi": 66,
-  "clearness": 0.14,
-  "is_day": true,
-  "condition": "overcast",
-  "icon": "☁️"
+  "rain_rate": 1.2,
+  "raining": true,
+  "sun_elevation": 2.9,
+  "clear_sky_ghi": 17,
+  "clearness": 0.18,
+  "is_day": false,
+  "condition": "night",
+  "icon": "🌙"
 }
