@@ -425,8 +425,12 @@ def write_live_json(current_data):
             "gust": _n('wind_gust', 1),
             "rain": _n('precip_total', 1),
             "rain_rate": rate, "rainRate": rate,
+            # alias attendus par le site (drop-in de l'ancien endpoint admin-ajax)
+            "precipRate": rate, "precipTotal": _n('precip_total', 1),
             "uv": _n('uv', 1),
             "solar_radiation": _n('solar_radiation', 1),
+            "solarRadiation": _n('solar_radiation', 1),
+            "solar": _n('solar_radiation', 1),
             "dewpt": _n('dewpt', 1),
         }
         atomic_write_json(LIVE_FILE, {"success": True, "data": obs})
