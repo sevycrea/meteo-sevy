@@ -8098,30 +8098,30 @@
         "timestamp": "2026-06-04 03:45:18"
       },
       "02:00": {
-        "temp": 13.1,
-        "hum": 82.0,
+        "temp": 12.6,
+        "hum": 87.0,
         "wind": 0.0,
         "gust": 0.0,
-        "wind_dir": 186,
+        "wind_dir": 168,
         "pressure": 1002.0,
         "rain": 0.0,
         "rain_rate": 0.0,
-        "timestamp": "2026-06-04 04:30:30"
+        "timestamp": "2026-06-04 04:45:18"
       }
     },
     "daily": {
-      "temp_min": 12.8,
+      "temp_min": 12.6,
       "temp_max": 13.7,
-      "temp_sum": 157.99999999999997,
-      "temp_count": 12,
-      "temp_avg": 13.2,
+      "temp_sum": 170.59999999999997,
+      "temp_count": 13,
+      "temp_avg": 13.1,
       "rain_total": 0.0,
       "wind_max": 3.5,
-      "pressure_sum": 12027.42,
-      "pressure_count": 12,
+      "pressure_sum": 13029.45,
+      "pressure_count": 13,
       "pressure_avg": 1002.3,
-      "humidity_sum": 982.0,
-      "humidity_count": 12,
+      "humidity_sum": 1069.0,
+      "humidity_count": 13,
       "humidity_avg": 82.0
     }
   }
