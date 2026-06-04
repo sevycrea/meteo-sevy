@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-03T23:45:28.151952",
+  "generated_at": "2026-06-04T00:00:49.803919",
   "location": "Vinelz, Suisse",
-  "total_alerts": 7,
+  "total_alerts": 5,
   "alerts": [
     {
       "type": "rain_likely",
@@ -15,16 +15,6 @@
     },
     {
       "type": "rain_likely",
-      "severity": "warning",
-      "date": "2026-06-03",
-      "day_label": "Aujourd'hui",
-      "rain_probability": 86.0,
-      "message": "🌧️ Pluie quasi certaine · 86.0% Aujourd'hui",
-      "recommendation": "Prévoyez un parapluie.",
-      "detected_at": "2026-06-03T23:45:28.048681"
-    },
-    {
-      "type": "rain_likely",
       "severity": "info",
       "date": "2026-06-04",
       "day_label": "Demain",
@@ -32,16 +22,6 @@
       "message": "🌧️ Pluie probable · 77.0% Demain",
       "recommendation": "Pensez à votre parapluie.",
       "detected_at": "2026-06-03T00:15:28.428969"
-    },
-    {
-      "type": "rain_likely",
-      "severity": "warning",
-      "date": "2026-06-03",
-      "day_label": "Aujourd'hui",
-      "rain_probability": 87.0,
-      "message": "🌧️ Pluie quasi certaine · 87.0% Aujourd'hui",
-      "recommendation": "Prévoyez un parapluie.",
-      "detected_at": "2026-06-03T00:15:28.425887"
     },
     {
       "type": "rain_likely",
@@ -74,6 +54,6 @@
       "detected_at": "2026-06-02T00:15:26.206792"
     }
   ],
-  "status": "warning",
-  "message": "2 avertissement(s) en cours"
+  "status": "info",
+  "message": "5 info(s) météo"
 }
