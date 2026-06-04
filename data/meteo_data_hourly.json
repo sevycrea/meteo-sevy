@@ -8223,28 +8223,28 @@
       "13:00": {
         "temp": 13.4,
         "hum": 89.0,
-        "wind": 4.2,
-        "gust": 4.2,
-        "wind_dir": 258,
+        "wind": 3.9,
+        "gust": 3.9,
+        "wind_dir": 240,
         "pressure": 1003.0,
-        "rain": 2.8,
-        "rain_rate": 0.2,
-        "timestamp": "2026-06-04 15:30:42"
+        "rain": 3.0,
+        "rain_rate": 0.8,
+        "timestamp": "2026-06-04 15:42:42"
       }
     },
     "daily": {
       "temp_min": 12.2,
       "temp_max": 19.1,
-      "temp_sum": 930.7,
-      "temp_count": 62,
+      "temp_sum": 944.1,
+      "temp_count": 63,
       "temp_avg": 15.0,
-      "rain_total": 2.79,
+      "rain_total": 3.05,
       "wind_max": 17.2,
-      "pressure_sum": 62105.69999999993,
-      "pressure_count": 62,
+      "pressure_sum": 63108.749999999935,
+      "pressure_count": 63,
       "pressure_avg": 1001.7,
-      "humidity_sum": 4935.0,
-      "humidity_count": 62,
+      "humidity_sum": 5024.0,
+      "humidity_count": 63,
       "humidity_avg": 80.0
     }
   }
