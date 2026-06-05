@@ -8311,32 +8311,32 @@
   "2026-06-05": {
     "hourly": {
       "02:00": {
-        "temp": 10.3,
-        "hum": 96.0,
-        "wind": 3.5,
-        "gust": 3.5,
-        "wind_dir": 90,
+        "temp": 10.6,
+        "hum": 90.0,
+        "wind": 0.0,
+        "gust": 0.0,
+        "wind_dir": 246,
         "pressure": 1005.1,
         "rain": 0.0,
         "rain_rate": 0.0,
-        "timestamp": "2026-06-05 04:30:30",
+        "timestamp": "2026-06-05 04:45:30",
         "gust_max": 6.4
       }
     },
     "daily": {
       "temp_min": 10.3,
-      "temp_max": 10.3,
-      "temp_sum": 10.3,
-      "temp_count": 1,
-      "temp_avg": 10.3,
+      "temp_max": 10.6,
+      "temp_sum": 20.9,
+      "temp_count": 2,
+      "temp_avg": 10.4,
       "rain_total": 0.0,
       "wind_max": 3.5,
-      "pressure_sum": 1005.08,
-      "pressure_count": 1,
+      "pressure_sum": 2010.16,
+      "pressure_count": 2,
       "pressure_avg": 1005.1,
-      "humidity_sum": 96.0,
-      "humidity_count": 1,
-      "humidity_avg": 96.0
+      "humidity_sum": 186.0,
+      "humidity_count": 2,
+      "humidity_avg": 93.0
     }
   }
 }
