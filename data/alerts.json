@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-05T02:30:37.649384",
+  "generated_at": "2026-06-05T02:45:28.720252",
   "location": "Vinelz, Suisse",
   "total_alerts": 3,
   "alerts": [
@@ -11,7 +11,7 @@
       "rain_probability": 76.0,
       "message": "🌧️ Pluie probable · 76.0% Demain",
       "recommendation": "Pensez à votre parapluie.",
-      "detected_at": "2026-06-05T01:30:40.393302"
+      "detected_at": "2026-06-05T02:45:28.641919"
     },
     {
       "type": "rain_likely",
@@ -21,7 +21,7 @@
       "rain_probability": 88.0,
       "message": "🌧️ Pluie quasi certaine · 88.0% Aujourd'hui",
       "recommendation": "Prévoyez un parapluie.",
-      "detected_at": "2026-06-05T01:30:40.389720"
+      "detected_at": "2026-06-05T02:45:28.638369"
     },
     {
       "type": "rain_likely",
