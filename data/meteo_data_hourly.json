@@ -8324,29 +8324,29 @@
       },
       "03:00": {
         "temp": 10.7,
-        "hum": 92.0,
+        "hum": 94.0,
         "wind": 0.0,
         "gust": 0.0,
-        "wind_dir": 246,
+        "wind_dir": 144,
         "pressure": 1005.1,
         "rain": 0.0,
         "rain_rate": 0.0,
-        "timestamp": "2026-06-05 05:00:42"
+        "timestamp": "2026-06-05 05:15:18"
       }
     },
     "daily": {
       "temp_min": 10.3,
       "temp_max": 10.7,
-      "temp_sum": 31.599999999999998,
-      "temp_count": 3,
-      "temp_avg": 10.5,
+      "temp_sum": 42.3,
+      "temp_count": 4,
+      "temp_avg": 10.6,
       "rain_total": 0.0,
       "wind_max": 3.5,
-      "pressure_sum": 3015.2400000000002,
-      "pressure_count": 3,
+      "pressure_sum": 4020.32,
+      "pressure_count": 4,
       "pressure_avg": 1005.1,
-      "humidity_sum": 278.0,
-      "humidity_count": 3,
+      "humidity_sum": 372.0,
+      "humidity_count": 4,
       "humidity_avg": 93.0
     }
   }
