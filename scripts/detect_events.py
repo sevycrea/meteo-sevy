@@ -283,7 +283,18 @@ def _analyze_window(records, window_label, source='hourly'):
 
     # ── D) Pluie locale ──
     if any(r is not None for r in rains):
-        rain_cumul = sum(r for r in rains if r is not None)
+        # `rains` = cumul du jour à chaque relevé (ex. 0.3, 0.3, …). La pluie
+        # RÉELLEMENT tombée dans la fenêtre = somme des INCRÉMENTS positifs du
+        # cumul (et non la somme des cumuls, qui gonflait à tort : 0.3 × N relevés).
+        # Les baisses (reset de minuit) sont ignorées.
+        rain_cumul = 0.0
+        _prev = None
+        for _r in rains:
+            if _r is None:
+                continue
+            if _prev is not None and _r > _prev:
+                rain_cumul += (_r - _prev)
+            _prev = _r
         cumul_label = "3h" if source == 'hourly' else "1h30"
         if rain_cumul >= R['rain_3h_critical']:
             alerts.append({
