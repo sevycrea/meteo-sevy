@@ -1,0 +1,8 @@
+{
+  "_comment": "Copier en apns_config.json sur le serveur, remplir avec ta clé APNs. NE PAS committer le vrai fichier ni la .p8.",
+  "team_id": "VOTRE_TEAM_ID",
+  "key_id": "VOTRE_KEY_ID",
+  "bundle_id": "Sevy-Cre-ations.MeteoSevy",
+  "key_file": "AuthKey_VOTRE_KEY_ID.p8",
+  "production": false
+}
