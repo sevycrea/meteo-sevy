@@ -283,7 +283,9 @@ async function cycle() {
       const today = new Date().toISOString().slice(0, 10);
       if (_alertFn && _quotaAlertDate !== today) {
         _quotaAlertDate = today;
-        _alertFn('⚠️ Quota WU dépassé', 'La collecte météo station est suspendue. Elle reprend automatiquement à minuit UTC.', 'meteo-system');
+        // .catch() obligatoire : une Promise flottante qui rejette crashe Node 24
+        _alertFn('⚠️ Quota WU dépassé', 'La collecte météo station est suspendue. Elle reprend automatiquement à minuit UTC.', 'meteo-system')
+          .catch((err) => log(`alertFn: ${err.message}`));
       }
     } else { log(`cycle: ${e.message}`); }
   }
@@ -302,7 +304,8 @@ function nextIntervalMs() {
 function scheduleNext() {
   const ms = nextIntervalMs();
   log(`prochain cycle dans ${ms / 60000} min (${localHour()}h locale)`);
-  setTimeout(() => cycle().then(scheduleNext), ms);
+  // .then(onFulfilled, onRejected) — scheduleNext appelé dans les deux cas
+  setTimeout(() => cycle().then(scheduleNext, (e) => { log(`cycle inattendu: ${e.message}`); scheduleNext(); }), ms);
 }
 
 // ── Démarrage du collecteur ──────────────────────────────────────────────────────
@@ -310,7 +313,7 @@ function start(opts = {}) {
   _alertFn = opts.alertFn || null;
   if (!WU_KEY || !INGEST_SECRET) { log('clé WU ou secret ingest manquant → collecteur NON démarré'); return; }
   log(`démarrage (station ${STATION}, cycle adaptatif 5 min jour / 30 min nuit)`);
-  seed().then(() => cycle().then(scheduleNext));
+  seed().then(() => cycle().then(scheduleNext, (e) => { log(`cycle init: ${e.message}`); scheduleNext(); }));
 }
 
 module.exports = { start, markHealth };
