@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-06-29T23:46:02.485884",
+  "generated_at": "2026-06-30T00:01:32.917403",
   "model_version": "2026-06-29T07:24:31.006243",
   "model_type": "multihorizon_sequential",
   "training_days": 305,
   "forecasts": [
     {
-      "date": "2026-06-29",
-      "day_name": "Monday",
+      "date": "2026-06-30",
+      "day_name": "Tuesday",
       "day_number": 0,
       "day_label": "Aujourd'hui",
       "temperature": {
@@ -38,8 +38,8 @@
       }
     },
     {
-      "date": "2026-06-30",
-      "day_name": "Tuesday",
+      "date": "2026-07-01",
+      "day_name": "Wednesday",
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
@@ -71,8 +71,8 @@
       }
     },
     {
-      "date": "2026-07-01",
-      "day_name": "Wednesday",
+      "date": "2026-07-02",
+      "day_name": "Thursday",
       "day_number": 2,
       "day_label": "Après-demain",
       "temperature": {
