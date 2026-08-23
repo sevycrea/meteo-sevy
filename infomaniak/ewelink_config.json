@@ -1,7 +1,5 @@
 {
   "app_id": "TON_APP_ID",
   "app_secret": "TON_APP_SECRET",
-  "email": "TON_EMAIL_EWELINK",
-  "password": "TON_MOT_DE_PASSE_EWELINK",
-  "country_code": "+41"
+  "refresh_token": "TON_REFRESH_TOKEN_OAUTH"
 }
