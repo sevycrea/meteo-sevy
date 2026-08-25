@@ -659,6 +659,10 @@ def check_cold_wave(forecasts):
 def check_heavy_rain(forecasts, nwp_data):
     """Pluie forte journalière. Utilise probabilité ML + cumul NWP si dispo."""
     out = []
+    # Plancher de probabilité pour ALERTER : en dessous, une prévision de pluie
+    # (même avec un gros cumul en mm) est trop incertaine pour notifier.
+    # Demande utilisateur : aucune alerte pluie sous 80 % de probabilité.
+    RAIN_PROB_MIN = 80
     nwp_forecasts = (nwp_data or {}).get('forecasts', {}) if isinstance(nwp_data, dict) else {}
     for f in forecasts:
         date = f.get('date'); label = f.get('day_label', date)
@@ -666,6 +670,10 @@ def check_heavy_rain(forecasts, nwp_data):
         # Quantité depuis NWP daily si dispo
         nwp_day = nwp_forecasts.get(date) if isinstance(nwp_forecasts, dict) else None
         cumul = (nwp_day or {}).get('precip_sum') if nwp_day else None
+
+        # Toutes les alertes pluie exigent une probabilité >= RAIN_PROB_MIN.
+        if prob < RAIN_PROB_MIN:
+            continue
 
         # Niveau extrême si grosse quantité prévue OU proba très haute
         if cumul is not None and cumul >= THRESHOLDS['heavy_rain_day']['mm_extreme']:
@@ -683,7 +691,7 @@ def check_heavy_rain(forecasts, nwp_data):
                         'rain_probability': prob,
                         'message': f"🌧️ Pluie quasi certaine · {prob}% {label}",
                         'recommendation': "Prévoyez un parapluie."})
-        elif prob >= THRESHOLDS['rain_prob_high']['warning']:
+        else:
             out.append({'type': 'rain_likely', 'severity': 'info', 'date': date, 'day_label': label,
                         'rain_probability': prob,
                         'message': f"🌧️ Pluie probable · {prob}% {label}",
