@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-02T01:01:14.918008",
-  "model_version": "2026-09-01T08:11:08.858430",
+  "generated_at": "2026-09-02T01:15:47.568311",
+  "model_version": "2026-09-02T01:01:11.194063",
   "model_type": "multihorizon_sequential",
   "training_days": 305,
   "forecasts": [
