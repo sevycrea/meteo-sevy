@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T14:46:03+01:00",
+  "generated_at": "2026-11-26T15:01:36+01:00",
   "model_version": "2026-11-26T12:58:58+01:00",
   "model_type": "mos_station_correction",
   "training_days": 474,
@@ -11,7 +11,7 @@
       "day_label": "Aujourd'hui",
       "temperature": {
         "predicted": 2.5,
-        "min_estimate": 0.8,
+        "min_estimate": 0.9,
         "max_estimate": 5.0
       },
       "rain": {
@@ -24,7 +24,7 @@
       "raw_nwp": {
         "model": "icon_seamless",
         "temp_avg": 2.3,
-        "temp_min": 0.9,
+        "temp_min": 1.0,
         "temp_max": 4.4
       },
       "periods": {
@@ -35,7 +35,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 2.2,
+          "temp_estimate": 2.1,
           "rain_risk": "high"
         },
         "p3": {
