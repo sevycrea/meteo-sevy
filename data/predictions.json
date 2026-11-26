@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T18:46:05+01:00",
+  "generated_at": "2026-11-26T19:01:23+01:00",
   "model_version": "2026-11-26T12:58:58+01:00",
   "model_type": "mos_station_correction",
   "training_days": 474,
@@ -11,8 +11,8 @@
       "day_label": "Aujourd'hui",
       "temperature": {
         "predicted": 2.5,
-        "min_estimate": 0.9,
-        "max_estimate": 5.0
+        "min_estimate": 0.8,
+        "max_estimate": 5.1
       },
       "rain": {
         "will_rain": true,
