@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T15:46:05+01:00",
+  "generated_at": "2026-11-26T16:01:31+01:00",
   "model_version": "2026-11-26T12:58:58+01:00",
   "model_type": "mos_station_correction",
   "training_days": 474,
@@ -11,7 +11,7 @@
       "day_label": "Aujourd'hui",
       "temperature": {
         "predicted": 2.5,
-        "min_estimate": 0.8,
+        "min_estimate": 0.9,
         "max_estimate": 5.1
       },
       "rain": {
@@ -23,7 +23,7 @@
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
-        "temp_avg": 2.3,
+        "temp_avg": 2.2,
         "temp_min": 1.0,
         "temp_max": 4.4
       },
@@ -51,8 +51,8 @@
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
-        "predicted": 1.7,
-        "min_estimate": 0.3,
+        "predicted": 1.6,
+        "min_estimate": 0.4,
         "max_estimate": 3.9
       },
       "rain": {
@@ -65,13 +65,13 @@
       "raw_nwp": {
         "model": "icon_seamless",
         "temp_avg": 1.6,
-        "temp_min": 0.1,
-        "temp_max": 3.9
+        "temp_min": 0.2,
+        "temp_max": 4.0
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 1.0,
+          "temp_estimate": 0.9,
           "rain_risk": "low"
         },
         "p2": {
@@ -81,7 +81,7 @@
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 1.0,
+          "temp_estimate": 0.9,
           "rain_risk": "low"
         }
       }
@@ -93,8 +93,8 @@
       "day_label": "Après-demain",
       "temperature": {
         "predicted": 0.6,
-        "min_estimate": -0.7,
-        "max_estimate": 2.2
+        "min_estimate": -0.8,
+        "max_estimate": 2.1
       },
       "rain": {
         "will_rain": false,
@@ -112,17 +112,17 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 0.3,
+          "temp_estimate": 0.2,
           "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 1.6,
+          "temp_estimate": 1.5,
           "rain_risk": "low"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 0.1,
+          "temp_estimate": -0.0,
           "rain_risk": "low"
         }
       }
