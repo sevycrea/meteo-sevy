@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T17:01:32+01:00",
+  "generated_at": "2026-11-26T17:16:02+01:00",
   "model_version": "2026-11-26T12:58:58+01:00",
   "model_type": "mos_station_correction",
   "training_days": 474,
@@ -12,7 +12,7 @@
       "temperature": {
         "predicted": 2.5,
         "min_estimate": 0.9,
-        "max_estimate": 5.1
+        "max_estimate": 5.0
       },
       "rain": {
         "will_rain": true,
@@ -24,13 +24,13 @@
       "raw_nwp": {
         "model": "icon_seamless",
         "temp_avg": 2.2,
-        "temp_min": 1.0,
+        "temp_min": 0.9,
         "temp_max": 4.4
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 2.3,
+          "temp_estimate": 2.4,
           "rain_risk": "high"
         },
         "p2": {
@@ -51,9 +51,9 @@
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
-        "predicted": 1.6,
+        "predicted": 1.7,
         "min_estimate": 0.4,
-        "max_estimate": 3.9
+        "max_estimate": 3.8
       },
       "rain": {
         "will_rain": false,
@@ -65,13 +65,13 @@
       "raw_nwp": {
         "model": "icon_seamless",
         "temp_avg": 1.6,
-        "temp_min": 0.2,
-        "temp_max": 4.0
+        "temp_min": 0.3,
+        "temp_max": 3.8
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 0.9,
+          "temp_estimate": 1.0,
           "rain_risk": "low"
         },
         "p2": {
