@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T19:45:58+01:00",
+  "generated_at": "2026-11-26T20:01:29+01:00",
   "model_version": "2026-11-26T12:58:58+01:00",
   "model_type": "mos_station_correction",
   "training_days": 474,
@@ -30,7 +30,7 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 2.4,
+          "temp_estimate": 2.3,
           "rain_risk": "high"
         },
         "p2": {
@@ -52,31 +52,31 @@
       "day_label": "Demain",
       "temperature": {
         "predicted": 1.7,
-        "min_estimate": 0.3,
-        "max_estimate": 3.8
+        "min_estimate": 0.4,
+        "max_estimate": 3.7
       },
       "rain": {
         "will_rain": false,
-        "probability": 8
+        "probability": 7
       },
       "confidence": 89,
       "expected_error_c": 0.97,
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
-        "temp_avg": 1.6,
-        "temp_min": 0.1,
-        "temp_max": 3.8
+        "temp_avg": 1.5,
+        "temp_min": 0.2,
+        "temp_max": 3.6
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 1.0,
+          "temp_estimate": 1.1,
           "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 3.2,
+          "temp_estimate": 3.1,
           "rain_risk": "low"
         },
         "p3": {
