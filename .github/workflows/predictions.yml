@@ -40,8 +40,12 @@ jobs:
       - name: Installer dépendances
         run: pip install -r requirements.txt
 
-      # 1) Récupérer le NWP frais (Open-Meteo / MetNo) — 7 jours à partir d'aujourd'hui
+      # 1) Récupérer le NWP frais (Open-Meteo / MetNo) — 7 jours à partir d'aujourd'hui.
+      #    Conservé pour les alertes du serveur (events.js lit nwp_forecast.json).
+      #    La prévision affichée n'en dépend plus : un échec ici ne bloque pas l'étape 2.
       - name: Récupérer NWP MetNo
+        id: nwp
+        continue-on-error: true
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
@@ -51,8 +55,11 @@ jobs:
           DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
         run: python scripts/fetch_nwp_forecast.py
 
-      # 2) Générer les prévisions ML multihorizon (utilise le NWP frais)
-      - name: Générer prévisions ML
+      # 2) Prévision corrigée par la station IVINEL2 (MOS) : écrit et publie
+      #    predictions.json (3 jours) et predictions_hourly.json (7 jours).
+      #    Remplace predict_weather_multihorizon.py + predict_hourly.py
+      #    (modèle figé sur les données de juin 2026, conservés dans scripts/).
+      - name: Prévision corrigée par la station
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
@@ -60,28 +67,17 @@ jobs:
           DATA_FTP_HOST: ${{ secrets.DATA_FTP_HOST }}
           DATA_FTP_USER: ${{ secrets.DATA_FTP_USER }}
           DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
-        run: python scripts/predict_weather_multihorizon.py
-
-      # 3) Générer les créneaux horaires 2h × 7 jours (utilise NWP + corrections ML)
-      - name: Générer prévisions horaires (créneaux 2h)
-        env:
-          FTP_HOST: ${{ secrets.FTP_HOST }}
-          FTP_USER: ${{ secrets.FTP_USER }}
-          FTP_PASS: ${{ secrets.FTP_PASS }}
-          DATA_FTP_HOST: ${{ secrets.DATA_FTP_HOST }}
-          DATA_FTP_USER: ${{ secrets.DATA_FTP_USER }}
-          DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
-        run: python scripts/predict_hourly.py
+        run: python scripts/predict_mos.py
 
       - name: Upload logs FTP
+        if: always()
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASS: ${{ secrets.FTP_PASS }}
         run: |
-          python scripts/upload_log_ftp.py logs/predictions_multihorizon.log || true
+          python scripts/upload_log_ftp.py logs/predictions_mos.log || true
           python scripts/upload_log_ftp.py logs/nwp_forecast.log || true
-          python scripts/upload_log_ftp.py logs/predictions_hourly.log || true
 
       - name: Update health.json
         if: always()
@@ -93,7 +89,7 @@ jobs:
           DATA_FTP_USER: ${{ secrets.DATA_FTP_USER }}
           DATA_FTP_PASS: ${{ secrets.DATA_FTP_PASS }}
         run: |
-          if [ "${{ job.status }}" = "success" ]; then
+          if [ "${{ job.status }}" = "success" ] && [ "${{ steps.nwp.outcome }}" = "success" ]; then
             python scripts/update_health.py --component predictions --status ok
           else
             python scripts/update_health.py --component predictions --status degraded
