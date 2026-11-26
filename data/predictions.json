@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T16:46:04+01:00",
+  "generated_at": "2026-11-26T17:01:32+01:00",
   "model_version": "2026-11-26T12:58:58+01:00",
   "model_type": "mos_station_correction",
   "training_days": 474,
@@ -93,8 +93,8 @@
       "day_label": "Après-demain",
       "temperature": {
         "predicted": 0.6,
-        "min_estimate": -0.8,
-        "max_estimate": 2.1
+        "min_estimate": -0.6,
+        "max_estimate": 2.0
       },
       "rain": {
         "will_rain": false,
@@ -105,24 +105,24 @@
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
-        "temp_avg": 0.5,
-        "temp_min": -0.7,
-        "temp_max": 1.8
+        "temp_avg": 0.4,
+        "temp_min": -0.6,
+        "temp_max": 1.5
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 0.2,
+          "temp_estimate": 0.3,
           "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 1.5,
+          "temp_estimate": 1.4,
           "rain_risk": "low"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": -0.0,
+          "temp_estimate": 0.1,
           "rain_risk": "low"
         }
       }
