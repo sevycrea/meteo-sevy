@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T22:01:30+01:00",
+  "generated_at": "2026-11-26T22:16:01+01:00",
   "model_version": "2026-11-26T12:58:58+01:00",
   "model_type": "mos_station_correction",
   "training_days": 474,
@@ -35,12 +35,12 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 2.0,
+          "temp_estimate": 2.1,
           "rain_risk": "high"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 2.8,
+          "temp_estimate": 2.9,
           "rain_risk": "high"
         }
       }
@@ -51,13 +51,13 @@
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
-        "predicted": 1.6,
-        "min_estimate": 0.3,
+        "predicted": 1.7,
+        "min_estimate": 0.4,
         "max_estimate": 3.8
       },
       "rain": {
         "will_rain": false,
-        "probability": 7
+        "probability": 8
       },
       "confidence": 89,
       "expected_error_c": 0.97,
@@ -71,17 +71,17 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 1.0,
+          "temp_estimate": 1.1,
           "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 3.0,
+          "temp_estimate": 3.1,
           "rain_risk": "low"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 0.8,
+          "temp_estimate": 0.9,
           "rain_risk": "low"
         }
       }
