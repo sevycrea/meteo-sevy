@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T10:01:43+01:00",
+  "generated_at": "2026-11-27T10:31:19+01:00",
   "model_version": "2026-11-27T03:01:26+01:00",
   "model_type": "mos_station_correction",
   "training_days": 475,
@@ -10,9 +10,9 @@
       "day_number": 0,
       "day_label": "Aujourd'hui",
       "temperature": {
-        "predicted": 2.2,
+        "predicted": 2.1,
         "min_estimate": 0.5,
-        "max_estimate": 4.7
+        "max_estimate": 4.6
       },
       "rain": {
         "will_rain": false,
@@ -53,7 +53,7 @@
       "temperature": {
         "predicted": 0.9,
         "min_estimate": -0.2,
-        "max_estimate": 2.1
+        "max_estimate": 2.2
       },
       "rain": {
         "will_rain": false,
@@ -93,12 +93,12 @@
       "day_label": "Après-demain",
       "temperature": {
         "predicted": 1.2,
-        "min_estimate": -1.5,
-        "max_estimate": 3.7
+        "min_estimate": -1.4,
+        "max_estimate": 3.6
       },
       "rain": {
         "will_rain": true,
-        "probability": 81
+        "probability": 90
       },
       "confidence": 86,
       "expected_error_c": 1.07,
@@ -117,7 +117,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 3.1,
+          "temp_estimate": 3.0,
           "rain_risk": "high"
         },
         "p3": {
