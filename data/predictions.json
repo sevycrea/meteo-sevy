@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T09:45:59+01:00",
+  "generated_at": "2026-11-27T10:01:43+01:00",
   "model_version": "2026-11-27T03:01:26+01:00",
   "model_type": "mos_station_correction",
   "training_days": 475,
@@ -12,7 +12,7 @@
       "temperature": {
         "predicted": 2.2,
         "min_estimate": 0.5,
-        "max_estimate": 4.8
+        "max_estimate": 4.7
       },
       "rain": {
         "will_rain": false,
@@ -25,7 +25,7 @@
         "model": "icon_seamless",
         "temp_avg": 1.7,
         "temp_min": 0.4,
-        "temp_max": 3.9
+        "temp_max": 3.8
       },
       "periods": {
         "p1": {
@@ -35,7 +35,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 3.7,
+          "temp_estimate": 3.6,
           "rain_risk": "low"
         },
         "p3": {
@@ -81,7 +81,7 @@
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 0.3,
+          "temp_estimate": 0.4,
           "rain_risk": "low"
         }
       }
