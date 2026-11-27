@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T17:46:10+01:00",
+  "generated_at": "2026-11-27T18:01:38+01:00",
   "model_version": "2026-11-27T12:39:26+01:00",
   "model_type": "mos_station_correction",
   "training_days": 475,
@@ -11,7 +11,7 @@
       "day_label": "Aujourd'hui",
       "temperature": {
         "predicted": 1.9,
-        "min_estimate": 0.4,
+        "min_estimate": 0.3,
         "max_estimate": 4.6
       },
       "rain": {
@@ -24,7 +24,7 @@
       "raw_nwp": {
         "model": "icon_seamless",
         "temp_avg": 1.4,
-        "temp_min": 0.3,
+        "temp_min": 0.2,
         "temp_max": 3.6
       },
       "periods": {
@@ -64,14 +64,14 @@
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
-        "temp_avg": 0.4,
+        "temp_avg": 0.5,
         "temp_min": -0.4,
-        "temp_max": 1.6
+        "temp_max": 1.8
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 0.5,
+          "temp_estimate": 0.4,
           "rain_risk": "low"
         },
         "p2": {
