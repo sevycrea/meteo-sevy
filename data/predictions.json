@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T13:31:24+01:00",
+  "generated_at": "2026-11-27T13:46:09+01:00",
   "model_version": "2026-11-27T12:39:26+01:00",
   "model_type": "mos_station_correction",
   "training_days": 475,
@@ -12,7 +12,7 @@
       "temperature": {
         "predicted": 2.1,
         "min_estimate": 0.5,
-        "max_estimate": 4.6
+        "max_estimate": 4.7
       },
       "rain": {
         "will_rain": false,
@@ -112,12 +112,12 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": -0.9,
+          "temp_estimate": -0.8,
           "rain_risk": "high"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 2.3,
+          "temp_estimate": 2.4,
           "rain_risk": "high"
         },
         "p3": {
