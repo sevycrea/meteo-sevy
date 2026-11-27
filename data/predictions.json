@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T13:46:09+01:00",
+  "generated_at": "2026-11-27T14:01:36+01:00",
   "model_version": "2026-11-27T12:39:26+01:00",
   "model_type": "mos_station_correction",
   "training_days": 475,
@@ -12,7 +12,7 @@
       "temperature": {
         "predicted": 2.1,
         "min_estimate": 0.5,
-        "max_estimate": 4.7
+        "max_estimate": 4.6
       },
       "rain": {
         "will_rain": false,
@@ -25,7 +25,7 @@
         "model": "icon_seamless",
         "temp_avg": 1.6,
         "temp_min": 0.4,
-        "temp_max": 3.8
+        "temp_max": 3.7
       },
       "periods": {
         "p1": {
@@ -40,7 +40,7 @@
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 1.1,
+          "temp_estimate": 1.2,
           "rain_risk": "low"
         }
       }
@@ -51,9 +51,9 @@
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
-        "predicted": 0.9,
+        "predicted": 0.8,
         "min_estimate": -0.3,
-        "max_estimate": 2.2
+        "max_estimate": 2.3
       },
       "rain": {
         "will_rain": false,
@@ -66,12 +66,12 @@
         "model": "icon_seamless",
         "temp_avg": 0.5,
         "temp_min": -0.4,
-        "temp_max": 1.5
+        "temp_max": 1.7
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 0.7,
+          "temp_estimate": 0.5,
           "rain_risk": "low"
         },
         "p2": {
@@ -81,7 +81,7 @@
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 0.4,
+          "temp_estimate": 0.3,
           "rain_risk": "low"
         }
       }
@@ -98,7 +98,7 @@
       },
       "rain": {
         "will_rain": true,
-        "probability": 74
+        "probability": 75
       },
       "confidence": 86,
       "expected_error_c": 1.07,
@@ -112,7 +112,7 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": -0.8,
+          "temp_estimate": -0.9,
           "rain_risk": "high"
         },
         "p2": {
