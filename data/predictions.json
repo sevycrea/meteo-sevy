@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T08:31:16+01:00",
+  "generated_at": "2026-11-27T09:01:36+01:00",
   "model_version": "2026-11-27T03:01:26+01:00",
   "model_type": "mos_station_correction",
   "training_days": 475,
@@ -11,8 +11,8 @@
       "day_label": "Aujourd'hui",
       "temperature": {
         "predicted": 2.2,
-        "min_estimate": 0.6,
-        "max_estimate": 4.7
+        "min_estimate": 0.5,
+        "max_estimate": 4.8
       },
       "rain": {
         "will_rain": false,
@@ -23,9 +23,9 @@
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
-        "temp_avg": 1.6,
+        "temp_avg": 1.7,
         "temp_min": 0.4,
-        "temp_max": 3.7
+        "temp_max": 3.9
       },
       "periods": {
         "p1": {
@@ -35,7 +35,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 3.6,
+          "temp_estimate": 3.7,
           "rain_risk": "low"
         },
         "p3": {
@@ -51,7 +51,7 @@
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
-        "predicted": 0.8,
+        "predicted": 0.9,
         "min_estimate": -0.2,
         "max_estimate": 2.1
       },
@@ -71,12 +71,12 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 0.5,
+          "temp_estimate": 0.6,
           "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 1.5,
+          "temp_estimate": 1.6,
           "rain_risk": "low"
         },
         "p3": {
@@ -93,12 +93,12 @@
       "day_label": "Après-demain",
       "temperature": {
         "predicted": 1.2,
-        "min_estimate": -1.4,
-        "max_estimate": 3.6
+        "min_estimate": -1.5,
+        "max_estimate": 3.7
       },
       "rain": {
         "will_rain": true,
-        "probability": 77
+        "probability": 81
       },
       "confidence": 86,
       "expected_error_c": 1.07,
@@ -117,7 +117,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 3.0,
+          "temp_estimate": 3.1,
           "rain_risk": "high"
         },
         "p3": {
