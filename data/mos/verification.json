@@ -37,8 +37,53 @@
         "rain_prob": 7,
         "applied": true
       }
+    ],
+    "2026-11-27": [
+      {
+        "k": 0,
+        "date": "2026-11-27",
+        "tavg": 2.19,
+        "tmin": 0.11,
+        "tmax": 4.85,
+        "raw_tavg": 1.6,
+        "raw_tmin": 0.0,
+        "raw_tmax": 3.8,
+        "rain_prob": 7,
+        "applied": true
+      },
+      {
+        "k": 1,
+        "date": "2026-11-28",
+        "tavg": 0.51,
+        "tmin": -0.79,
+        "tmax": 2.09,
+        "raw_tavg": 0.16,
+        "raw_tmin": -0.9,
+        "raw_tmax": 1.5,
+        "rain_prob": 9,
+        "applied": true
+      },
+      {
+        "k": 2,
+        "date": "2026-11-29",
+        "tavg": 1.11,
+        "tmin": -1.66,
+        "tmax": 3.61,
+        "raw_tavg": 1.38,
+        "raw_tmin": -1.5,
+        "raw_tmax": 4.0,
+        "rain_prob": 36,
+        "applied": true
+      }
     ]
   },
-  "summary": {},
-  "updated_at": "2026-11-27T00:46:03+01:00"
+  "summary": {
+    "0": {
+      "n_days": 1,
+      "mae_minmax_corrected": 0.58,
+      "mae_minmax_raw_icon": 0.35,
+      "rain_accuracy": 1.0
+    }
+  },
+  "updated_at": "2026-11-27T01:01:36+01:00"
 }
