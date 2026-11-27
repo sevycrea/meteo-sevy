@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-27T03:01:25+01:00",
-  "model_version": "2026-11-26T12:58:58+01:00",
+  "generated_at": "2026-11-27T03:15:54+01:00",
+  "model_version": "2026-11-27T03:01:26+01:00",
   "model_type": "mos_station_correction",
-  "training_days": 474,
+  "training_days": 475,
   "forecasts": [
     {
       "date": "2026-11-27",
@@ -30,7 +30,7 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 1.6,
+          "temp_estimate": 1.5,
           "rain_risk": "low"
         },
         "p2": {
@@ -53,11 +53,11 @@
       "temperature": {
         "predicted": 0.6,
         "min_estimate": -0.4,
-        "max_estimate": 1.9
+        "max_estimate": 2.0
       },
       "rain": {
         "will_rain": false,
-        "probability": 9
+        "probability": 10
       },
       "confidence": 89,
       "expected_error_c": 0.97,
@@ -71,7 +71,7 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 0.3,
+          "temp_estimate": 0.2,
           "rain_risk": "low"
         },
         "p2": {
@@ -94,11 +94,11 @@
       "temperature": {
         "predicted": 0.9,
         "min_estimate": -1.6,
-        "max_estimate": 3.5
+        "max_estimate": 3.6
       },
       "rain": {
         "will_rain": false,
-        "probability": 41
+        "probability": 43
       },
       "confidence": 86,
       "expected_error_c": 1.07,
