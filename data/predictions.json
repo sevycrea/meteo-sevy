@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T02:01:22+01:00",
+  "generated_at": "2026-11-28T02:15:57+01:00",
   "model_version": "2026-11-27T12:39:26+01:00",
   "model_type": "mos_station_correction",
   "training_days": 475,
@@ -12,7 +12,7 @@
       "temperature": {
         "predicted": 0.8,
         "min_estimate": -0.4,
-        "max_estimate": 2.6
+        "max_estimate": 2.5
       },
       "rain": {
         "will_rain": false,
@@ -51,22 +51,22 @@
       "day_number": 1,
       "day_label": "Demain",
       "temperature": {
-        "predicted": 1.2,
+        "predicted": 1.3,
         "min_estimate": -1.2,
-        "max_estimate": 4.2
+        "max_estimate": 3.9
       },
       "rain": {
         "will_rain": true,
-        "probability": 76
+        "probability": 74
       },
       "confidence": 89,
       "expected_error_c": 0.97,
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
-        "temp_avg": 1.4,
+        "temp_avg": 1.3,
         "temp_min": -1.1,
-        "temp_max": 4.3
+        "temp_max": 3.7
       },
       "periods": {
         "p1": {
@@ -76,12 +76,12 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 3.0,
+          "temp_estimate": 3.3,
           "rain_risk": "high"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 1.6,
+          "temp_estimate": 1.4,
           "rain_risk": "high"
         }
       }
@@ -98,7 +98,7 @@
       },
       "rain": {
         "will_rain": false,
-        "probability": 35
+        "probability": 37
       },
       "confidence": 86,
       "expected_error_c": 1.07,
@@ -117,12 +117,12 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 6.3,
+          "temp_estimate": 6.2,
           "rain_risk": "medium"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 4.2,
+          "temp_estimate": 4.1,
           "rain_risk": "medium"
         }
       }
