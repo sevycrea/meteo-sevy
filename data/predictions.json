@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-28T03:01:30+01:00",
-  "model_version": "2026-11-27T12:39:26+01:00",
+  "generated_at": "2026-11-28T03:19:20+01:00",
+  "model_version": "2026-11-28T03:01:31+01:00",
   "model_type": "mos_station_correction",
-  "training_days": 475,
+  "training_days": 476,
   "forecasts": [
     {
       "date": "2026-11-28",
@@ -19,7 +19,7 @@
         "probability": 4
       },
       "confidence": 96,
-      "expected_error_c": 0.74,
+      "expected_error_c": 0.73,
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
@@ -35,7 +35,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 1.8,
+          "temp_estimate": 1.7,
           "rain_risk": "low"
         },
         "p3": {
@@ -60,7 +60,7 @@
         "probability": 73
       },
       "confidence": 89,
-      "expected_error_c": 0.97,
+      "expected_error_c": 0.96,
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
@@ -117,7 +117,7 @@
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 6.2,
+          "temp_estimate": 6.3,
           "rain_risk": "medium"
         },
         "p3": {
