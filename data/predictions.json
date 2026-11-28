@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T10:01:28+01:00",
+  "generated_at": "2026-11-28T10:18:49+01:00",
   "model_version": "2026-11-28T03:01:31+01:00",
   "model_type": "mos_station_correction",
   "training_days": 476,
@@ -10,8 +10,8 @@
       "day_number": 0,
       "day_label": "Aujourd'hui",
       "temperature": {
-        "predicted": 0.7,
-        "min_estimate": -0.6,
+        "predicted": 0.8,
+        "min_estimate": -0.5,
         "max_estimate": 2.5
       },
       "rain": {
@@ -52,12 +52,12 @@
       "day_label": "Demain",
       "temperature": {
         "predicted": 1.4,
-        "min_estimate": -1.0,
+        "min_estimate": -0.9,
         "max_estimate": 3.9
       },
       "rain": {
         "will_rain": false,
-        "probability": 48
+        "probability": 38
       },
       "confidence": 89,
       "expected_error_c": 0.96,
@@ -71,7 +71,7 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": -0.6,
+          "temp_estimate": -0.5,
           "rain_risk": "medium"
         },
         "p2": {
@@ -93,12 +93,12 @@
       "day_label": "Après-demain",
       "temperature": {
         "predicted": 4.8,
-        "min_estimate": 3.5,
-        "max_estimate": 7.3
+        "min_estimate": 3.4,
+        "max_estimate": 7.4
       },
       "rain": {
         "will_rain": false,
-        "probability": 39
+        "probability": 44
       },
       "confidence": 86,
       "expected_error_c": 1.07,
@@ -112,7 +112,7 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 4.6,
+          "temp_estimate": 4.5,
           "rain_risk": "medium"
         },
         "p2": {
@@ -122,7 +122,7 @@
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 3.9,
+          "temp_estimate": 3.8,
           "rain_risk": "medium"
         }
       }
