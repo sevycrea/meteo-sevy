@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T01:45:59+01:00",
+  "generated_at": "2026-11-28T02:01:22+01:00",
   "model_version": "2026-11-27T12:39:26+01:00",
   "model_type": "mos_station_correction",
   "training_days": 475,
@@ -30,12 +30,12 @@
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 0.1,
+          "temp_estimate": -0.1,
           "rain_risk": "low"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 1.8,
+          "temp_estimate": 1.7,
           "rain_risk": "low"
         },
         "p3": {
