@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T10:31:26+01:00",
+  "generated_at": "2026-11-28T10:46:01+01:00",
   "model_version": "2026-11-28T03:01:31+01:00",
   "model_type": "mos_station_correction",
   "training_days": 476,
@@ -94,30 +94,30 @@
       "temperature": {
         "predicted": 4.8,
         "min_estimate": 3.4,
-        "max_estimate": 7.4
+        "max_estimate": 7.3
       },
       "rain": {
         "will_rain": false,
-        "probability": 44
+        "probability": 45
       },
       "confidence": 86,
       "expected_error_c": 1.07,
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
-        "temp_avg": 4.7,
+        "temp_avg": 4.6,
         "temp_min": 3.0,
-        "temp_max": 7.6
+        "temp_max": 7.4
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 4.5,
+          "temp_estimate": 4.4,
           "rain_risk": "medium"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 6.3,
+          "temp_estimate": 6.4,
           "rain_risk": "medium"
         },
         "p3": {
