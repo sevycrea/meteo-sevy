@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T08:15:58+01:00",
+  "generated_at": "2026-11-28T08:31:23+01:00",
   "model_version": "2026-11-28T03:01:31+01:00",
   "model_type": "mos_station_correction",
   "training_days": 476,
@@ -52,36 +52,36 @@
       "day_label": "Demain",
       "temperature": {
         "predicted": 1.3,
-        "min_estimate": -1.1,
-        "max_estimate": 4.1
+        "min_estimate": -1.2,
+        "max_estimate": 3.9
       },
       "rain": {
         "will_rain": true,
-        "probability": 70
+        "probability": 72
       },
       "confidence": 89,
       "expected_error_c": 0.96,
       "method": "corrigé par la station",
       "raw_nwp": {
         "model": "icon_seamless",
-        "temp_avg": 1.1,
-        "temp_min": -1.0,
-        "temp_max": 3.5
+        "temp_avg": 0.9,
+        "temp_min": -1.3,
+        "temp_max": 3.1
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": -0.8,
+          "temp_estimate": -0.7,
           "rain_risk": "high"
         },
         "p2": {
           "name": "Après-midi (12h-20h)",
-          "temp_estimate": 3.2,
+          "temp_estimate": 3.1,
           "rain_risk": "high"
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 1.4,
+          "temp_estimate": 1.5,
           "rain_risk": "high"
         }
       }
@@ -93,12 +93,12 @@
       "day_label": "Après-demain",
       "temperature": {
         "predicted": 4.9,
-        "min_estimate": 3.8,
+        "min_estimate": 3.6,
         "max_estimate": 7.5
       },
       "rain": {
         "will_rain": false,
-        "probability": 42
+        "probability": 36
       },
       "confidence": 86,
       "expected_error_c": 1.07,
@@ -106,13 +106,13 @@
       "raw_nwp": {
         "model": "icon_seamless",
         "temp_avg": 4.7,
-        "temp_min": 3.3,
+        "temp_min": 3.0,
         "temp_max": 7.6
       },
       "periods": {
         "p1": {
           "name": "Matin (04h-12h)",
-          "temp_estimate": 4.6,
+          "temp_estimate": 4.7,
           "rain_risk": "medium"
         },
         "p2": {
