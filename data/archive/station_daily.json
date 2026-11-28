@@ -7848,5 +7848,22 @@
   "pressure_avg": 1002.4,
   "pressure_max": 1006.1,
   "obs_count": 274
+ },
+ "2026-11-27": {
+  "temp_min": 0.5,
+  "temp_avg": 1.6,
+  "temp_max": 4.3,
+  "hum_min": 76,
+  "hum_avg": 91,
+  "hum_max": 96,
+  "wind_min": 0.1,
+  "wind_avg": 3.8,
+  "wind_max": 12.3,
+  "gust_max": 21.9,
+  "rain": 0,
+  "pressure_min": 1005.1,
+  "pressure_avg": 1008.2,
+  "pressure_max": 1012.9,
+  "obs_count": 274
  }
 }
