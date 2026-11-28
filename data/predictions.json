@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T01:31:22+01:00",
+  "generated_at": "2026-11-28T01:45:59+01:00",
   "model_version": "2026-11-27T12:39:26+01:00",
   "model_type": "mos_station_correction",
   "training_days": 475,
@@ -53,11 +53,11 @@
       "temperature": {
         "predicted": 1.2,
         "min_estimate": -1.2,
-        "max_estimate": 4.1
+        "max_estimate": 4.2
       },
       "rain": {
         "will_rain": true,
-        "probability": 77
+        "probability": 76
       },
       "confidence": 89,
       "expected_error_c": 0.97,
@@ -81,7 +81,7 @@
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 1.5,
+          "temp_estimate": 1.6,
           "rain_risk": "high"
         }
       }
@@ -93,12 +93,12 @@
       "day_label": "Après-demain",
       "temperature": {
         "predicted": 5.0,
-        "min_estimate": 3.6,
-        "max_estimate": 7.4
+        "min_estimate": 3.7,
+        "max_estimate": 7.3
       },
       "rain": {
         "will_rain": false,
-        "probability": 33
+        "probability": 35
       },
       "confidence": 86,
       "expected_error_c": 1.07,
@@ -122,7 +122,7 @@
         },
         "p3": {
           "name": "Nuit (20h-04h)",
-          "temp_estimate": 4.1,
+          "temp_estimate": 4.2,
           "rain_risk": "medium"
         }
       }
